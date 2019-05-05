@@ -2,9 +2,15 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
-
+#include <ctime>
+#include <unistd.h>
 
 using namespace std;
+const int sleep_time = 1;
+
+void ok(){
+    cout << "OK\n";
+}
 
 struct Date{
     int year;
@@ -51,7 +57,7 @@ struct Product{
     Time time;
     int shelf_life;
     void print(){
-        cout << name << " " << amount << " of " << units << "\n";
+        cout << name << " " << amount << " " << units << "\n";
         cout << "produced ";
         date.print();
         time.print();
@@ -206,6 +212,7 @@ void vector_interacter(){
         if (command_type == "h") print_command_list();
         if (command_type == "add"){
             products.get();
+            ok();
         }
         if (command_type == "print"){
             products.print();
@@ -245,6 +252,7 @@ void file_interacter(){
         if (command_type == "h") print_command_list();
         if (command_type == "add"){
             products.get();
+            ok();
         }
         if (command_type == "print"){
             products.print();
@@ -283,6 +291,61 @@ void interacter(){
     return;
 }
 
+void visual(){
+    cout << "------VISUAL MODE------\n";
+    cout << "Using vector:\n";
+    Vector products;
+    cout << "Adding water to struct\n";
+    sleep(sleep_time);
+    Product temp = {1, "water", "litrs",10, 12,10,2001,12,35,4000};
+    products.products.push_back(temp);
+    cout << "Printing all elemrnts\n";
+    sleep(sleep_time);
+    products.print();
+    sleep(sleep_time);
+    cout << "add tea\n";
+    sleep(sleep_time);
+    temp = {2, "tea", "kg", 5, 12,10,2001,12,35,4000};
+    products.products.push_back(temp);
+    cout << "Printing all elemrnts\n";
+    sleep(sleep_time);
+    products.print();
+    sleep(sleep_time);
+    cout << "Searching name ending 'r'\n";
+    vector <Product> result = products.search_end_name("r");
+    for (auto i : result)
+        i.print();
+    sleep(sleep_time);
+
+    cout << "Using files:\n";
+    File product;
+    cout << "Adding water to struct\n";
+    sleep(sleep_time);
+    temp = {1, "water", "litrs",10, 12,10,2001,12,35,4000};
+    cout << "Printing all elemrnts\n";
+    sleep(sleep_time);
+    products.print();
+    sleep(sleep_time);
+    cout << "add tea\n";
+    sleep(sleep_time);
+    temp = {2, "tea", "kg", 5, 12,10,2001,12,35,4000};
+
+    cout << "Printing all elemrnts\n";
+    sleep(sleep_time);
+    products.print();
+    sleep(sleep_time);
+    cout << "Searching name ending 'a'\n";
+    result = product.search_end_name("a");
+    for (auto i : result)
+        i.print();
+    sleep(sleep_time);
+    cout << "Have a nice day!\n";
+}
+
+void benchmark(){
+
+}
+
 void selector(){
     while (1){
         cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to visual mod\nPress 'b' to benchmark mod\nPress q to exit\n";
@@ -290,8 +353,8 @@ void selector(){
         cin >> mod;
         if (mod == 'q') break;
         if (mod == 'i') interacter();
-        //if (mod == 'v') visual();
-        //if (mod == 'b') benchmark();
+        if (mod == 'v') visual();
+        if (mod == 'b') benchmark();
     }
 }
 
