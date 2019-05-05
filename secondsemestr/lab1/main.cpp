@@ -90,6 +90,7 @@ struct Vector{
     void print(){
         for (auto i : products)
             i.print();
+        cout << "\n\n";
     }
     vector <Product> search_end_name(string end){
         vector <Product> result;
@@ -191,17 +192,111 @@ struct File{
     }
 };
 
-int main()
-{
-    Vector str;
-    int n;
-    cin >> n;
-    for (int i = 1; i <= n; ++i)
-        str.get(), cout << i;
-
-    vector <Product> temp = str.search_end_name("a");
-    for (auto i : temp)
-        i.print();
-    return 0;
+void print_command_list(){
+    cout << "In proggres..\n";
 }
 
+void vector_interacter(){
+    Vector products;
+    cout << "Press 'h' to view list of commands\n";
+    while (1){
+        string command_type;
+        cin >> command_type;
+        if (command_type == "q") break;
+        if (command_type == "h") print_command_list();
+        if (command_type == "add"){
+            products.get();
+        }
+        if (command_type == "print"){
+            products.print();
+        }
+        if (command_type == "search_name"){
+            string name;
+            cin >> name;
+            vector <Product> result = products.search_end_name(name);
+            for (auto i : result)
+                i.print();
+        }
+        if (command_type == "search_unit"){
+            string unit; int life;
+            cin >> unit >> life;
+            vector <Product> result = products.search_units(unit, life);
+            for (auto i : result)
+                i.print();
+        }
+        if (command_type == "search_date"){
+            Date left, right;
+            left.get();
+            right.get();
+            vector <Product> result = products.search_date(left, right);
+            for (auto i : result)
+                i.print();
+        }
+    }
+}
+
+void file_interacter(){
+    File products;
+    cout << "Press 'h' to view list of commands\n";
+    while (1){
+        string command_type;
+        cin >> command_type;
+        if (command_type == "q") break;
+        if (command_type == "h") print_command_list();
+        if (command_type == "add"){
+            products.get();
+        }
+        if (command_type == "print"){
+            products.print();
+        }
+        if (command_type == "search_name"){
+            string name;
+            cin >> name;
+            vector <Product> result = products.search_end_name(name);
+            for (auto i : result)
+                i.print();
+        }
+        if (command_type == "search_unit"){
+            string unit; int life;
+            cin >> unit >> life;
+            vector <Product> result = products.search_units(unit, life);
+            for (auto i : result)
+                i.print();
+        }
+        if (command_type == "search_date"){
+            Date left, right;
+            left.get();
+            right.get();
+            vector <Product> result = products.search_date(left, right);
+            for (auto i : result)
+                i.print();
+        }
+    }
+}
+
+void interacter(){
+    cout << "-------INTERACTOR MODE-------\nChoose type of struct:\nPress 'r' to use RAM\nPress 'f' to use file\n";
+    char struct_type;
+    cin >> struct_type;
+    if (struct_type == 'r') vector_interacter();
+    if (struct_type == 'f') file_interacter();
+    return;
+}
+
+void selector(){
+    while (1){
+        cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to visual mod\nPress 'b' to benchmark mod\nPress q to exit\n";
+        char mod;
+        cin >> mod;
+        if (mod == 'q') break;
+        if (mod == 'i') interacter();
+        //if (mod == 'v') visual();
+        //if (mod == 'b') benchmark();
+    }
+}
+
+int main()
+{
+    selector();
+    return 0;
+}
