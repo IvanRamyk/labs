@@ -150,15 +150,58 @@ struct File{
         for (auto i : temp)
             i.print();
     }
+    vector <Product> file_to_vector(){
+        vector <Product> result;
+        Product product;
+        ifstream fin("struct");
+        while (product.in(fin))
+            result.push_back(product);
+        fin.close();
+        return result;
+    }
+    vector <Product> search_end_name(string end){
+        vector <Product> result;
+        reverse(end.begin(), end.end());
+        vector <Product> products = file_to_vector();
+        for (auto i : products)
+            if (i.name.size() >= end.size()){
+                bool is_same = 1;
+                for (int j = 0; j < end.size(); ++j)
+                    if (end[j] != i.name[i.name.size() - 1 - j])
+                        is_same = 0;
+                if (is_same) result.push_back(i);
+            }
+        return result;
+    }
+    vector <Product> search_units(string units_etalon, int life_etalon){
+        vector <Product> result;
+        vector <Product> products = file_to_vector();
+        for (auto i : products)
+            if (units_etalon == i.units && i.shelf_life >= life_etalon)
+                result.push_back(i);
+        return result;
+    }
+    vector <Product> search_date(Date left, Date right){
+        vector <Product> result;
+        vector <Product> products = file_to_vector();
+        for (auto i : products)
+            if (left <= i.date && i.date <= right)
+                result.push_back(i);
+        return result;
+    }
 };
 
 int main()
 {
-    File str;
-    /*int n;
+    Vector str;
+    int n;
     cin >> n;
     for (int i = 1; i <= n; ++i)
-        str.get();*/
-    str.print();
+        str.get(), cout << i;
+
+    vector <Product> temp = str.search_end_name("a");
+    for (auto i : temp)
+        i.print();
     return 0;
 }
+
