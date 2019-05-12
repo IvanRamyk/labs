@@ -205,6 +205,7 @@ pair <vector <span_edge> , int > minimal_spanning_tree(graf_adj graf){
     vector <span_edge> result;
     vector <int> dist;
     vector <int> used;
+    used.resize(graf.number_vertex);
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i) {
         dist[i] = -1;
