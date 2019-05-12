@@ -4,10 +4,11 @@
 #include <time.h>
 #include <windows.h>
 #include <chrono>
+#include <algorithm>
 
 using namespace std;
 
-int bubble_size = 10;
+int bubble_size = 125;
 bool is_demo = 0;
 int n;
 const int sleep_const = 2 * 1000;
@@ -72,7 +73,6 @@ void bubble_sort(Date array[], int left, int rigth){
         }
     }
 }
-
 int partition(Date array[], int left, int right){
      Date pivot = array[(left + right) >> 1];
      int i = left, j = right;
@@ -90,7 +90,6 @@ int partition(Date array[], int left, int right){
 void quick_sort(Date array[], int left, int right){
      if (left < right){
          int middle = partition(array, left, right);
-         //middle = (left + right) / 2;
          quick_sort(array, left, middle - 1);
          quick_sort(array, middle + 1, right);
          if (is_demo) {
@@ -102,8 +101,9 @@ void quick_sort(Date array[], int left, int right){
      }
  }
 
+Date temp [20000000];
+
 void merge(Date array[], int left, int middle, int right){
-     Date temp [right + 1];
      int i = left;
      int j = middle + 1;
      int k = left;
@@ -200,13 +200,132 @@ void demo(){
     combine_merge_bubble_sort(arr1, 0, n - 1);
 }
 
+Date arr[20000000];
+Date arr1[20000000];
+
+void search_size(){
+    for (bubble_size = 2; bubble_size <= 20; ++bubble_size){
+        cout << "For max bubble size = " << bubble_size << "\n";
+        for (int n = 2000; n <=2000000; n *= 10){
+            for (int i = 0; i < n; ++i)
+                arr[i].init();
+            int start = clock();
+            combine_merge_bubble_sort(arr, 0, n - 1);
+            int end = clock();
+            cout << "  For n " << n << " " << (end - start)/1000. << "\n";
+        }
+    }
+    for (bubble_size = 25; bubble_size <= 200; bubble_size +=10){
+        cout << "For max bubble size = " << bubble_size << "\n";
+        for (int n = 2000; n <=2000000; n *= 10){
+            for (int i = 0; i < n; ++i)
+                arr[i].init();
+            int start = clock();
+            combine_merge_bubble_sort(arr, 0, n - 1);
+            int end = clock();
+            cout << "  For n " << n << " " << (end - start)/1000. << "\n";
+        }
+    }
+}
+
+void benchmark_for_size(int size){
+    unsigned int start_time, end_time;
+    int n = size;
+    printf("For size %d\n\n", size);
+    printf("  For random array\n");
+    for (int i = 0; i < n; ++i)
+        arr[i].init();
+
+    if (n <= 10000) {
+        for (int i = 0; i < n; ++i)
+            arr1[i] = arr[i];
+        start_time = clock();
+        bubble_sort(arr1, 0, n - 1);
+        end_time = clock();
+        printf("    Bubble: %f\n", (end_time - start_time) / 1000.);
+    }
+    for (int i = 0; i < n; ++i)
+        arr1[i] = arr[i];
+
+    start_time = clock();
+    quick_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Quick: %f\n", (end_time - start_time) / 1000.);
+
+    for (int i = 0; i < n; ++i)
+        arr1[i] = arr[i];
+
+    start_time = clock();
+    merge_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Merge: %f\n", (end_time - start_time) / 1000.);
+
+    for (int i = 0; i < n; ++i)
+        arr1[i] = arr[i];
+    start_time = clock();
+    combine_merge_bubble_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Combine: %f\n\n\n", (end_time - start_time) / 1000.);
+
+    printf("  For sort array\n");
+    if (n <= 10000) {
+        start_time = clock();
+        bubble_sort(arr1, 0, n - 1);
+        end_time = clock();
+        printf("    Bubble: %f\n", (end_time - start_time) / 1000.);
+    }
+    start_time = clock();
+    quick_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Quick: %f\n", (end_time - start_time) / 1000.);
+    start_time = clock();
+    merge_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Merge: %f\n", (end_time - start_time) / 1000.);
+    start_time = clock();
+    combine_merge_bubble_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Combine: %f\n\n\n", (end_time - start_time) / 1000.);
+
+    reverse(arr1, arr1 + 10000000);
+
+    printf("  For reverse array\n");
+    if (n <= 10000) {
+        start_time = clock();
+        bubble_sort(arr1, 0, n - 1);
+        end_time = clock();
+        printf("    Bubble: %f\n", (end_time - start_time) / 1000.);
+    }
+    start_time = clock();
+    quick_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Quick: %f\n", (end_time - start_time) / 1000.);
+    start_time = clock();
+    merge_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Merge: %f\n", (end_time - start_time) / 1000.);
+    start_time = clock();
+    combine_merge_bubble_sort(arr1, 0, n - 1);
+    end_time = clock();
+    printf("    Combine: %f\n\n\n", (end_time - start_time) / 1000.);
+}
+
+void benchmark(){
+    srand(time(0));
+    search_size();
+    bubble_size = 4;
+    for (int n = 100; n <= 10000000; n *= 10)
+        benchmark_for_size(n);
+}
+
 void selector(){
      cout << "Press 'd' to demo mod\n";
      char mode;
      cin >> mode;
-     if (mode == 'd'){
+     if (mode == 'd')
          demo();
-     }
+     if (mode == 'b')
+         benchmark();
 }
 
 int main() {
