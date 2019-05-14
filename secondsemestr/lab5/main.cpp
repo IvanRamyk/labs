@@ -23,11 +23,12 @@ struct graph_matrix{
     graph_matrix(int v, bool o = 0){
         directed = 0;
         number_vertex = v;
+        number_edge = 0;
         matrix.resize(number_vertex);
         for (int i = 0; i < number_vertex; ++i)
             matrix[i].resize(number_vertex);
     }
-    void add(int from, int to, int weight = 1){
+    void add(int from, int to, int weight = -1){
         matrix[from][to] = weight;
         if (!directed)
             matrix[to][from] = weight;
@@ -35,6 +36,7 @@ struct graph_matrix{
     }
     void graph_random(int v, int e, int o = 0){
         number_vertex = v;
+        number_edge = 0;
         directed = o;
         matrix.resize(number_vertex);
         for (int i = 0; i < number_vertex; ++i)
@@ -70,6 +72,16 @@ struct graph_matrix{
             }
         }
     }
+    void print(){
+        printf("Graph with %d vertices and %d edges\nEdges:\n", number_vertex, number_edge);
+        for (int i = 0; i < number_vertex; ++i){
+            for (int j = 0; j < number_vertex; ++j)
+                if ((directed || i < j) &&  matrix[i][j]) {
+                    if (matrix[i][j] != -1) printf("(%d, %d) %d\n", i, j, matrix[i][j]);
+                    else printf("(%d, %d)\n", i, j);
+                }
+        }
+    }
 };
 
 struct edge{
@@ -91,9 +103,10 @@ struct graph_adj{
     graph_adj(int v, bool o = 0){
         directed = o;
         number_vertex = v;
+        number_edge = 0;
         adj.resize(number_vertex);
     }
-    void add(int from, int to, int weight = 1){
+    void add(int from, int to, int weight = -1){
         adj[from].push_back({to,weight});
         if (!directed)
             adj[to].push_back({from,weight});
@@ -124,13 +137,23 @@ struct graph_adj{
             add(from, to, weight);
         }
     }
+    void print(){
+        printf("Graph with %d vertices and %d edges\nEdges:\n", number_vertex, number_edge);
+        for (int i = 0; i < number_vertex; ++i){
+            for (auto j : adj[i])
+                if (directed || i < j.to) {
+                    if (j.weight != -1) printf("(%d, %d) %d\n", i, j, j.weight);
+                    else printf("(%d, %d)\n", i, j);
+                }
+        }
+    }
 };
 
 graph_matrix adj_to_matrix(graph_adj graph){
     graph_matrix result = graph_matrix(graph.number_vertex, graph.directed);
     for (int i = 0; i < graph.number_vertex; ++i){
         for (auto j : graph.adj[i])
-            result.add(i, j.to, j.weight);
+            if (graph.directed || i < j.to) result.add(i, j.to, j.weight);
     }
     return result;
 }
@@ -139,7 +162,7 @@ graph_adj matrix_to_adj(graph_matrix graph){
     graph_adj result = graph_adj(graph.number_vertex, graph.directed);
     for (int i = 0; i < graph.number_vertex; ++i){
         for (int j = 0; j < graph.number_vertex; ++j)
-            if (graph.matrix[i][j]) result.add(i, j, graph.matrix[i][j]);
+            if ((graph.matrix[i][j]) && (i < j || graph.directed)) result.add(i, j, graph.matrix[i][j]);
     }
     return result;
 }
@@ -701,7 +724,84 @@ void benchmark(){
 }
 
 void visual(){
-    
+    cout << "------------VISUAL MODE-------------\n";
+    cout << "1. Searching connected components \n";
+    graph_adj graph = graph_adj(7, 0);
+    graph.add(0, 1);
+    graph.add(0, 2);
+    graph.add(0, 3);
+    graph.add(1, 2);
+    graph.add(1, 3);
+    graph.add(3, 6);
+    graph.add(4, 5);
+    graph.print();
+    vector <vector <int> > components = search_component_adj(graph);
+    cout << "Components: ";
+    cout << components.size() << "\n";
+    for (auto i : components){
+        for (auto j : i)
+            cout << j << " ";
+        cout << "\n";
+    }
+    Sleep(3 * 1000);
+    cout << "2. BFS algorithm\n";
+    graph.add(4, 2);
+    graph.print();
+    vector <int> dist = bfs_adj(graph, 2);
+    cout << "Distance from vertex 2: \n";
+    for (int i = 0; i < 7; ++i)
+        cout << "to " << i << " is " << dist[i] << "\n";
+    Sleep(3 * 1000);
+    cout << "3. Topological sort\n";
+    graph_adj top = graph_adj(7, 1);
+    top.add(0, 1);
+    top.add(0, 2);
+    top.add(0, 3);
+    top.add(1, 2);
+    top.add(1, 3);
+    top.add(3, 6);
+    top.add(4, 5);
+    top.add(4, 2);
+    top.print();
+    pair <bool, vector <int>> sort = topological_sort_adj(top);
+    cout << "Correct order: ";
+    for (auto i : sort.second)
+        cout << i << " ";
+    cout << "\n";
+    Sleep(3 * 1000);
+    cout << "4. Dijkstra\n";
+    graph_matrix weight = graph_matrix(7, 0);
+    weight.add(0, 1, 10);
+    weight.add(0, 2, 3);
+    weight.add(0, 3, 100);
+    weight.add(1, 2, 102);
+    weight.add(1, 3, 23);
+    weight.add(3, 6, 14);
+    weight.add(4, 5, 32);
+    weight.add(4, 2, 34);
+    weight.add(4, 0, 44);
+    weight.add(4, 6, 2);
+    weight.add(4, 1, 1);
+    weight.print();
+    dist = dijkstra_matrix(weight, 3);
+    cout << "Distance from vertex 3: \n";
+    for (int i = 0; i < 7; ++i)
+        cout << "to " << i << " is " << dist[i] << "\n";
+    Sleep(3 * 1000);
+    cout << "5. Spanning tree algorithm \n";
+    weight.print();
+    pair < vector <span_edge>, int> result = spanning_tree_matrix(weight);
+    cout << "Tree with weight " << result.second << "\nEdges:\n";
+    for (auto i : result.first)
+        cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
+    Sleep(3 * 1000);
+    cout << "6. Minimal spanning tree algorithm \n";
+    weight.print();
+    result = minimal_spanning_tree_matrix(weight);
+    cout << "Tree with weight " << result.second << "\nEdges:\n";
+    for (auto i : result.first)
+        cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
+    cout << "Have a nice day!\n";
 }
 
 void selector(){
@@ -710,6 +810,7 @@ void selector(){
     cin >> mode;
     if (mode == 'i') interactor();
     if (mode == 'b') benchmark();
+    if (mode == 'v') visual();
 }
 
 
