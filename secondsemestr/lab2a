@@ -1,15 +1,20 @@
-#include <bits/stdc++.h>
-#include <unistd.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cmath>
+#include <ctime>
+#include <windows.h>
 
 using namespace std;
 
-const int nmax = 100;
-const int sleep_time = 1;
+const int nmax = 50000;
+const int sleep_time = 1000;
 
 struct IP{
     string IP4;
     IP(){
-       IP4 = "";
+        IP4 = "";
     }
     IP(string ip){
         IP4 = ip;
@@ -46,6 +51,20 @@ struct IP{
     }
     void print(){
         cout << IP4 << "\n";
+    }
+    void random_value(){
+        IP4 = "";
+        int field = rand() % 256;
+        IP4 += to_string(field);
+        IP4 += '.';
+        field = rand() % 256;
+        IP4 += to_string(field);
+        IP4 += '.';
+        field = rand() % 256;
+        IP4 += to_string(field);
+        IP4 += '.';
+        field = rand() % 256;
+        IP4 += to_string(field);
     }
 };
 
@@ -373,131 +392,283 @@ void visual(){
     cout << "Using array:\n";
     Array adress = Array();
     cout << "Adding '8.8.8.8' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("8.8.8.8");
     adress.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '255.255.255.0' to tail\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("255.255.255.0");
     adress.append_right(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '255.0.0.0' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("255.0.0.0");
     adress.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '0.0.0.0' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("0.0.0.0");
     adress.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Deleting element from tail\n";
     adress.pop_right();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Using vector:\n";
     Vector adress_vector = Vector();
     cout << "Adding '8.8.8.8' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("8.8.8.8");
     adress_vector.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_vector.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '255.255.255.0' to tail\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("255.255.255.0");
     adress_vector.append_right(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_vector.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '255.0.0.0' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("255.0.0.0");
     adress_vector.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_vector.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '0.0.0.0' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("0.0.0.0");
     adress_vector.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_vector.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Deleting element from tail\n";
     adress_vector.pop_right();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_vector.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Using list:\n";
     List adress_list = List();
     cout << "Adding '8.8.8.8' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("8.8.8.8");
     adress_list.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_list.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '255.255.255.0' to tail\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("255.255.255.0");
     adress_list.append_right(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_list.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '255.0.0.0' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("255.0.0.0");
     adress_list.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_list.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Adding '0.0.0.0' to head\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     temp = IP("0.0.0.0");
     adress_list.append_left(temp);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_list.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Deleting element from tail\n";
     adress_list.pop_right();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Printing all elemrnts\n";
-    sleep(sleep_time);
+    Sleep(sleep_time);
     adress_list.print();
-    sleep(sleep_time);
+    Sleep(sleep_time);
     cout << "Have a nice day!\n";
 }
 
 void benchmark(){
-
+    cout << "For List:\n";
+    List list = List();
+    double duration = 0.0;
+    long long cnt_of_operations = 1;
+    int start_time;
+    cout << "   Time of adding:\n";
+    while(duration < 1) {
+        cnt_of_operations *=5;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            list.append_left(temp);
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    long long etalon = cnt_of_operations;
+    while(duration < 5) {
+        cnt_of_operations += etalon;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            list.append_left(temp);
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    cout << "  Time of deleting\n";
+    cnt_of_operations = 1;
+    duration =  0;
+    while(duration < 1 && !list.is_empty()) {
+        cnt_of_operations = cnt_of_operations*5;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            list.pop_left();
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5 && !list.is_empty()) {
+        cnt_of_operations += etalon;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            list.pop_left();
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    cout << "For Vector:\n";
+    Vector vec = Vector();
+    duration = 0.0;
+    cnt_of_operations = 1;
+    cout << "   Time of adding:\n";
+    while(duration < 1) {
+        cnt_of_operations *=5;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            vec.append_left(temp);
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5) {
+        cnt_of_operations += etalon;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            vec.append_left(temp);
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    cout << "  Time of deleting\n";
+    cnt_of_operations = 1;
+    duration =  0;
+    while(duration < 1 && !vec.is_empty()) {
+        cnt_of_operations = cnt_of_operations*5;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            vec.pop_right();
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5 && !vec.is_empty()) {
+        cnt_of_operations += etalon;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            vec.pop_right();
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    cout << "For Array:\n";
+    Array arr = Array();
+    duration = 0.0;
+    cnt_of_operations = 1;
+    cout << "   Time of adding:\n";
+    while(duration < 1) {
+        cnt_of_operations *=5;
+        if (cnt_of_operations > nmax) break;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            arr.append_left(temp);
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5) {
+        cnt_of_operations += etalon;
+        if (cnt_of_operations >= nmax) break;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            arr.append_left(temp);
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    cout << "  Time of deleting\n";
+    cnt_of_operations = 1;
+    duration =  0;
+    while(duration < 1 && !arr.is_empty()) {
+        cnt_of_operations = cnt_of_operations*5;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            arr.pop_left();
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5 && !arr.is_empty()) {
+        cnt_of_operations += etalon;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            arr.pop_left();
+        }
+        duration = (clock() - start_time) / 1000.0;
+        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+    }
 }
 
 void selector(){
@@ -514,6 +685,7 @@ void selector(){
 
 int main()
 {
+    srand(time(0));
     selector();
     return 0;
 }
