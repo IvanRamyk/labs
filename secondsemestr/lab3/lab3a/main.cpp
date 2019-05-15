@@ -34,25 +34,25 @@ struct Date{
     }
 };
 bool operator <(Date a, Date b){
-     return a.value() > b.value();
- }
+    return a.value() > b.value();
+}
 bool operator >(Date a, Date b){
     return a.value() < b.value();
- }
+}
 void bubble_sort(Date array[], int number_of_elements){
-     bool not_sort = 1;
-     while (not_sort){
-         not_sort = 0;
-         for (int i = 0; i < number_of_elements - 1; ++i)
-             if (array[i + 1] < array[i]) {
-                 swap(array[i], array[i + 1]);
-                 not_sort = 1;
-             }
-         for (int i = number_of_elements - 2; i >= 0; --i)
-             if (array[i + 1] < array[i])
-                 swap(array[i], array[i + 1]);
-     }
- }
+    bool not_sort = 1;
+    while (not_sort){
+        not_sort = 0;
+        for (int i = 0; i < number_of_elements - 1; ++i)
+            if (array[i + 1] < array[i]) {
+                swap(array[i], array[i + 1]);
+                not_sort = 1;
+            }
+        for (int i = number_of_elements - 2; i >= 0; --i)
+            if (array[i + 1] < array[i])
+                swap(array[i], array[i + 1]);
+    }
+}
 void bubble_sort(Date array[], int left, int rigth){
     bool not_sort = 1;
     while (not_sort){
@@ -74,78 +74,78 @@ void bubble_sort(Date array[], int left, int rigth){
     }
 }
 int partition(Date array[], int left, int right){
-     Date pivot = array[(left + right) >> 1];
-     int i = left, j = right;
-     while(1){
-         while (array[i] < pivot)
-             ++i;
-         while (array[j] > pivot)
-             j--;
-         if (i >= j) return j;
+    Date pivot = array[(left + right) >> 1];
+    int i = left, j = right;
+    while(1){
+        while (array[i] < pivot)
+            ++i;
+        while (array[j] > pivot)
+            j--;
+        if (i >= j) return j;
         swap(array[i], array[j]);
         i++,j--;
-     }
+    }
 }//Hoare
 
 void quick_sort(Date array[], int left, int right){
-     if (left < right){
-         int middle = partition(array, left, right);
-         quick_sort(array, left, middle - 1);
-         quick_sort(array, middle + 1, right);
-         if (is_demo) {
-             for (int i = 0; i < n; ++i)
-                 array[i].print();
-             cout << "=======\n";
-             Sleep(sleep_const);
-         }
-     }
- }
+    if (left < right){
+        int middle = partition(array, left, right);
+        quick_sort(array, left, middle - 1);
+        quick_sort(array, middle + 1, right);
+        if (is_demo) {
+            for (int i = 0; i < n; ++i)
+                array[i].print();
+            cout << "=======\n";
+            Sleep(sleep_const);
+        }
+    }
+}
 
 Date temp [20000000];
 
 void merge(Date array[], int left, int middle, int right){
-     int i = left;
-     int j = middle + 1;
-     int k = left;
-     while (k != right + 1){
-         if (i == middle + 1){
-             temp[k] = array[j];
-             ++j;
-         }
-         else if (j == right + 1){
-             temp[k] = array[i];
-             ++i;
-         }
-         else if (array[i] > array[j]){
-             temp[k] = array[j];
-             ++j;
-         }
-         else {
-             temp[k] = array[i];
-             ++i;
-         }
-         ++k;
-     }
-     for (int i = left; i <= right; ++i)
-         array[i] = temp[i];
- }
+    int i = left;
+    int j = middle + 1;
+    int k = left;
+    while (k != right + 1){
+        if (i == middle + 1){
+            temp[k] = array[j];
+            ++j;
+        }
+        else if (j == right + 1){
+            temp[k] = array[i];
+            ++i;
+        }
+        else if (array[i] > array[j]){
+            temp[k] = array[j];
+            ++j;
+        }
+        else {
+            temp[k] = array[i];
+            ++i;
+        }
+        ++k;
+    }
+    for (int i = left; i <= right; ++i)
+        array[i] = temp[i];
+}
 
 void merge_sort(Date array[], int left, int right){
-     if (left < right) {
-         //cout << left << " " << right << "\n";
-         int middle = (left + right) >> 1;
-         merge_sort(array, left, middle);
-         merge_sort(array, middle + 1, right);
-         merge(array, left, middle, right);
-         //cout << left << " " << right << " done!\n";
-         if (is_demo) {
-             for (int i = 0; i < n; ++i)
-                 array[i].print();
-             cout << "=======\n";
-             Sleep(sleep_const);
-         }
-     }
- }
+    if (left < right) {
+        //cout << left << " " << right << "\n";
+        int middle = (left + right) >> 1;
+        merge_sort(array, left, middle);
+        merge_sort(array, middle + 1, right);
+        merge(array, left, middle, right);
+        //cout << left << " " << right << " done!\n";
+        if (is_demo) {
+            for (int i = 0; i < n; ++i)
+                array[i].print();
+            cout << "=======\n";
+            Sleep(sleep_const);
+        }
+    }
+}
 
 void combine_merge_bubble_sort(Date array[], int left, int right)
 {
@@ -319,16 +319,16 @@ void benchmark(){
 }
 
 void selector(){
-     cout << "Press 'd' to demo mod\n";
-     char mode;
-     cin >> mode;
-     if (mode == 'd')
-         demo();
-     if (mode == 'b')
-         benchmark();
+    cout << "Press 'd' to demo mod\nPress 'b' to benchmark\n";
+    char mode;
+    cin >> mode;
+    if (mode == 'd')
+        demo();
+    if (mode == 'b')
+        benchmark();
 }
 
 int main() {
-     selector();
-     return 0;
+    selector();
+    return 0;
 }
