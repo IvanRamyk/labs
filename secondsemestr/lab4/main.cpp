@@ -134,6 +134,7 @@ struct binary_tree{
         else inter_print(current_node);
     }
     void inter_print(){
+        std::cout << "--------INTERACTOR PRINTING MODE----------\n";
         inter_print(root);
     }
     void symmetric_order(binary_tree_node * current_node, std::vector<binary_tree_node *> &answer){
@@ -149,59 +150,69 @@ struct binary_tree{
         symmetric_order(root, result);
         return result;
     }
-    /*
-    binary_tree_node * get_min(binary_tree_node *current_node){
-        if (current_node->left_child->left_child)
-            return get_min(current_node->left_child);
-        binary_tree_node * answer = current_node->left_child;
-        current_node->left_child = current_node->left_child->right_child;
-        return answer;
-    }
-    binary_tree_node * delete_member_node(binary_tree_node * current_node, double value, double eps){
-        if (!current_node) return current_node;
-        if (fabs(current_node->object.get_mark() - value) < eps){
-            if (!current_node->right_child){
-                binary_tree_node * temp = current_node->left_child;
-                delete current_node;
-                return temp;
-            }
-            if (!current_node->right_child->left_child){
-                binary_tree_node * temp = current_node->right_child;
-                delete current_node;
-                return temp;
-            }
-            else {
-                binary_tree_node * temp = get_min(current_node->right_child);
-                temp->left_child = current_node->left_child;
-                temp->right_child = current_node->right_child;
-                delete current_node;
-                return temp;
-            }
-        }
-        if (current_node->object.get_mark() > value)
-            current_node->left_child = delete_member_node(current_node->left_child,  value, eps);
-        else
-            current_node->right_child = delete_member_node(current_node->right_child, value, eps);
-        return current_node;
-    }
-    void delete_member(double value, double eps = 0.001){
-        root = delete_member_node(root, value, eps);
-    }
-     */
 };
+
+void inter_tree(){
+    tree _tree = tree(0);
+    std::string command;
+    std::cout << "Enter 'add' to add element\n";
+    std::cout << "Enter 'print' to start print mode\n";
+    std::cout << "Enter 'exit' to exit\n";
+    while (1){
+        std::cin >> command;
+        if (command == "exit") break;
+        if (command == "add"){
+            std::cout << "Print element, please\n";
+            int data;
+            std::cin >> data;
+            _tree.add(data, drand(0, 1));
+        }
+        if (command == "print")
+            _tree.inter_print();
+    }
+}
+
+void inter_binary_tree(){
+    binary_tree _tree = binary_tree();
+    std::string command;
+    std::cout << "Enter 'add' to add element\n";
+    std::cout << "Enter 'print' to start print mode\n";
+    std::cout << "Enter 'exit' to exit\n";
+    while (1){
+        std::cin >> command;
+        if (command == "exit") break;
+        if (command == "add"){
+            std::cout << "Print element, please\n";
+            int data;
+            std::cin >> data;
+            _tree.add(data);
+        }
+        if (command == "print")
+            _tree.inter_print();
+    }
+}
+
+void interactor(){
+    std::cout << "Enter tree to work with tree\nEnter binary to work with binary tree\n";
+    std::string command;
+    std::cin >> command;
+    if (command == "tree")
+        inter_tree();
+    if (command == "binary")
+        inter_binary_tree();
+}
+
+
+
+void select(){
+    std::cout << "Enter 'i' to start interactor mode\n";
+    char mode;
+    std::cin >> mode;
+    if (mode == 'i') interactor();
+}
 
 int main() {
     srand(time(0));
-    tree _tree = tree(1);
-    for (int i = 0; i < 10; ++i){
-        _tree.add(rand(), drand(0, 1));
-    }
-    _tree.inter_print();
-    for (int i = 0; i < 5; ++i){
-        int dat;
-        std::cin >> dat;
-        _tree.delete_node(dat);
-        _tree.inter_print();
-    }
+    select();
     return 0;
 }
