@@ -7,10 +7,9 @@
 #include <ctime>
 #include <windows.h>
 
-using namespace std;
 
 struct graph_matrix{
-    vector <vector < int > > matrix;
+    std::vector <std::vector < int > > matrix;
     int number_vertex;
     int number_edge;
     bool directed;
@@ -90,7 +89,7 @@ struct edge{
 };
 
 struct graph_adj{
-    vector <vector < edge > > adj;
+    std::vector <std::vector < edge > > adj;
     int number_vertex;
     int number_edge;
     bool directed;
@@ -168,18 +167,18 @@ graph_adj matrix_to_adj(graph_matrix graph){
 }
 
 
-void dfs_adj(graph_adj &graf, int v, vector <bool> &used, vector <int> &component){
+void dfs_adj(graph_adj &graf, int v, std::vector <bool> &used, std::vector <int> &component){
     used[v] = 1;
     component.push_back(v);
     for (auto i : graf.adj[v])
         if (!used[i.to]) dfs_adj(graf, i.to, used, component);
 }
 
-vector < vector <int> > search_component_adj(graph_adj graf){
-    vector <bool> used;
+std::vector < std::vector <int> > search_component_adj(graph_adj graf){
+    std::vector <bool> used;
     used.resize(graf.number_vertex);
-    vector <vector <int> > result;
-    vector <int> component;
+    std::vector <std::vector <int> > result;
+    std::vector <int> component;
     for (int i = 0; i < graf.number_vertex; ++i)
         if (!used[i]) {
             component.clear();
@@ -189,18 +188,18 @@ vector < vector <int> > search_component_adj(graph_adj graf){
     return result;
 }
 
-void dfs_matrix(graph_matrix &graf, int v, vector <bool> &used, vector <int> &component){
+void dfs_matrix(graph_matrix &graf, int v, std::vector <bool> &used, std::vector <int> &component){
     used[v] = 1;
     component.push_back(v);
     for (int i = 0; i < graf.matrix[v].size(); ++i)
         if (graf.matrix[v][i] && !used[i]) dfs_matrix(graf, i, used, component);
 }
 
-vector < vector <int> > search_component_matrix(graph_matrix graf){
-    vector <bool> used;
+std::vector < std::vector <int> > search_component_matrix(graph_matrix graf){
+    std::vector <bool> used;
     used.resize(graf.number_vertex);
-    vector <vector <int> > result;
-    vector <int> component;
+    std::vector <std::vector <int> > result;
+    std::vector <int> component;
     for (int i = 0; i < graf.number_vertex; ++i)
         if (!used[i]) {
             component.clear();
@@ -210,13 +209,13 @@ vector < vector <int> > search_component_matrix(graph_matrix graf){
     return result;
 }
 
-vector <int> bfs_adj(graph_adj graf, int v){
-    vector <int> dist;
+std::vector <int> bfs_adj(graph_adj graf, int v){
+    std::vector <int> dist;
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i)
         dist[i] = -1;
     dist[v] = 0;
-    queue <int> q;
+    std::queue <int> q;
     q.push(v);
     while (!q.empty()){
         int cur = q.front();
@@ -230,13 +229,13 @@ vector <int> bfs_adj(graph_adj graf, int v){
     return dist;
 }
 
-vector <int> bfs_matrix(graph_matrix graf, int v){
-    vector <int> dist;
+std::vector <int> bfs_matrix(graph_matrix graf, int v){
+    std::vector <int> dist;
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i)
         dist[i] = -1;
     dist[v] = 0;
-    queue <int> q;
+    std::queue <int> q;
     q.push(v);
     while (!q.empty()){
         int cur = q.front();
@@ -250,13 +249,13 @@ vector <int> bfs_matrix(graph_matrix graf, int v){
     return dist;
 }
 
-vector <int> dijkstra_adj(graph_adj graf, int v){
-    vector <int> dist;
+std::vector <int> dijkstra_adj(graph_adj graf, int v){
+    std::vector <int> dist;
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i)
         dist[i] = -1;
     dist[v] = 0;
-    priority_queue <pair <int, int> > q;
+    std::priority_queue <std::pair <int, int> > q;
     q.push({0, v});
     while (!q.empty()){
         int cur = q.top().second;
@@ -270,13 +269,13 @@ vector <int> dijkstra_adj(graph_adj graf, int v){
     return dist;
 }
 
-vector <int> dijkstra_matrix(graph_matrix graf, int v){
-    vector <int> dist;
+std::vector <int> dijkstra_matrix(graph_matrix graf, int v){
+    std::vector <int> dist;
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i)
         dist[i] = -1;
     dist[v] = 0;
-    priority_queue <pair <int, int> > q;
+    std::priority_queue <std::pair <int, int> > q;
     q.push({0, v});
     while (!q.empty()){
         int cur = q.top().second;
@@ -290,7 +289,7 @@ vector <int> dijkstra_matrix(graph_matrix graf, int v){
     return dist;
 }
 
-bool top_dfs_adj (graph_adj &graf, int v, vector <int>& used, vector <int> &ans) {
+bool top_dfs_adj (graph_adj &graf, int v, std::vector <int>& used, std::vector <int> &ans) {
     used[v] = 1;
     bool result = 1;
     for (auto i : graf.adj[v]) {
@@ -304,7 +303,7 @@ bool top_dfs_adj (graph_adj &graf, int v, vector <int>& used, vector <int> &ans)
     return result;
 }
 
-bool top_dfs_matrix (graph_matrix &graf, int v, vector <int>& used, vector <int> &ans) {
+bool top_dfs_matrix (graph_matrix &graf, int v, std::vector <int>& used, std::vector <int> &ans) {
     used[v] = 1;
     bool answer = 1;
     for (int i = 0; i < graf.matrix[v].size(); ++i)
@@ -316,13 +315,13 @@ bool top_dfs_matrix (graph_matrix &graf, int v, vector <int>& used, vector <int>
     return answer;
 }
 
-pair< bool, vector <int>> topological_sort_adj(graph_adj graf) {
+std::pair< bool, std::vector <int>> topological_sort_adj(graph_adj graf) {
     int n = graf.number_vertex;
-    vector <int> used;
+    std::vector <int> used;
     used.resize(n);
     for (int i=0; i<n; ++i)
         used[i] = false;
-    vector <int> result;
+    std::vector <int> result;
     bool answer = 1;
     for (int i=0; i<n; ++i)
         if (!used[i])
@@ -331,14 +330,14 @@ pair< bool, vector <int>> topological_sort_adj(graph_adj graf) {
     return {answer, result};
 }
 
-pair<bool, vector <int>> topological_sort_matrix(graph_matrix graf) {
+std::pair<bool, std::vector <int>> topological_sort_matrix(graph_matrix graf) {
     int n = graf.number_vertex;
     bool answer;
-    vector <int> used;
+    std::vector <int> used;
     used.resize(n);
     for (int i=0; i<n; ++i)
         used[i] = false;
-    vector <int> result;
+    std::vector <int> result;
     for (int i=0; i<n; ++i)
         if (!used[i])
             answer &= top_dfs_matrix (graf, i, used, result);
@@ -356,7 +355,7 @@ bool operator <(span_edge a, span_edge b){
     return a.weight > b.weight;
 }
 
-void spanning_dfs_matrix(graph_matrix &graf, int v, vector <bool> &used, vector <span_edge> &result){
+void spanning_dfs_matrix(graph_matrix &graf, int v, std::vector <bool> &used, std::vector <span_edge> &result){
     used[v] = 1;
     for (int i = 0; i < graf.matrix[v].size(); ++i)
         if (graf.matrix[v][i] && !used[i]) {
@@ -365,7 +364,7 @@ void spanning_dfs_matrix(graph_matrix &graf, int v, vector <bool> &used, vector 
         }
 }
 
-void spanning_dfs_adj(graph_adj &graf, int v, vector <bool> &used, vector <span_edge> &result){
+void spanning_dfs_adj(graph_adj &graf, int v, std::vector <bool> &used, std::vector <span_edge> &result){
     used[v] = 1;
     for (auto i : graf.adj[v])
         if (!used[i.to]){
@@ -375,9 +374,9 @@ void spanning_dfs_adj(graph_adj &graf, int v, vector <bool> &used, vector <span_
 }
 
 
-pair <vector <span_edge> , int > spanning_tree_adj(graph_adj graf){
-    vector <span_edge> result;
-    vector <bool> used;
+std::pair <std::vector <span_edge> , int > spanning_tree_adj(graph_adj graf){
+    std::vector <span_edge> result;
+    std::vector <bool> used;
     used.resize(graf.number_vertex);
     spanning_dfs_adj(graf, 0, used, result);
     int weight = 0;
@@ -386,9 +385,9 @@ pair <vector <span_edge> , int > spanning_tree_adj(graph_adj graf){
     return {result, weight};
 }
 
-pair <vector <span_edge> , int > spanning_tree_matrix(graph_matrix graf){
-    vector <span_edge> result;
-    vector <bool> used;
+std::pair <std::vector <span_edge> , int > spanning_tree_matrix(graph_matrix graf){
+    std::vector <span_edge> result;
+    std::vector <bool> used;
     used.resize(graf.number_vertex);
     spanning_dfs_matrix(graf, 0, used, result);
     int weight = 0;
@@ -397,10 +396,10 @@ pair <vector <span_edge> , int > spanning_tree_matrix(graph_matrix graf){
     return {result, weight};
 }
 
-pair <vector <span_edge> , int > minimal_spanning_tree_adj(graph_adj graf){
-    vector <span_edge> result;
-    vector <int> dist;
-    vector <int> used;
+std::pair <std::vector <span_edge> , int > minimal_spanning_tree_adj(graph_adj graf){
+    std::vector <span_edge> result;
+    std::vector <int> dist;
+    std::vector <int> used;
     used.resize(graf.number_vertex);
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i) {
@@ -408,7 +407,7 @@ pair <vector <span_edge> , int > minimal_spanning_tree_adj(graph_adj graf){
         used[i] = 0;
     }
     dist[0] = 0;
-    priority_queue <span_edge> q;
+    std::priority_queue <span_edge> q;
     q.push({0, 0, 0});
     while (!q.empty()){
         int cur = q.top().to;
@@ -430,10 +429,10 @@ pair <vector <span_edge> , int > minimal_spanning_tree_adj(graph_adj graf){
     return {result, total};
 }
 
-pair <vector <span_edge> , int > minimal_spanning_tree_matrix(graph_matrix graf){
-    vector <span_edge> result;
-    vector <int> dist;
-    vector <int> used;
+std::pair <std::vector <span_edge> , int > minimal_spanning_tree_matrix(graph_matrix graf){
+    std::vector <span_edge> result;
+    std::vector <int> dist;
+    std::vector <int> used;
     used.resize(graf.number_vertex);
     dist.resize(graf.number_vertex);
     for (int i = 0; i < graf.number_vertex; ++i) {
@@ -441,7 +440,7 @@ pair <vector <span_edge> , int > minimal_spanning_tree_matrix(graph_matrix graf)
         used[i] = 0;
     }
     dist[0] = 0;
-    priority_queue <span_edge> q;
+    std::priority_queue <span_edge> q;
     q.push({0, 0, 0});
     while (!q.empty()){
         int cur = q.top().to;
@@ -464,251 +463,251 @@ pair <vector <span_edge> , int > minimal_spanning_tree_matrix(graph_matrix graf)
 }
 
 void interactor_adj() {
-    cout << "Is graph directed? Press y/n\n";
+    std::cout << "Is graph directed? Press y/n\n";
     char is_directed;
-    cin >> is_directed;
-    cout << "Print number of vertexes\n";
+    std::cin >> is_directed;
+    std::cout << "Print number of vertexes\n";
     int n;
-    cin >> n;
+    std::cin >> n;
     graph_adj graph = graph_adj(n, is_directed == 'y');
-    cout << "Press y/n if edges have weight\n";
+    std::cout << "Press y/n if edges have weight\n";
     char weight;
-    cin >> weight;
+    std::cin >> weight;
     bool is_weight = weight == 'y';
     while (1){
-        string command;
-        cout << "Please, print the command\n";
-        cin >> command;
+        std::string command;
+        std::cout << "Please, print the command\n";
+        std::cin >> command;
         if (command == "exit") break;
         if (command == "add"){
             int from, to;
-            cin >> from >> to;
+            std::cin >> from >> to;
             if (is_weight) {
                 int w;
-                cin >> w;
+                std::cin >> w;
                 graph.add(from, to , w);
             }
             else {
                 graph.add(from, to);
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
 
         }
         if (command == "search_component"){
-            vector <vector <int> > result = search_component_adj(graph);
-            cout << "Components:\n";
+            std::vector <std::vector <int> > result = search_component_adj(graph);
+            std::cout << "Components:\n";
             for (auto i : result){
                 for (auto j : i)
-                    cout << j << " ";
-                cout << "\n";
+                    std::cout << j << " ";
+                std::cout << "\n";
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
         }
         if (command == "bfs"){
             int v;
-            cin >> v;
-            vector <int> dist = bfs_adj(graph, v);
-            cout << "Vector of distance from " << v << " to others:\n";
+            std::cin >> v;
+            std::vector <int> dist = bfs_adj(graph, v);
+            std::cout << "Vector of distance from " << v << " to others:\n";
             for (int i = 0; i < dist.size(); ++i){
-                cout << "for " <<i << " : " << dist[i] << "\n";
+                std::cout << "for " <<i << " : " << dist[i] << "\n";
             }
-            cout << "\nDone\n";
+            std::cout << "\nDone\n";
         }
         if (command == "dijkstra"){
             int v;
-            cin >> v;
-            vector <int> dist = dijkstra_adj(graph, v);
-            cout << "Vector of distance from " << v << " to others:\n";
+            std::cin >> v;
+            std::vector <int> dist = dijkstra_adj(graph, v);
+            std::cout << "Vector of distance from " << v << " to others:\n";
             for (int i = 0; i < dist.size(); ++i){
-                cout << "for " <<i << " : " << dist[i] << "\n";
+                std::cout << "for " <<i << " : " << dist[i] << "\n";
             }
-            cout << "\nDone\n";
+            std::cout << "\nDone\n";
         }
         if (command == "top_sort"){
-            pair<bool, vector <int>> result = topological_sort_adj(graph);
+            std::pair<bool, std::vector <int>> result = topological_sort_adj(graph);
             if (!result.first){
-                cout << "No result\n";
+                std::cout << "No result\n";
                 continue;
             }
-            cout << "Result :\n";
+            std::cout << "Result :\n";
             for (auto i : result.second)
-                cout << i << " ";
-            cout << "\nDone\n";
+                std::cout << i << " ";
+            std::cout << "\nDone\n";
         }
         if (command == "spanning_tree"){
-            pair < vector <span_edge>, int> ans = spanning_tree_adj(graph);
-            cout << "Weight of tree : " << ans.second << "\n";
-            cout << "Tree :\n";
+            std::pair < std::vector <span_edge>, int> ans = spanning_tree_adj(graph);
+            std::cout << "Weight of tree : " << ans.second << "\n";
+            std::cout << "Tree :\n";
             for (auto i : ans.first){
-                cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
+                std::cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
         }
         if (command == "min_spanning_tree"){
-            pair < vector <span_edge>, int> ans = minimal_spanning_tree_adj(graph);
-            cout << "Weight of tree : " << ans.second << "\n";
-            cout << "Tree :\n";
+            std::pair < std::vector <span_edge>, int> ans = minimal_spanning_tree_adj(graph);
+            std::cout << "Weight of tree : " << ans.second << "\n";
+            std::cout << "Tree :\n";
             for (auto i : ans.first){
-                cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
+                std::cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
         }
     }
 }
 
 void interactor_matrix(){
-    cout << "Is graph directed? Press y/n\n";
+    std::cout << "Is graph directed? Press y/n\n";
     char is_directed;
-    cin >> is_directed;
-    cout << "Print number of vertexes\n";
+    std::cin >> is_directed;
+    std::cout << "Print number of vertexes\n";
     int n;
-    cin >> n;
+    std::cin >> n;
     graph_matrix graph = graph_matrix(n, is_directed == 'y');
-    cout << "Press y/n if edges have weight\n";
+    std::cout << "Press y/n if edges have weight\n";
     char weight;
-    cin >> weight;
+    std::cin >> weight;
     bool is_weight = weight == 'y';
     while (1){
-        string command;
-        cout << "Please, print the command\n";
-        cin >> command;
+        std::string command;
+        std::cout << "Please, print the command\n";
+        std::cin >> command;
         if (command == "exit") break;
         if (command == "add"){
             int from, to;
-            cin >> from >> to;
+            std::cin >> from >> to;
             if (is_weight) {
                 int w;
-                cin >> w;
+                std::cin >> w;
                 graph.add(from, to , w);
             }
             else {
                 graph.add(from, to);
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
 
         }
         if (command == "search_component"){
-            vector <vector <int> > result = search_component_matrix(graph);
-            cout << "Components:\n";
+            std::vector <std::vector <int> > result = search_component_matrix(graph);
+            std::cout << "Components:\n";
             for (auto i : result){
                 for (auto j : i)
-                    cout << j << " ";
-                cout << "\n";
+                    std::cout << j << " ";
+                std::cout << "\n";
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
         }
         if (command == "bfs"){
             int v;
-            cin >> v;
-            vector <int> dist = bfs_matrix(graph, v);
-            cout << "Vector of distance from " << v << " to others:\n";
+            std::cin >> v;
+            std::vector <int> dist = bfs_matrix(graph, v);
+            std::cout << "Vector of distance from " << v << " to others:\n";
             for (int i = 0; i < dist.size(); ++i){
-                cout << "for " <<i << " : " << dist[i] << "\n";
+                std::cout << "for " <<i << " : " << dist[i] << "\n";
             }
-            cout << "\nDone\n";
+            std::cout << "\nDone\n";
         }
         if (command == "dijkstra"){
             int v;
-            cin >> v;
-            vector <int> dist = dijkstra_matrix(graph, v);
-            cout << "Vector of distance from " << v << " to others:\n";
+            std::cin >> v;
+            std::vector <int> dist = dijkstra_matrix(graph, v);
+            std::cout << "Vector of distance from " << v << " to others:\n";
             for (int i = 0; i < dist.size(); ++i){
-                cout << "for " <<i << " : " << dist[i] << "\n";
+                std::cout << "for " <<i << " : " << dist[i] << "\n";
             }
-            cout << "\nDone\n";
+            std::cout << "\nDone\n";
         }
         if (command == "top_sort"){
-            pair<bool, vector <int>> result = topological_sort_matrix(graph);
+            std::pair<bool, std::vector <int>> result = topological_sort_matrix(graph);
             if (!result.first){
-                cout << "No result\n";
+                std::cout << "No result\n";
                 continue;
             }
-            cout << "Result :\n";
+            std::cout << "Result :\n";
             for (auto i : result.second)
-                cout << i << " ";
-            cout << "\nDone\n";
+                std::cout << i << " ";
+            std::cout << "\nDone\n";
         }
         if (command == "spanning_tree"){
-            pair < vector <span_edge>, int> ans = spanning_tree_matrix(graph);
-            cout << "Weight of tree : " << ans.second << "\n";
-            cout << "Tree :\n";
+            std::pair < std::vector <span_edge>, int> ans = spanning_tree_matrix(graph);
+            std::cout << "Weight of tree : " << ans.second << "\n";
+            std::cout << "Tree :\n";
             for (auto i : ans.first){
-                cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
+                std::cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
         }
         if (command == "min_spanning_tree"){
-            pair < vector <span_edge>, int> ans = minimal_spanning_tree_matrix(graph);
-            cout << "Weight of tree : " << ans.second << "\n";
-            cout << "Tree :\n";
+            std::pair < std::vector <span_edge>, int> ans = minimal_spanning_tree_matrix(graph);
+            std::cout << "Weight of tree : " << ans.second << "\n";
+            std::cout << "Tree :\n";
             for (auto i : ans.first){
-                cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
+                std::cout << "from " << i.from << " to " << i.to << " weight is " << i.weight << "\n";
             }
-            cout << "Done\n";
+            std::cout << "Done\n";
         }
     }
 };
 
 void interactor(){
     printf("------------INERACTOR MODE------------\n");
-    cout << "To use matrix press 'm'\nTo use list press 'l'\n";
+    std::cout << "To use matrix press 'm'\nTo use list press 'l'\n";
     char type;
-    cin >> type;
+    std::cin >> type;
     if (type == 'm') interactor_matrix();
     if (type == 'l') interactor_adj();
 }
 
 void benchmark(){
-    cout << "----------------BENCHMARK MODE----------------\n";
+    std::cout << "----------------BENCHMARK MODE----------------\n";
     for (int n = 10; n <= 10000; n *= 10){
-        cout << "Number of vertex is " << n << "\n";
+        std::cout << "Number of vertex is " << n << "\n";
         for (int m = n; m < n * (n - 1) / 2; m *= 5){
-            cout << "   Number of edges is " << m << "\n";
+            std::cout << "   Number of edges is " << m << "\n";
             graph_adj adj;
             adj.graph_random_weight(n, m);
             graph_matrix matrix = adj_to_matrix(adj);
             int start_adj = clock();
-            vector <vector <int>> temp = search_component_adj(adj);
+            std::vector <std::vector <int>> temp = search_component_adj(adj);
             int end_adj = clock();
             int start_matrix = clock();
             temp = search_component_matrix(matrix);
             int end_matrix = clock();
-            cout << "       Time searching component: list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            cout << "                                 matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time searching component: list - " << -(start_adj - end_adj)/1000.0 << "\n";
+            std::cout << "                                 matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
             start_adj = clock();
-            vector <int> dist = bfs_adj(adj, 0);
+            std::vector <int> dist = bfs_adj(adj, 0);
             end_adj = clock();
             start_matrix = clock();
             dist = bfs_matrix(matrix, 0);
             end_matrix = clock();
-            cout << "       Time working bfs: list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            cout << "                         matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time working bfs: list - " << -(start_adj - end_adj)/1000.0 << "\n";
+            std::cout << "                         matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
             start_adj = clock();
-            pair<bool, vector <int> >  top_sort = topological_sort_adj(adj);
+            std::pair<bool, std::vector <int> >  top_sort = topological_sort_adj(adj);
             end_adj = clock();
             start_matrix = clock();
             top_sort = topological_sort_matrix(matrix);
             end_matrix = clock();
-            cout << "       Time working topological sort: list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            cout << "                                      matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time working topological sort: list - " << -(start_adj - end_adj)/1000.0 << "\n";
+            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
             if (n <= 1000){
                 start_adj = clock();
-                vector <int>  dijkstra = dijkstra_adj(adj, 0);
+                std::vector <int>  dijkstra = dijkstra_adj(adj, 0);
                 end_adj = clock();
                 start_matrix = clock();
                 dijkstra = dijkstra_matrix(matrix, 0);
                 end_matrix = clock();
-                cout << "       Time working dijkstra : list - " << -(start_adj - end_adj)/1000.0 << "\n";
-                cout << "                               matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+                std::cout << "       Time working dijkstra : list - " << -(start_adj - end_adj)/1000.0 << "\n";
+                std::cout << "                               matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
             }
             start_adj = clock();
-            pair< vector <span_edge>, int > span = spanning_tree_adj(adj);
+            std::pair< std::vector <span_edge>, int > span = spanning_tree_adj(adj);
             end_adj = clock();
             start_matrix = clock();
             span = spanning_tree_matrix(matrix);
             end_matrix = clock();
-            cout << "       Time searching spanning tree : list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            cout << "                                      matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time searching spanning tree : list - " << -(start_adj - end_adj)/1000.0 << "\n";
+            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
             if (n <= 1000){
                 start_adj = clock();
                 span = minimal_spanning_tree_adj(adj);
@@ -716,16 +715,16 @@ void benchmark(){
                 start_matrix = clock();
                 span = minimal_spanning_tree_matrix(matrix);
                 end_matrix = clock();
-                cout << "       Time searching minimal spanning tree : list - " << -(start_adj - end_adj)/1000.0 << "\n";
-                cout << "                                              matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+                std::cout << "       Time searching minimal spanning tree : list - " << -(start_adj - end_adj)/1000.0 << "\n";
+                std::cout << "                                              matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
             }
         }
     }
 }
 
 void visual(){
-    cout << "------------VISUAL MODE-------------\n";
-    cout << "1. Searching connected components \n";
+    std::cout << "------------VISUAL MODE-------------\n";
+    std::cout << "1. Searching connected components \n";
     graph_adj graph = graph_adj(7, 0);
     graph.add(0, 1);
     graph.add(0, 2);
@@ -735,24 +734,24 @@ void visual(){
     graph.add(3, 6);
     graph.add(4, 5);
     graph.print();
-    vector <vector <int> > components = search_component_adj(graph);
-    cout << "Components: ";
-    cout << components.size() << "\n";
+    std::vector <std::vector <int> > components = search_component_adj(graph);
+    std::cout << "Components: ";
+    std::cout << components.size() << "\n";
     for (auto i : components){
         for (auto j : i)
-            cout << j << " ";
-        cout << "\n";
+            std::cout << j << " ";
+        std::cout << "\n";
     }
     Sleep(3 * 1000);
-    cout << "2. BFS algorithm\n";
+    std::cout << "2. BFS algorithm\n";
     graph.add(4, 2);
     graph.print();
-    vector <int> dist = bfs_adj(graph, 2);
-    cout << "Distance from vertex 2: \n";
+    std::vector <int> dist = bfs_adj(graph, 2);
+    std::cout << "Distance from vertex 2: \n";
     for (int i = 0; i < 7; ++i)
-        cout << "to " << i << " is " << dist[i] << "\n";
+        std::cout << "to " << i << " is " << dist[i] << "\n";
     Sleep(3 * 1000);
-    cout << "3. Topological sort\n";
+    std::cout << "3. Topological sort\n";
     graph_adj top = graph_adj(7, 1);
     top.add(0, 1);
     top.add(0, 2);
@@ -763,13 +762,13 @@ void visual(){
     top.add(4, 5);
     top.add(4, 2);
     top.print();
-    pair <bool, vector <int>> sort = topological_sort_adj(top);
-    cout << "Correct order: ";
+    std::pair <bool, std::vector <int>> sort = topological_sort_adj(top);
+    std::cout << "Correct order: ";
     for (auto i : sort.second)
-        cout << i << " ";
-    cout << "\n";
+        std::cout << i << " ";
+    std::cout << "\n";
     Sleep(3 * 1000);
-    cout << "4. Dijkstra\n";
+    std::cout << "4. Dijkstra\n";
     graph_matrix weight = graph_matrix(7, 0);
     weight.add(0, 1, 10);
     weight.add(0, 2, 3);
@@ -784,30 +783,30 @@ void visual(){
     weight.add(4, 1, 1);
     weight.print();
     dist = dijkstra_matrix(weight, 3);
-    cout << "Distance from vertex 3: \n";
+    std::cout << "Distance from vertex 3: \n";
     for (int i = 0; i < 7; ++i)
-        cout << "to " << i << " is " << dist[i] << "\n";
+        std::cout << "to " << i << " is " << dist[i] << "\n";
     Sleep(3 * 1000);
-    cout << "5. Spanning tree algorithm \n";
+    std::cout << "5. Spanning tree algorithm \n";
     weight.print();
-    pair < vector <span_edge>, int> result = spanning_tree_matrix(weight);
-    cout << "Tree with weight " << result.second << "\nEdges:\n";
+    std::pair < std::vector <span_edge>, int> result = spanning_tree_matrix(weight);
+    std::cout << "Tree with weight " << result.second << "\nEdges:\n";
     for (auto i : result.first)
-        cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
+        std::cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
     Sleep(3 * 1000);
-    cout << "6. Minimal spanning tree algorithm \n";
+    std::cout << "6. Minimal spanning tree algorithm \n";
     weight.print();
     result = minimal_spanning_tree_matrix(weight);
-    cout << "Tree with weight " << result.second << "\nEdges:\n";
+    std::cout << "Tree with weight " << result.second << "\nEdges:\n";
     for (auto i : result.first)
-        cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
-    cout << "Have a nice day!\n";
+        std::cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
+    std::cout << "Have a nice day!\n";
 }
 
 void selector(){
     printf("Press 'i' to interactor mode\nPress 'v' to visual mode\nPress 'b' to benchmark mode\n");
     char mode;
-    cin >> mode;
+    std::cin >> mode;
     if (mode == 'i') interactor();
     if (mode == 'b') benchmark();
     if (mode == 'v') visual();
