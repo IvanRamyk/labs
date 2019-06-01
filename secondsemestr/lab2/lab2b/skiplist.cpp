@@ -1,7 +1,5 @@
 #include <iostream>
 
-using namespace std;
-
 long long const inf = 1e9 + 7;
 int const max_level = 1e3;
 
@@ -29,7 +27,7 @@ struct SkipList {
         for (int i = 0; i < max_level; ++i)
             head->next[i] = tail;
     }
-    pair <bool, Node*> find(int value){
+    std::pair <bool, Node*> find(int value){
         int cur_level = cnt_level - 1;
         Node *pointer;
         while (cur_level >= 0 && pointer->data != value){
@@ -54,29 +52,27 @@ struct SkipList {
             pointer->next[cur_level] = cur;
             ++cur_level;
         }
-        cnt_level = max(cur_level, cnt_level);
+        cnt_level = std::max(cur_level, cnt_level);
     }
 };
 
 int main()
 {
     int n;
-    cin >> n;
+    std::cin >> n;
     SkipList list = SkipList();
     for (int i = 1; i <= n; ++i){
         int temp;
-        cin >> temp;
+        std::cin >> temp;
         list.add(temp);
     }
     for (int i = 0; i < list.cnt_level; ++i){
         Node *pointer = list.head;
         while (pointer != list.tail){
-            cout << pointer->data << " ";
+            std::cout << pointer->data << " ";
             pointer = pointer->next[i];
         }
-        cout << "\n";
+        std::cout << "\n";
     }
-    int m;
-    //for (int i = )
     return 0;
 }
