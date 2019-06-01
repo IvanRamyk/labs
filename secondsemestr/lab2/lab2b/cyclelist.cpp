@@ -1,17 +1,15 @@
 #include <iostream>
 
-using namespace std;
-
 const int MaxMassageNumber = 10;
 
 struct Massage{
-    string text;
+    std::string text;
     int time_from_begin;
     Massage(){
         time_from_begin = 0;
         text = "";
     }
-    Massage(int time, string massage){
+    Massage(int time, std::string massage){
         time_from_begin = time;
         text = massage;
     }
@@ -76,15 +74,15 @@ int main() {
     List list = List();
     Massage temp;
     int n;
-    cin >> n;
-    getline(cin, temp.text);
+    std::cin >> n;
+    getline(std::cin, temp.text);
     for (int i = 1; i <= n; ++i){
-        getline(cin, temp.text);
+        getline(std::cin, temp.text);
         temp.time_from_begin = i;
         list.append(temp);
     }
     int k;
-    cin >> k;
+    std::cin >> k;
     list.print(k);
     return 0;
 }
