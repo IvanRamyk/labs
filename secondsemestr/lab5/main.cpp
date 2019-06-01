@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <cmath>
 #include <ctime>
-#include <windows.h>
+#include <chrono>
+#include <thread>
 
 
 struct graph_matrix{
@@ -672,24 +673,24 @@ void benchmark(){
             int start_matrix = clock();
             temp = search_component_matrix(matrix);
             int end_matrix = clock();
-            std::cout << "       Time searching component: list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            std::cout << "                                 matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time searching component: list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
+            std::cout << "                                 matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
             start_adj = clock();
             std::vector <int> dist = bfs_adj(adj, 0);
             end_adj = clock();
             start_matrix = clock();
             dist = bfs_matrix(matrix, 0);
             end_matrix = clock();
-            std::cout << "       Time working bfs: list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            std::cout << "                         matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time working bfs: list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
+            std::cout << "                         matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
             start_adj = clock();
             std::pair<bool, std::vector <int> >  top_sort = topological_sort_adj(adj);
             end_adj = clock();
             start_matrix = clock();
             top_sort = topological_sort_matrix(matrix);
             end_matrix = clock();
-            std::cout << "       Time working topological sort: list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time working topological sort: list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
+            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
             if (n <= 1000){
                 start_adj = clock();
                 std::vector <int>  dijkstra = dijkstra_adj(adj, 0);
@@ -697,8 +698,8 @@ void benchmark(){
                 start_matrix = clock();
                 dijkstra = dijkstra_matrix(matrix, 0);
                 end_matrix = clock();
-                std::cout << "       Time working dijkstra : list - " << -(start_adj - end_adj)/1000.0 << "\n";
-                std::cout << "                               matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+                std::cout << "       Time working dijkstra : list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
+                std::cout << "                               matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
             }
             start_adj = clock();
             std::pair< std::vector <span_edge>, int > span = spanning_tree_adj(adj);
@@ -706,8 +707,8 @@ void benchmark(){
             start_matrix = clock();
             span = spanning_tree_matrix(matrix);
             end_matrix = clock();
-            std::cout << "       Time searching spanning tree : list - " << -(start_adj - end_adj)/1000.0 << "\n";
-            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+            std::cout << "       Time searching spanning tree : list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
+            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
             if (n <= 1000){
                 start_adj = clock();
                 span = minimal_spanning_tree_adj(adj);
@@ -715,8 +716,8 @@ void benchmark(){
                 start_matrix = clock();
                 span = minimal_spanning_tree_matrix(matrix);
                 end_matrix = clock();
-                std::cout << "       Time searching minimal spanning tree : list - " << -(start_adj - end_adj)/1000.0 << "\n";
-                std::cout << "                                              matrix - " << -(start_matrix - end_matrix)/1000.0 << "\n";
+                std::cout << "       Time searching minimal spanning tree : list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
+                std::cout << "                                              matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
             }
         }
     }
@@ -742,7 +743,7 @@ void visual(){
             std::cout << j << " ";
         std::cout << "\n";
     }
-    Sleep(3 * 1000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     std::cout << "2. BFS algorithm\n";
     graph.add(4, 2);
     graph.print();
@@ -750,7 +751,7 @@ void visual(){
     std::cout << "Distance from vertex 2: \n";
     for (int i = 0; i < 7; ++i)
         std::cout << "to " << i << " is " << dist[i] << "\n";
-    Sleep(3 * 1000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     std::cout << "3. Topological sort\n";
     graph_adj top = graph_adj(7, 1);
     top.add(0, 1);
@@ -767,7 +768,7 @@ void visual(){
     for (auto i : sort.second)
         std::cout << i << " ";
     std::cout << "\n";
-    Sleep(3 * 1000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     std::cout << "4. Dijkstra\n";
     graph_matrix weight = graph_matrix(7, 0);
     weight.add(0, 1, 10);
@@ -786,14 +787,14 @@ void visual(){
     std::cout << "Distance from vertex 3: \n";
     for (int i = 0; i < 7; ++i)
         std::cout << "to " << i << " is " << dist[i] << "\n";
-    Sleep(3 * 1000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     std::cout << "5. Spanning tree algorithm \n";
     weight.print();
     std::pair < std::vector <span_edge>, int> result = spanning_tree_matrix(weight);
     std::cout << "Tree with weight " << result.second << "\nEdges:\n";
     for (auto i : result.first)
         std::cout << "(" << i.from << ", " << i.to << ")" << " " << i.weight << "\n";
-    Sleep(3 * 1000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     std::cout << "6. Minimal spanning tree algorithm \n";
     weight.print();
     result = minimal_spanning_tree_matrix(weight);
