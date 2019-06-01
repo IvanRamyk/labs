@@ -3,24 +3,23 @@
 #include <queue>
 #include <algorithm>
 #include <cmath>
-#include <ctime>
-#include <windows.h>
+#include <chrono>
+#include <thread>
 
-using namespace std;
 
 const int nmax = 50000;
-const int sleep_time = 1000;
+const int sleep_for_time = 1000;
 
 struct IP{
-    string IP4;
+    std::string IP4;
     IP(){
         IP4 = "";
     }
-    IP(string ip){
+    IP(std::string ip){
         IP4 = ip;
     }
-    bool is_valid(string temp_ip){
-        string field = "";
+    bool is_valid(std::string temp_ip){
+        std::string field = "";
         int cnt_fields = 1;
         if (temp_ip[temp_ip.size() - 1] == '.') return 0;
         for (int i = 0; i < temp_ip.size(); ++i){
@@ -41,8 +40,8 @@ struct IP{
         return 1;
     }
     bool get(){
-        string ip;
-        cin >> ip;
+        std::string ip;
+        std::cin >> ip;
         if (is_valid(ip)){
             IP4 = ip;
             return 1;
@@ -50,21 +49,21 @@ struct IP{
         return 0;
     }
     void print(){
-        cout << IP4 << "\n";
+        std::cout << IP4 << "\n";
     }
     void random_value(){
         IP4 = "";
         int field = rand() % 256;
-        IP4 += to_string(field);
+        IP4 += std::to_string(field);
         IP4 += '.';
         field = rand() % 256;
-        IP4 += to_string(field);
+        IP4 += std::to_string(field);
         IP4 += '.';
         field = rand() % 256;
-        IP4 += to_string(field);
+        IP4 += std::to_string(field);
         IP4 += '.';
         field = rand() % 256;
-        IP4 += to_string(field);
+        IP4 += std::to_string(field);
     }
 };
 
@@ -181,12 +180,14 @@ struct Array{
     bool pop_right(){
         if (is_empty()) return 0;
         number_in_struct--;
+        return 1;
     }
     bool pop_left(){
         if(is_empty()) return 0;
         for (int pos = 0; pos < number_in_struct - 1; ++pos)
             arr[pos] = arr[pos + 1];
         number_in_struct--;
+        return 1;
     }
     void print(){
         for (int pos = 0; pos < number_in_struct; ++pos)
@@ -195,7 +196,7 @@ struct Array{
 };
 
 struct Vector{
-    vector <IP> vec;
+    std::vector <IP> vec;
     Vector(){
         vec.clear();
     }
@@ -211,10 +212,12 @@ struct Vector{
     bool pop_right(){
         if (is_empty()) return 0;
         vec.pop_back();
+        return 1;
     }
     bool pop_left(){
         if(is_empty()) return 0;
         vec.erase(vec.begin());
+        return 1;
     }
     void print(){
         for(auto i : vec)
@@ -223,19 +226,19 @@ struct Vector{
 };
 
 void print_command_list(){
-    cout << "q //exit\nis_empty // print is struct empty\nappend_left <IP4> //add IP4 to the head of queue\nappend_right <IP4>//add IP4 to the tail of queue\npop_left // remove element from head\npop_right //remove element from tail\n print //print elements from head to tail\n";
+    std::cout << "q //exit\nis_empty // print is struct empty\nappend_left <IP4> //add IP4 to the head of queue\nappend_right <IP4>//add IP4 to the tail of queue\npop_left // remove element from head\npop_right //remove element from tail\n print //print elements from head to tail\n";
 }
 
 void ok(){
-    cout << "OK\n";
+    std::cout << "OK\n";
 }
 
 void interacter_array(){
     Array adress = Array();
-    cout << "Press 'h' to view list of commands\n";
+    std::cout << "Press 'h' to view list of commands\n";
     while (1){
-        string command_type;
-        cin >> command_type;
+        std::string command_type;
+        std::cin >> command_type;
         if (command_type == "q") break;
         if (command_type == "h") print_command_list();
         if (command_type == "append_left"){
@@ -245,11 +248,11 @@ void interacter_array(){
                     ok();
                 }
                 else {
-                    cout << "ERROR: number of IP's is already maximum.\n";
+                    std::cout << "ERROR: number of IP's is already maximum.\n";
                 }
             }
             else {
-                cout << "ERROR: invalid IP4.\n";
+                std::cout << "ERROR: invalid IP4.\n";
             }
         }
         if (command_type == "append_right"){
@@ -259,24 +262,24 @@ void interacter_array(){
                     ok();
                 }
                 else {
-                    cout << "ERROR: number of IP's is already maximum.\n";
+                    std::cout << "ERROR: number of IP's is already maximum.\n";
                 }
             }
             else {
-                cout << "ERROR: invalid IP4.\n";
+                std::cout << "ERROR: invalid IP4.\n";
             }
         }
         if (command_type == "is_empty"){
-            if (adress.is_empty()) cout << "YES\n";
-            else cout << "NO\n";
+            if (adress.is_empty()) std::cout << "YES\n";
+            else std::cout << "NO\n";
         }
         if (command_type == "pop_left"){
             if (adress.pop_left()) ok();
-            else cout << "ERROR: struct is empty\n";
+            else std::cout << "ERROR: struct is empty\n";
         }
         if (command_type == "pop_right"){
             if (adress.pop_right()) ok();
-            else cout << "ERROR: struct is empty\n";
+            else std::cout << "ERROR: struct is empty\n";
         }
         if (command_type == "print"){
             adress.print();
@@ -286,10 +289,10 @@ void interacter_array(){
 
 void interacter_vector(){
     Vector adress = Vector();
-    cout << "Press 'h' to view list of commands\n";
+    std::cout << "Press 'h' to view list of commands\n";
     while (1){
-        string command_type;
-        cin >> command_type;
+        std::string command_type;
+        std::cin >> command_type;
         if (command_type == "q") break;
         if (command_type == "h") print_command_list();
         if (command_type == "append_left"){
@@ -299,7 +302,7 @@ void interacter_vector(){
                 ok();
             }
             else {
-                cout << "ERROR: invalid IP4.\n";
+                std::cout << "ERROR: invalid IP4.\n";
             }
         }
         if (command_type == "append_right"){
@@ -309,20 +312,20 @@ void interacter_vector(){
                 ok();
             }
             else {
-                cout << "ERROR: invalid IP4.\n";
+                std::cout << "ERROR: invalid IP4.\n";
             }
         }
         if (command_type == "is_empty"){
-            if (adress.is_empty()) cout << "YES\n";
-            else cout << "NO\n";
+            if (adress.is_empty()) std::cout << "YES\n";
+            else std::cout << "NO\n";
         }
         if (command_type == "pop_left"){
             if (adress.pop_left()) ok();
-            else cout << "ERROR: struct is empty\n";
+            else std::cout << "ERROR: struct is empty\n";
         }
         if (command_type == "pop_right"){
             if (adress.pop_right()) ok();
-            else cout << "ERROR: struct is empty\n";
+            else std::cout << "ERROR: struct is empty\n";
         }
         if (command_type == "print"){
             adress.print();
@@ -332,10 +335,10 @@ void interacter_vector(){
 
 void interacter_list(){
     List adress = List();
-    cout << "Press 'h' to view list of commands\n";
+    std::cout << "Press 'h' to view list of commands\n";
     while (1){
-        string command_type;
-        cin >> command_type;
+        std::string command_type;
+        std::cin >> command_type;
         if (command_type == "q") break;
         if (command_type == "h") print_command_list();
         if (command_type == "append_left"){
@@ -345,7 +348,7 @@ void interacter_list(){
                 ok();
             }
             else {
-                cout << "ERROR: invalid IP4.\n";
+                std::cout << "ERROR: invalid IP4.\n";
             }
         }
         if (command_type == "append_right"){
@@ -355,20 +358,20 @@ void interacter_list(){
                 ok();
             }
             else {
-                cout << "ERROR: invalid IP4.\n";
+                std::cout << "ERROR: invalid IP4.\n";
             }
         }
         if (command_type == "is_empty"){
-            if (adress.is_empty()) cout << "YES\n";
-            else cout << "NO\n";
+            if (adress.is_empty()) std::cout << "YES\n";
+            else std::cout << "NO\n";
         }
         if (command_type == "pop_left"){
             if (adress.pop_left()) ok();
-            else cout << "ERROR: struct is empty\n";
+            else std::cout << "ERROR: struct is empty\n";
         }
         if (command_type == "pop_right"){
             if (adress.pop_right()) ok();
-            else cout << "ERROR: struct is empty\n";
+            else std::cout << "ERROR: struct is empty\n";
         }
         if (command_type == "print"){
             adress.print();
@@ -377,151 +380,151 @@ void interacter_list(){
 }
 
 void interacter(){
-    cout << "-------INTERACTOR MODE-------\nChoose type of struct:\nPress 'l' to use list\nPress 'a' to use array\nPress 'v' to use vector\n";
+    std::cout << "-------INTERACTOR MODE-------\nChoose type of struct:\nPress 'l' to use list\nPress 'a' to use array\nPress 'v' to use vector\n";
     char struct_type;
-    cin >> struct_type;
+    std::cin >> struct_type;
     if (struct_type == 'a') interacter_array();
     if (struct_type == 'v') interacter_vector();
     if (struct_type == 'l') interacter_list();
     return;
 }
 
-void visual(){
-    cout << "------VISUAL MODE------\n";
+void demo(){
+    std::cout << "------DEMO MODE------\n";
     IP temp = IP();
-    cout << "Using array:\n";
+    std::cout << "Using array:\n";
     Array adress = Array();
-    cout << "Adding '8.8.8.8' to head\n";
-    Sleep(sleep_time);
+    std::cout << "Adding '8.8.8.8' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("8.8.8.8");
     adress.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress.print();
-    Sleep(sleep_time);
-    cout << "Adding '255.255.255.0' to tail\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.255.255.0' to tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("255.255.255.0");
     adress.append_right(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress.print();
-    Sleep(sleep_time);
-    cout << "Adding '255.0.0.0' to head\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("255.0.0.0");
     adress.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress.print();
-    Sleep(sleep_time);
-    cout << "Adding '0.0.0.0' to head\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '0.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("0.0.0.0");
     adress.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress.print();
-    Sleep(sleep_time);
-    cout << "Deleting element from tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Deleting element from tail\n";
     adress.pop_right();
-    Sleep(sleep_time);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress.print();
-    Sleep(sleep_time);
-    cout << "Using vector:\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Using vector:\n";
     Vector adress_vector = Vector();
-    cout << "Adding '8.8.8.8' to head\n";
-    Sleep(sleep_time);
+    std::cout << "Adding '8.8.8.8' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("8.8.8.8");
     adress_vector.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_vector.print();
-    Sleep(sleep_time);
-    cout << "Adding '255.255.255.0' to tail\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.255.255.0' to tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("255.255.255.0");
     adress_vector.append_right(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_vector.print();
-    Sleep(sleep_time);
-    cout << "Adding '255.0.0.0' to head\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("255.0.0.0");
     adress_vector.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_vector.print();
-    Sleep(sleep_time);
-    cout << "Adding '0.0.0.0' to head\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '0.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("0.0.0.0");
     adress_vector.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_vector.print();
-    Sleep(sleep_time);
-    cout << "Deleting element from tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Deleting element from tail\n";
     adress_vector.pop_right();
-    Sleep(sleep_time);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_vector.print();
-    Sleep(sleep_time);
-    cout << "Using list:\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Using list:\n";
     List adress_list = List();
-    cout << "Adding '8.8.8.8' to head\n";
-    Sleep(sleep_time);
+    std::cout << "Adding '8.8.8.8' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("8.8.8.8");
     adress_list.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_list.print();
-    Sleep(sleep_time);
-    cout << "Adding '255.255.255.0' to tail\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.255.255.0' to tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("255.255.255.0");
     adress_list.append_right(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_list.print();
-    Sleep(sleep_time);
-    cout << "Adding '255.0.0.0' to head\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("255.0.0.0");
     adress_list.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_list.print();
-    Sleep(sleep_time);
-    cout << "Adding '0.0.0.0' to head\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '0.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     temp = IP("0.0.0.0");
     adress_list.append_left(temp);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_list.print();
-    Sleep(sleep_time);
-    cout << "Deleting element from tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Deleting element from tail\n";
     adress_list.pop_right();
-    Sleep(sleep_time);
-    cout << "Printing all elemrnts\n";
-    Sleep(sleep_time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
     adress_list.print();
-    Sleep(sleep_time);
-    cout << "Have a nice day!\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Have a nice day!\n";
 }
 
 void benchmark(){
-    cout << "For List:\n";
+    std::cout << "For List:\n";
     List list = List();
     double duration = 0.0;
     long long cnt_of_operations = 1;
     int start_time;
-    cout << "   Time of adding:\n";
+    std::cout << "   Time of adding:\n";
     while(duration < 1) {
         cnt_of_operations *=5;
         IP temp;
@@ -531,7 +534,7 @@ void benchmark(){
             list.append_left(temp);
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
     long long etalon = cnt_of_operations;
     while(duration < 5) {
@@ -543,9 +546,9 @@ void benchmark(){
             list.append_left(temp);
         }
         duration = (clock() - start_time) / 1000.0;
-        cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
-    cout << "  Time of deleting\n";
+    std::cout << "  Time of deleting\n";
     cnt_of_operations = 1;
     duration =  0;
     while(duration < 1 && !list.is_empty()) {
@@ -555,7 +558,7 @@ void benchmark(){
             list.pop_left();
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5 && !list.is_empty()) {
@@ -565,13 +568,13 @@ void benchmark(){
             list.pop_left();
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
-    cout << "For Vector:\n";
+    std::cout << "For Vector:\n";
     Vector vec = Vector();
     duration = 0.0;
     cnt_of_operations = 1;
-    cout << "   Time of adding:\n";
+    std::cout << "   Time of adding:\n";
     while(duration < 1) {
         cnt_of_operations *=5;
         IP temp;
@@ -581,7 +584,7 @@ void benchmark(){
             vec.append_left(temp);
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5) {
@@ -593,9 +596,9 @@ void benchmark(){
             vec.append_left(temp);
         }
         duration = (clock() - start_time) / 1000.0;
-        cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
-    cout << "  Time of deleting\n";
+    std::cout << "  Time of deleting\n";
     cnt_of_operations = 1;
     duration =  0;
     while(duration < 1 && !vec.is_empty()) {
@@ -605,7 +608,7 @@ void benchmark(){
             vec.pop_right();
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5 && !vec.is_empty()) {
@@ -615,13 +618,13 @@ void benchmark(){
             vec.pop_right();
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
-    cout << "For Array:\n";
+    std::cout << "For Array:\n";
     Array arr = Array();
     duration = 0.0;
     cnt_of_operations = 1;
-    cout << "   Time of adding:\n";
+    std::cout << "   Time of adding:\n";
     while(duration < 1) {
         cnt_of_operations *=5;
         if (cnt_of_operations > nmax) break;
@@ -632,7 +635,7 @@ void benchmark(){
             arr.append_left(temp);
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5) {
@@ -645,9 +648,9 @@ void benchmark(){
             arr.append_left(temp);
         }
         duration = (clock() - start_time) / 1000.0;
-        cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
-    cout << "  Time of deleting\n";
+    std::cout << "  Time of deleting\n";
     cnt_of_operations = 1;
     duration =  0;
     while(duration < 1 && !arr.is_empty()) {
@@ -657,7 +660,7 @@ void benchmark(){
             arr.pop_left();
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5 && !arr.is_empty()) {
@@ -667,18 +670,18 @@ void benchmark(){
             arr.pop_left();
         }
         duration = (clock() - start_time) / 1000.0;
-        cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
     }
 }
 
 void selector(){
     while (1){
-        cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to visual mod\nPress 'b' to benchmark mod\nPress q to exit\n";
+        std::cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to demo mod\nPress 'b' to benchmark mod\nPress q to exit\n";
         char mod;
-        cin >> mod;
+        std::cin >> mod;
         if (mod == 'q') break;
         if (mod == 'i') interacter();
-        if (mod == 'v') visual();
+        if (mod == 'd') demo();
         if (mod == 'b') benchmark();
     }
 }
