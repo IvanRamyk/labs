@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 
 struct tree_node{
     int data;
@@ -152,6 +153,227 @@ struct binary_tree{
     }
 };
 
+struct expression_node{
+    char type;//c - const, v - variable, o - operation
+    int value;
+};
+
+struct expression_tree_node{
+    expression_node data;
+    expression_tree_node * left_child;
+    expression_tree_node * right_child;
+    expression_tree_node * parent;
+    expression_tree_node(expression_node _data, expression_tree_node * left, expression_tree_node * right, expression_tree_node *_parent){
+        data = _data;
+        left_child = left;
+        right_child = right;
+        parent = _parent;
+    }
+};
+
+bool is_unary(char operation){
+    return operation == '-';
+}
+
+bool is_operation(char _char){
+    return _char == '+' || _char == '-' || _char == '*' || _char == '/' || _char == '^';
+}
+
+int priority_operation(char operation){
+    if (operation == '^') return 3;
+    if (operation == '*' || operation == '/') return 2;
+    if (operation == '+' || operation == '-') return 1;
+    return 0;
+}
+
+struct expression_tree{
+    expression_tree_node * root;
+    expression_tree(){
+        root = nullptr;
+    }
+    expression_tree_node * expression_to_tree(std::string expression, expression_tree_node * parent = nullptr){
+        if (is_unary(expression[0])){
+            char operation = expression[0];
+            expression.erase(expression.begin());
+            expression_tree_node * current_node = new expression_tree_node({'o', operation},
+                                                                     nullptr, expression_to_tree(expression), parent);
+            return current_node;
+        }
+        while (1){
+            if (expression[0] != '(' || expression[expression.size() - 1] != ')') break;
+            bool can_delete = 1;
+            int cnt = 0;
+            for (int i = 1; i < expression.size() - 1; ++i){
+                if (expression[i] == '(') ++cnt;
+                if (expression[i] == ')') --cnt;
+                if (cnt < 0) can_delete = 0;
+            }
+            if (!can_delete) break;
+            expression.erase(expression.begin());
+            expression.erase(expression.end() - 1);
+        }
+        std::cout << expression << "\n";
+        int cnt_scope = 0, pos, pos_min_priority = -1, scope_min_priority = 1000;
+        std::string first_expression = "";
+        std::string second_expression = "";
+        for (pos = 0; pos < expression.size(); ++pos) {
+            if (expression[pos] == '(')
+                ++cnt_scope;
+            if (expression[pos] == ')')
+                --cnt_scope;
+            if (is_operation(expression[pos]) && ((scope_min_priority > cnt_scope)
+            || (scope_min_priority == cnt_scope && priority_operation(expression[pos])< priority_operation(expression[pos_min_priority])))) {
+                pos_min_priority = pos;
+                scope_min_priority = cnt_scope;
+            }
+        }
+        if (pos_min_priority == -1){
+            char first_operand_type;
+            int first_operand_value;
+            if (expression[0] <= '9' && expression[0] >= '0') {
+                first_operand_type = 'c';
+                first_operand_value = std::atoi(expression.c_str());
+            }
+            else {
+                first_operand_type = 'v';
+                first_operand_value = expression[0] - 'a';
+            }
+            expression_tree_node * current_node = new expression_tree_node({first_operand_type, first_operand_value},
+                                                                           nullptr, nullptr, parent);
+            return current_node;
+        }
+        char operation = expression[pos_min_priority];
+        for (int i = 0; i < pos_min_priority; ++i)
+            first_expression += expression[i];
+        for (int i = pos_min_priority + 1; i < expression.size(); ++i)
+            second_expression += expression[i];
+        expression_tree_node * current_node = new expression_tree_node({'o', operation}, expression_to_tree(first_expression),
+                                                                       expression_to_tree(second_expression), parent);
+        return current_node;
+
+    }
+    expression_tree(std::string expression){
+        std::string formating = "";
+        for (int i = 0; i < expression.size(); ++i)
+            if (expression[i] != ' ')
+                formating += expression[i];
+        root = expression_to_tree(formating);
+    }
+    void print_expression(expression_tree_node * current_node){
+        if (current_node->data.type == 'o' && current_node->left_child != nullptr){
+            if (current_node->left_child->data.type == 'o' &&
+                priority_operation(current_node->data.value) > priority_operation(current_node->left_child->data.value))
+                std::cout << "(";
+            print_expression(current_node->left_child);
+            if (current_node->left_child->data.type == 'o' &&
+                priority_operation(current_node->data.value) > priority_operation(current_node->left_child->data.value))
+                std::cout << ")";
+            std::cout << char(current_node->data.value);
+            if (current_node->right_child->data.type == 'o' &&
+                priority_operation(current_node->data.value) > priority_operation(current_node->right_child->data.value))
+                std::cout << "(";
+            print_expression(current_node->right_child);
+            if (current_node->right_child->data.type == 'o' &&
+                priority_operation(current_node->data.value) > priority_operation(current_node->right_child->data.value))
+                std::cout << ")";
+        }
+        else if (current_node->data.type == 'o' && is_unary(current_node->data.value)){
+            std::cout << char(current_node->data.value);
+            if (current_node->right_child->data.type == 'o')
+                std::cout << "(";
+            print_expression(current_node->right_child);
+            if (current_node->right_child->data.type == 'o')
+                std::cout << ")";
+        }
+        else if (current_node->data.type == 'c'){
+            std::cout << current_node->data.value;
+        }
+        else {
+            std::cout << char('a' + current_node->data.value);
+        }
+    }
+    void print_expression(){
+        print_expression(root);
+        std::cout << "\n";
+    }
+    void inter_print(expression_tree_node * current_node) {
+        std::cout << "Current Node - ";
+        if (current_node->data.type == 'o')
+            std::cout << char(current_node->data.value) << "\n";
+        if (current_node->data.type == 'c')
+            std::cout << current_node->data.value << "\n";
+        if (current_node->data.type == 'v')
+            std::cout << char(current_node->data.value + 'a') << "\n";
+        std::cout << "Sons: ";
+        int cnt_children = 0;
+        if (current_node->left_child != nullptr)
+            std::cout << "Left: " << current_node->left_child->data.value << " ";
+        if (current_node->right_child != nullptr)
+            std::cout << "Right: " << current_node->right_child->data.value;
+        std::cout << "\n";
+        std::cout << "Enter q to exit\nEnter l to go to the left child\nEnter r to go to the right child\n";
+        char to_do;
+        std::cin >> to_do;
+        if (to_do == 'q') return;
+        else if (current_node->parent != nullptr && to_do == 'p') inter_print(current_node->parent);
+        else if (current_node->parent == nullptr && to_do == 'p') return;
+        else if (to_do == 'l' && current_node->left_child != nullptr)
+            inter_print(current_node->left_child);
+        else if (to_do == 'r' && current_node->right_child != nullptr)
+            inter_print(current_node->right_child);
+        else inter_print(current_node);
+    }
+    void inter_print(){
+        std::cout << "--------INTERACTOR PRINTING MODE----------\n";
+        inter_print(root);
+    }
+    void delete_node(expression_tree_node * current_node){
+        if (current_node->left_child)
+            delete_node(current_node->left_child);
+        if (current_node->right_child)
+            delete_node(current_node->left_child);
+        delete current_node;
+    }
+    std::pair<bool, expression_tree_node *> calculate_const(expression_tree_node * current_node){
+        if (current_node->data.type == 'v')
+            return {0, current_node};
+        if (current_node->data.type == 'c')
+            return {1, current_node};
+        std::pair<bool, expression_tree_node *> first = calculate_const(current_node->left_child);
+        std::pair<bool, expression_tree_node *> second = calculate_const(current_node->right_child);
+        current_node->left_child = first.second;
+        current_node->right_child = second.second;
+        bool answer = first.first && second.first;
+        if (answer){
+            current_node->data.type = 'c';
+            if (current_node->data.value == int('-'))
+                current_node->data.value = current_node->left_child->data.value - current_node->right_child->data.value;
+            if (current_node->data.value == int('+'))
+                current_node->data.value = current_node->left_child->data.value + current_node->right_child->data.value;
+            if (current_node->data.value == int('*'))
+                current_node->data.value = current_node->left_child->data.value * current_node->right_child->data.value;
+            if (current_node->data.value == int('/'))
+                current_node->data.value = current_node->left_child->data.value / current_node->right_child->data.value;
+            if (current_node->data.value == int('^'))
+                current_node->data.value = std::pow(current_node->left_child->data.value, current_node->right_child->data.value);
+            delete_node(current_node->left_child);
+            delete_node(current_node->right_child);
+            current_node->left_child = nullptr;
+            current_node->right_child = nullptr;
+        }
+        return {answer, current_node};
+    }
+    void calculate_const(){
+        root = calculate_const(root).second;
+    }
+    void simplify(){
+        root = simplify(root);
+    }
+    int calculate(){
+
+    }
+};
+
 void inter_tree(){
     tree _tree = tree(0);
     std::string command;
@@ -213,6 +435,13 @@ void select(){
 
 int main() {
     srand(time(0));
-    select();
+    std::string exp;
+    getline(std::cin, exp);
+    expression_tree _tree = expression_tree(exp);
+    _tree.print_expression();
+    //_tree.calculate_const();
+    _tree.inter_print();
+    //_tree.print_expression();
+    //select();
     return 0;
 }
