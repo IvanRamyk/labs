@@ -5,6 +5,8 @@
 #include <ctime>
 #include <cmath>
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 
 struct tree_node{
     int data;
@@ -465,7 +467,9 @@ struct expression_tree{
             return first_result ^ second_result;
         return 0;
     }
-    int calculate(std::vector <int> variables = {}){
+    int calculate(std::vector <std::pair<char, int>> _variables = {}){
+        for (int i = 0; i < _variables.size(); ++i)
+            variables[_variables[i].first] = _variables[i].second;
         return calculate(root);
     }
     bool is_mistakes(expression_tree_node * current_node){
@@ -585,16 +589,76 @@ void interactor(){
         inter_expression();
 }
 
+void sleep_for_demo(){
+    int sleep_for_time = 1000;
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+}
+
 void demo(){
     std::cout << "-----------DEMO MODE------------\n";
-    
+    std::cout << "Working with tree:\n";
+    sleep_for_demo();
+    tree _tree(-1);
+    std::cout << "Add -1, 2, 3, 4, 5, 10, 13:\n";
+    sleep_for_demo();
+    _tree.add(2, drand(0, 1));
+    _tree.add(3, drand(0, 1));
+    _tree.add(4, drand(0, 1));
+    _tree.add(5, drand(0, 1));
+    _tree.add(10, drand(0, 1));
+    _tree.add(13, drand(0, 1));
+    std::cout << "Printing tree is interactive, you need to chose options\n";
+    sleep_for_demo();
+    _tree.inter_print();
+    std::cout << "Delete 2, 3, 10\n";
+    _tree.delete_node(2);
+    _tree.delete_node(3);
+    _tree.delete_node(10);
+    std::cout << "Printing tree is interactive, you need to chose options\n";
+    sleep_for_demo();
+    _tree.inter_print();
+    std::cout << "Working with binary tree\n";
+    sleep_for_demo();
+    binary_tree binary;
+    std::cout << "Add 9, 1, 2, 5, 15, 34, 23, 14\n";
+    sleep_for_demo();
+    binary.add(9);
+    binary.add(1);
+    binary.add(2);
+    binary.add(5);
+    binary.add(15);
+    binary.add(34);
+    binary.add(23);
+    binary.add(14);
+    std::cout << "Printing tree is interactive, you need to chose options\n";
+    sleep_for_demo();
+    binary.inter_print();
+    std::cout << "Working with expression\n";
+    std::cout << "Add expression '(3+2)/a + b'\n";
+    expression_tree expression;
+    expression.get_expression("(3+2)/a + b");
+    std::cout << "Print expression\n";
+    expression.print_expression();
+    std::cout <<"Simplify expression '(1*5-5)/(123-b) + (5 - 5) * c'\n";
+    expression.get_expression("(1*5-5)/(123-b) + (5 - 5) * c");
+    expression.simplify();
+    expression.print_expression();
+    std::cout <<"Calculate expression '(3 + a)/b + 123 + c*a'\n"
+                "a == 1\n"
+                "b == 2\n"
+                "c == 3\n";
+    expression.get_expression("(3 + a)/b + 123 + c*a");
+    std::cout << expression.calculate({{'a',1}, {'b', 2},{'c', 3}}) << "\n";
+    std::cout << "Have a nice day!\n";
 }
 
 void select(){
-    std::cout << "Enter 'i' to start interactor mode\n";
+    std::cout << "Enter 'i' to start interactor mode\n"
+                 "Enter 'd' to start demo mode\n";
     char mode;
     std::cin >> mode;
     if (mode == 'i') interactor();
+    if (mode == 'd') demo();
 }
 
 int main() {
