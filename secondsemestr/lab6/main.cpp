@@ -67,10 +67,10 @@ struct node{
         next = nullptr;
         prev = nullptr;
     }
-    node(Date _date, node *n = nullptr, node *p = nullptr){
+    node(Date _date, node *n = nullptr, node *current_node = nullptr){
         date = _date;
         next = n;
-        prev = p;
+        prev = current_node;
     }
 };
 
@@ -213,23 +213,23 @@ struct binary_tree{
         if (root)
             print_node_in_sort_order(root);
     }
-    void search_eps_node(binary_tree_node * current_node, std::vector<binary_tree_node *> &result, Date min_value, Date max_value){
+    void find(binary_tree_node * current_node, std::vector<binary_tree_node *> &result, Date min_value, Date max_value){
         if (!current_node) return;
         if (min_value <= current_node->date && current_node->date <= max_value){
             result.push_back(current_node);
-            search_eps_node(current_node->left_child, result, min_value, max_value);
-            search_eps_node(current_node->right_child, result, min_value, max_value);
+            find(current_node->left_child, result, min_value, max_value);
+            find(current_node->right_child, result, min_value, max_value);
         }
         else {
             if (max_value < current_node->date)
-                search_eps_node(current_node->left_child, result, min_value, max_value);
+                find(current_node->left_child, result, min_value, max_value);
             else
-                search_eps_node(current_node->right_child, result, min_value, max_value);
+                find(current_node->right_child, result, min_value, max_value);
         }
     }
-    std::vector <binary_tree_node *> search_eps(Date min_value, Date max_value){
+    std::vector <binary_tree_node *> find(Date min_value, Date max_value){
         std::vector <binary_tree_node *> result;
-        search_eps_node(root, result, min_value, max_value);
+        find(root, result, min_value, max_value);
         return result;
     }
     binary_tree_node * get_min(binary_tree_node *current_node){
@@ -383,9 +383,151 @@ struct array_list{
     }
 };
 
+struct balance_tree_node{
+    Date date;
+    unsigned char height;
+    balance_tree_node* left_child;
+    balance_tree_node* right_child;
+    balance_tree_node(Date _date) { 
+        date = _date; 
+        left_child = right_child = nullptr; 
+        height = 1; 
+    }
+};
+
+struct balance_tree{
+    balance_tree_node * root;
+    balance_tree(){
+        root = nullptr;
+    }
+    unsigned char height(balance_tree_node* current_node){
+        if (current_node != nullptr) return current_node->height;
+        return 0;
+    }
+    int balance_factor(balance_tree_node* current_node){
+        return height(current_node->right_child)-height(current_node->left_child);
+    }
+    void get_hight(balance_tree_node* current_node){
+        unsigned char hl = height(current_node->left_child);
+        unsigned char hr = height(current_node->right_child);
+        current_node->height = (hl>hr?hl:hr)+1;
+    }
+    balance_tree_node* rotate_right(balance_tree_node* current_node){
+        balance_tree_node* q = current_node->left_child;
+        current_node->left_child = q->right_child;
+        q->right_child = current_node;
+        get_hight(current_node);
+        get_hight(q);
+        return q;
+    }
+    balance_tree_node* rotate_left(balance_tree_node* q){
+        balance_tree_node* current_node = q->right_child;
+        q->right_child = current_node->left_child;
+        current_node->left_child = q;
+        get_hight(q);
+        get_hight(current_node);
+        return current_node;
+    }
+    balance_tree_node* balance(balance_tree_node* current_node){
+        get_hight(current_node);
+        if( balance_factor(current_node)==2 ){
+            if( balance_factor(current_node->right_child) < 0 )
+                current_node->right_child = rotate_right(current_node->right_child);
+            return rotate_left(current_node);
+        }
+        if( balance_factor(current_node)==-2 ){
+            if( balance_factor(current_node->left_child) > 0  )
+                current_node->left_child = rotate_left(current_node->left_child);
+            return rotate_right(current_node);
+        }
+        return current_node;
+    }
+    balance_tree_node* add(balance_tree_node* current_node, Date _date){
+        if( !current_node ) return new balance_tree_node(_date);
+        if( _date<current_node->date )
+            current_node->left_child = add(current_node->left_child, _date);
+        else
+            current_node->right_child = add(current_node->right_child, _date);
+        return balance(current_node);
+    }
+    void add(Date date){
+        root = add(root, date);
+    }
+    balance_tree_node* find_minimum(balance_tree_node* current_node) {
+        return current_node->left_child?find_minimum(current_node->left_child):current_node;
+    }
+    balance_tree_node* remove_minimum(balance_tree_node* current_node){
+        if( current_node->left_child==0 )
+            return current_node->right_child;
+        current_node->left_child = remove_minimum(current_node->left_child);
+        return balance(current_node);
+    }
+    balance_tree_node* remove(balance_tree_node* current_node, Date min_date, Date max_date) {
+        if(!current_node) return 0;
+        if(max_date < current_node->date)
+            current_node->left_child = remove(current_node->left_child,min_date, max_date);
+        else if(current_node->date < min_date)
+            current_node->right_child = remove(current_node->right_child,min_date, max_date);
+        else
+        {
+            current_node->left_child = remove(current_node->left_child, min_date, max_date);
+            current_node->right_child = remove(current_node->right_child, min_date, max_date);
+            balance_tree_node* q = current_node->left_child;
+            balance_tree_node* r = current_node->right_child;
+            delete current_node;
+            if(!r) return q;
+            balance_tree_node* min = find_minimum(r);
+            min->right_child = remove_minimum(r);
+            min->left_child = q;
+            return balance(min);
+        }
+        return balance(current_node);
+    }
+    void remove(Date min_date, Date max_date){
+        root = remove(root, min_date, max_date);
+    }
+    void remove(Date date){
+        root = remove(root, date, date);
+    }
+    void find(balance_tree_node * current_node, std::vector<balance_tree_node *> &result, Date min_value, Date max_value){
+        if (!current_node) return;
+        if (min_value <= current_node->date && current_node->date <= max_value){
+            result.push_back(current_node);
+            find(current_node->left_child, result, min_value, max_value);
+            find(current_node->right_child, result, min_value, max_value);
+        }
+        else {
+            if (max_value < current_node->date)
+                find(current_node->left_child, result, min_value, max_value);
+            else
+                find(current_node->right_child, result, min_value, max_value);
+        }
+    }
+    std::vector <balance_tree_node *> find(Date min_value, Date max_value){
+        std::vector <balance_tree_node *> result;
+        find(root, result, min_value, max_value);
+        return result;
+    }
+    std::vector <balance_tree_node *> find(Date value){
+        std::vector <balance_tree_node *> result;
+        find(root, result, value, value);
+        return result;
+    }
+    void print_in_sort_order(balance_tree_node * current_node){
+        if (current_node == nullptr) return;
+        print_in_sort_order(current_node->left_child);
+        current_node->date.print();
+        print_in_sort_order(current_node->right_child);
+    }
+    void print_in_sort_order(){
+        print_in_sort_order(root);
+    }
+};
+
+
 int main() {
     srand(time(0));
-    array_list _tree = array_list();
+    balance_tree _tree = balance_tree();
     Date del;
     for (int i = 0; i < 10; ++i) {
         Date temp = Date();
@@ -397,9 +539,10 @@ int main() {
     std::cout << "\n";
     _tree.print_in_sort_order();
     std::cout << "\n";
-    std::vector<Date> vec = _tree.find(del);
+    std::vector<balance_tree_node * > vec = _tree.find(del);
     for (auto i : vec)
-        i.print();
+        i->date.print();
+    _tree.remove(del);
     std::cout << "\n";
     _tree.print_in_sort_order();
     return 0;
