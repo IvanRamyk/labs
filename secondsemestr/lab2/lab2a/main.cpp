@@ -1,336 +1,693 @@
 #include <iostream>
-#include <ctime>
-#include <stdio.h>
-#include <time.h>
-#include <windows.h>
-#include <chrono>
+#include <vector>
+#include <queue>
 #include <algorithm>
+#include <cmath>
+#include <chrono>
+#include <thread>
 
-using namespace std;
 
-int bubble_size = 125;
-bool is_demo = 0;
-int n;
-const int sleep_const = 2 * 1000;
+const int nmax = 50000;
+const int sleep_for_time = 1000;
 
-struct Date{
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
-    int value(){
-        return ((((year * 12) + month) * 31 + day) + hour) * 60 + minute;
+struct IP{
+    std::string IP4;
+    IP(){
+        IP4 = "";
     }
-    void init(){
-        year = rand() % 3000 + 1;
-        month = rand() % 12 + 1;
-        day = rand() % 31 + 1;
-        hour = rand() % 24;
-        minute = rand() % 60;
+    IP(std::string ip){
+        IP4 = ip;
+    }
+    bool is_valid(std::string temp_ip){
+        std::string field = "";
+        int cnt_fields = 1;
+        if (temp_ip[temp_ip.size() - 1] == '.') return 0;
+        for (int i = 0; i < temp_ip.size(); ++i){
+            if ((temp_ip[i] > '9' || temp_ip[i] < '0') && temp_ip[i] != '.') return 0;
+            if (temp_ip[i] == '.') {
+                if (field == "") return 0;
+                ++cnt_fields;
+                int field_val = atoi(field.c_str());
+                if (field_val < 0 || field_val > 255) return 0;
+                field = "";
+            }
+            else field += temp_ip[i];
+        }
+        if (field == "") return 0;
+        int field_val = atoi(field.c_str());
+        if (field_val < 0 || field_val > 255) return 0;
+        if (cnt_fields != 4) return 0;
+        return 1;
+    }
+    bool get(){
+        std::string ip;
+        std::cin >> ip;
+        if (is_valid(ip)){
+            IP4 = ip;
+            return 1;
+        }
+        return 0;
     }
     void print(){
-        printf("%d.%02d.%02d %02d:%02d\n", year, month, day, hour, minute);
+        std::cout << IP4 << "\n";
+    }
+    void random_value(){
+        IP4 = "";
+        int field = rand() % 256;
+        IP4 += std::to_string(field);
+        IP4 += '.';
+        field = rand() % 256;
+        IP4 += std::to_string(field);
+        IP4 += '.';
+        field = rand() % 256;
+        IP4 += std::to_string(field);
+        IP4 += '.';
+        field = rand() % 256;
+        IP4 += std::to_string(field);
     }
 };
-bool operator <(Date a, Date b){
-    return a.value() > b.value();
-}
-bool operator >(Date a, Date b){
-    return a.value() < b.value();
-}
-void bubble_sort(Date array[], int number_of_elements){
-    bool not_sort = 1;
-    while (not_sort){
-        not_sort = 0;
-        for (int i = 0; i < number_of_elements - 1; ++i)
-            if (array[i + 1] < array[i]) {
-                swap(array[i], array[i + 1]);
-                not_sort = 1;
-            }
-        for (int i = number_of_elements - 2; i >= 0; --i)
-            if (array[i + 1] < array[i])
-                swap(array[i], array[i + 1]);
-    }
-}
-void bubble_sort(Date array[], int left, int rigth){
-    bool not_sort = 1;
-    while (not_sort){
-        not_sort = 0;
-        for (int i = left; i < rigth; ++i)
-            if (array[i + 1] < array[i]) {
-                swap(array[i], array[i + 1]);
-                not_sort = 1;
-            }
-        for (int i = rigth - 1; i >= left; --i)
-            if (array[i + 1] < array[i])
-                swap(array[i], array[i + 1]);
-        if (is_demo) {
-            for (int i = 0; i < n; ++i)
-                array[i].print();
-            cout << "=======\n";
-            Sleep(sleep_const);
-        }
-    }
-}
-int partition(Date array[], int left, int right){
-    Date pivot = array[(left + right) >> 1];
-    int i = left, j = right;
-    while(1){
-        while (array[i] < pivot)
-            ++i;
-        while (array[j] > pivot)
-            j--;
-        if (i >= j) return j;
-        swap(array[i], array[j]);
-        i++,j--;
-    }
-}//Hoare
 
-void quick_sort(Date array[], int left, int right){
-    if (left < right){
-        int middle = partition(array, left, right);
-        quick_sort(array, left, middle - 1);
-        quick_sort(array, middle + 1, right);
-        if (is_demo) {
-            for (int i = 0; i < n; ++i)
-                array[i].print();
-            cout << "=======\n";
-            Sleep(sleep_const);
-        }
+struct Node{
+    Node *next;
+    Node *prev;
+    IP IP4;
+    Node(){
+        IP4 = IP();
+        next = nullptr;
+        prev = nullptr;
     }
-}
+    Node(IP ip, Node *n = nullptr, Node *p = nullptr){
+        IP4 = ip;
+        next = n;
+        prev = p;
+    }
+};
 
-Date temp [20000000];
-
-void merge(Date array[], int left, int middle, int right){
-    int i = left;
-    int j = middle + 1;
-    int k = left;
-    while (k != right + 1){
-        if (i == middle + 1){
-            temp[k] = array[j];
-            ++j;
-        }
-        else if (j == right + 1){
-            temp[k] = array[i];
-            ++i;
-        }
-        else if (array[i] > array[j]){
-            temp[k] = array[j];
-            ++j;
+struct List{
+    Node * head;
+    Node * tail;
+    List(){
+        head = nullptr;
+        tail = nullptr;
+    }
+    bool is_empty(){
+        return !head;
+    }
+    void append_left(IP ip){
+        if (!head){
+            head = tail = new Node(ip);
         }
         else {
-            temp[k] = array[i];
-            ++i;
-        }
-        ++k;
-    }
-    for (int i = left; i <= right; ++i)
-        array[i] = temp[i];
-}
-
-void merge_sort(Date array[], int left, int right){
-    if (left < right) {
-        //cout << left << " " << right << "\n";
-        int middle = (left + right) >> 1;
-        merge_sort(array, left, middle);
-        merge_sort(array, middle + 1, right);
-        merge(array, left, middle, right);
-        //cout << left << " " << right << " done!\n";
-        if (is_demo) {
-            for (int i = 0; i < n; ++i)
-                array[i].print();
-            cout << "=======\n";
-            Sleep(sleep_const);
+            Node *cur = new Node(ip, head);
+            head->prev = cur;
+            head = cur;
         }
     }
+    void append_right(IP ip){
+        if (!head){
+            head = tail = new Node(ip);
+        }
+        else {
+            Node *cur = new Node(ip, nullptr, tail);
+            tail->next = cur;
+            tail = cur;
+        }
+    }
+    IP front(){
+        return head->IP4;
+    }
+    IP back(){
+        return tail->IP4;
+    }
+    bool pop_left(){
+        if (is_empty()) return 0;
+        if (head == tail){
+            head = tail = nullptr;
+        }
+        else {
+            Node *temp = head;
+            head = head->next;
+            head->prev = nullptr;
+            delete temp;
+        }
+        return 1;
+    }
+    bool pop_right(){
+        if (is_empty()) return 0;
+        if (head == tail){
+            head = tail = nullptr;
+        }
+        else {
+            Node *temp = tail;
+            tail = tail->prev;
+            tail->next = nullptr;
+            delete temp;
+        }
+        return 1;
+    }
+    void print(){
+        Node *cur =  head;
+        while (cur != nullptr){
+            cur->IP4.print();
+            cur = cur->next;
+        }
+    }
+};
+
+struct Array{
+    IP arr[nmax];
+    int number_in_struct;
+    Array(){
+        number_in_struct = 0;
+    }
+    bool is_empty(){
+        return !number_in_struct;
+    }
+    bool append_right(IP IP4){
+        if (number_in_struct == nmax) return 0;
+        arr[number_in_struct] = IP4;
+        ++number_in_struct;
+        return 1;
+    }
+    bool append_left(IP IP4){
+        if (number_in_struct == nmax) return 0;
+        for (int pos = number_in_struct; pos; pos--)
+            arr[pos] = arr[pos - 1];
+        arr[0] = IP4;
+        number_in_struct++;
+        return 1;
+    }
+    bool pop_right(){
+        if (is_empty()) return 0;
+        number_in_struct--;
+        return 1;
+    }
+    bool pop_left(){
+        if(is_empty()) return 0;
+        for (int pos = 0; pos < number_in_struct - 1; ++pos)
+            arr[pos] = arr[pos + 1];
+        number_in_struct--;
+        return 1;
+    }
+    void print(){
+        for (int pos = 0; pos < number_in_struct; ++pos)
+            arr[pos].print();
+    }
+};
+
+struct Vector{
+    std::vector <IP> vec;
+    Vector(){
+        vec.clear();
+    }
+    bool is_empty(){
+        return vec.empty();
+    }
+    void append_right(IP IP4){
+        vec.push_back(IP4);
+    }
+    void append_left(IP IP4){
+        vec.insert(vec.begin(), IP4);
+    }
+    bool pop_right(){
+        if (is_empty()) return 0;
+        vec.pop_back();
+        return 1;
+    }
+    bool pop_left(){
+        if(is_empty()) return 0;
+        vec.erase(vec.begin());
+        return 1;
+    }
+    void print(){
+        for(auto i : vec)
+            i.print();
+    }
+};
+
+void print_command_list(){
+    std::cout << "q //exit\nis_empty // print is struct empty\nappend_left <IP4> //add IP4 to the head of queue\nappend_right <IP4>//add IP4 to the tail of queue\npop_left // remove element from head\npop_right //remove element from tail\n print //print elements from head to tail\n";
 }
 
-void combine_merge_bubble_sort(Date array[], int left, int right)
-{
-    if (right - left > bubble_size) {
-        int middle = (left + right) >> 1;
-        merge_sort(array, left, middle);
-        merge_sort(array, middle + 1, right);
-        merge(array, left, middle, right);
+void ok(){
+    std::cout << "OK\n";
+}
+
+void interacter_array(){
+    Array adress = Array();
+    std::cout << "Press 'h' to view list of commands\n";
+    while (1){
+        std::string command_type;
+        std::cin >> command_type;
+        if (command_type == "q") break;
+        if (command_type == "h") print_command_list();
+        if (command_type == "append_left"){
+            IP ip;
+            if (ip.get()){
+                if (adress.append_left(ip)){
+                    ok();
+                }
+                else {
+                    std::cout << "ERROR: number of IP's is already maximum.\n";
+                }
+            }
+            else {
+                std::cout << "ERROR: invalid IP4.\n";
+            }
+        }
+        if (command_type == "append_right"){
+            IP ip;
+            if (ip.get()){
+                if (adress.append_right(ip)){
+                    ok();
+                }
+                else {
+                    std::cout << "ERROR: number of IP's is already maximum.\n";
+                }
+            }
+            else {
+                std::cout << "ERROR: invalid IP4.\n";
+            }
+        }
+        if (command_type == "is_empty"){
+            if (adress.is_empty()) std::cout << "YES\n";
+            else std::cout << "NO\n";
+        }
+        if (command_type == "pop_left"){
+            if (adress.pop_left()) ok();
+            else std::cout << "ERROR: struct is empty\n";
+        }
+        if (command_type == "pop_right"){
+            if (adress.pop_right()) ok();
+            else std::cout << "ERROR: struct is empty\n";
+        }
+        if (command_type == "print"){
+            adress.print();
+        }
     }
-    bubble_sort(array, left, right);
-    if (is_demo) {
-        for (int i = 0; i < n; ++i)
-            array[i].print();
-        cout << "=======\n";
-        Sleep(sleep_const);
+}
+
+void interacter_vector(){
+    Vector adress = Vector();
+    std::cout << "Press 'h' to view list of commands\n";
+    while (1){
+        std::string command_type;
+        std::cin >> command_type;
+        if (command_type == "q") break;
+        if (command_type == "h") print_command_list();
+        if (command_type == "append_left"){
+            IP ip;
+            if (ip.get()){
+                adress.append_left(ip);
+                ok();
+            }
+            else {
+                std::cout << "ERROR: invalid IP4.\n";
+            }
+        }
+        if (command_type == "append_right"){
+            IP ip;
+            if (ip.get()){
+                adress.append_right(ip);
+                ok();
+            }
+            else {
+                std::cout << "ERROR: invalid IP4.\n";
+            }
+        }
+        if (command_type == "is_empty"){
+            if (adress.is_empty()) std::cout << "YES\n";
+            else std::cout << "NO\n";
+        }
+        if (command_type == "pop_left"){
+            if (adress.pop_left()) ok();
+            else std::cout << "ERROR: struct is empty\n";
+        }
+        if (command_type == "pop_right"){
+            if (adress.pop_right()) ok();
+            else std::cout << "ERROR: struct is empty\n";
+        }
+        if (command_type == "print"){
+            adress.print();
+        }
     }
+}
+
+void interacter_list(){
+    List adress = List();
+    std::cout << "Press 'h' to view list of commands\n";
+    while (1){
+        std::string command_type;
+        std::cin >> command_type;
+        if (command_type == "q") break;
+        if (command_type == "h") print_command_list();
+        if (command_type == "append_left"){
+            IP ip;
+            if (ip.get()){
+                adress.append_left(ip);
+                ok();
+            }
+            else {
+                std::cout << "ERROR: invalid IP4.\n";
+            }
+        }
+        if (command_type == "append_right"){
+            IP ip;
+            if (ip.get()){
+                adress.append_right(ip);
+                ok();
+            }
+            else {
+                std::cout << "ERROR: invalid IP4.\n";
+            }
+        }
+        if (command_type == "is_empty"){
+            if (adress.is_empty()) std::cout << "YES\n";
+            else std::cout << "NO\n";
+        }
+        if (command_type == "pop_left"){
+            if (adress.pop_left()) ok();
+            else std::cout << "ERROR: struct is empty\n";
+        }
+        if (command_type == "pop_right"){
+            if (adress.pop_right()) ok();
+            else std::cout << "ERROR: struct is empty\n";
+        }
+        if (command_type == "print"){
+            adress.print();
+        }
+    }
+}
+
+void interacter(){
+    std::cout << "-------INTERACTOR MODE-------\nChoose type of struct:\nPress 'l' to use list\nPress 'a' to use array\nPress 'v' to use vector\n";
+    char struct_type;
+    std::cin >> struct_type;
+    if (struct_type == 'a') interacter_array();
+    if (struct_type == 'v') interacter_vector();
+    if (struct_type == 'l') interacter_list();
+    return;
 }
 
 void demo(){
-    srand(time(0));
-    is_demo = 1;
-    Date arr[1000];
-    cout << "Please enter size of array\n";
-    cin >> n;
-    for (int i = 0; i < n; ++i)
-        arr[i].init();
-    cout << "Array:\n";
-    Sleep(sleep_const);
-    for (int i = 0; i < n; ++i)
-        arr[i].print();
-    Sleep(sleep_const);
-    Date arr1 [1000];
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-    cout << "Sorting with bubble sort:\n";
-    Sleep(sleep_const);
-    bubble_sort(arr1, 0, n - 1);
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-    cout << "Sorting with quick sort:\n";
-    Sleep(sleep_const);
-    quick_sort(arr1, 0, n - 1);
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-    cout << "Sorting with merge sort:\n";
-    Sleep(sleep_const);
-    merge_sort(arr1, 0, n - 1);
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-    cout << "Sorting with combine sort:\n";
-    Sleep(sleep_const);
-    combine_merge_bubble_sort(arr1, 0, n - 1);
-}
-
-Date arr[20000000];
-Date arr1[20000000];
-
-void search_size(){
-    for (bubble_size = 2; bubble_size <= 20; ++bubble_size){
-        cout << "For max bubble size = " << bubble_size << "\n";
-        for (int n = 2000; n <=2000000; n *= 10){
-            for (int i = 0; i < n; ++i)
-                arr[i].init();
-            int start = clock();
-            combine_merge_bubble_sort(arr, 0, n - 1);
-            int end = clock();
-            cout << "  For n " << n << " " << (end - start)/ double(CLOCKS_PER_SEC) << " sec" << "\n";
-        }
-    }
-    for (bubble_size = 25; bubble_size <= 200; bubble_size +=10){
-        cout << "For max bubble size = " << bubble_size << "\n";
-        for (int n = 2000; n <=2000000; n *= 10){
-            for (int i = 0; i < n; ++i)
-                arr[i].init();
-            int start = clock();
-            combine_merge_bubble_sort(arr, 0, n - 1);
-            int end = clock();
-            cout << "  For n " << n << " " << (end - start)/ double(CLOCKS_PER_SEC) << " sec" << "\n";
-        }
-    }
-}
-
-void benchmark_for_size(int size){
-    unsigned int start_time, end_time;
-    int n = size;
-    printf("For size %d\n\n", size);
-    printf("  For random array\n");
-    for (int i = 0; i < n; ++i)
-        arr[i].init();
-
-    if (n <= 10000) {
-        for (int i = 0; i < n; ++i)
-            arr1[i] = arr[i];
-        start_time = clock();
-        bubble_sort(arr1, 0, n - 1);
-        end_time = clock();
-        printf("    Bubble: %f sec\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    }
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-
-    start_time = clock();
-    quick_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Quick: %f sec\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-
-    start_time = clock();
-    merge_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Merge: %f sec\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-
-    for (int i = 0; i < n; ++i)
-        arr1[i] = arr[i];
-    start_time = clock();
-    combine_merge_bubble_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Combine: %f sec\n\n\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-
-    printf("  For sort array\n");
-    if (n <= 10000) {
-        start_time = clock();
-        bubble_sort(arr1, 0, n - 1);
-        end_time = clock();
-        printf("    Bubble: %f sec\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    }
-    start_time = clock();
-    quick_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Quick: %f sec\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    start_time = clock();
-    merge_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Merge: %f sec\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    start_time = clock();
-    combine_merge_bubble_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Combine: %f sec\n\n\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-
-    reverse(arr1, arr1 + 10000000);
-
-    printf("  For reverse array\n");
-    if (n <= 10000) {
-        start_time = clock();
-        bubble_sort(arr1, 0, n - 1);
-        end_time = clock();
-        printf("    Bubble: %f sec\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    }
-    start_time = clock();
-    quick_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Quick: %f sec\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    start_time = clock();
-    merge_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Merge: %f sec\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
-    start_time = clock();
-    combine_merge_bubble_sort(arr1, 0, n - 1);
-    end_time = clock();
-    printf("    Combine: %f sec\n\n\n\n", (end_time - start_time) /  double(CLOCKS_PER_SEC));
+    std::cout << "------DEMO MODE------\n";
+    IP temp = IP();
+    std::cout << "Using array:\n";
+    Array adress = Array();
+    std::cout << "Adding '8.8.8.8' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("8.8.8.8");
+    adress.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.255.255.0' to tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("255.255.255.0");
+    adress.append_right(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("255.0.0.0");
+    adress.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '0.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("0.0.0.0");
+    adress.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Deleting element from tail\n";
+    adress.pop_right();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Using vector:\n";
+    Vector adress_vector = Vector();
+    std::cout << "Adding '8.8.8.8' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("8.8.8.8");
+    adress_vector.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_vector.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.255.255.0' to tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("255.255.255.0");
+    adress_vector.append_right(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_vector.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("255.0.0.0");
+    adress_vector.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_vector.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '0.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("0.0.0.0");
+    adress_vector.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_vector.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Deleting element from tail\n";
+    adress_vector.pop_right();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_vector.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Using list:\n";
+    List adress_list = List();
+    std::cout << "Adding '8.8.8.8' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("8.8.8.8");
+    adress_list.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_list.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.255.255.0' to tail\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("255.255.255.0");
+    adress_list.append_right(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_list.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '255.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("255.0.0.0");
+    adress_list.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_list.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Adding '0.0.0.0' to head\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    temp = IP("0.0.0.0");
+    adress_list.append_left(temp);
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_list.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Deleting element from tail\n";
+    adress_list.pop_right();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Printing all elemrnts\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    adress_list.print();
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_for_time));
+    std::cout << "Have a nice day!\n";
 }
 
 void benchmark(){
     std::cout << "Rewriting benchmark file ('benchmark.txt')\n";
     freopen("benchmark.txt", "w", stdout);
-    srand(time(0));
-    search_size();
-    bubble_size = 4;
-    for (int n = 100; n <= 10000000; n *= 10)
-        benchmark_for_size(n);
+    std::cout << "For List:\n";
+    List list = List();
+    double duration = 0.0;
+    long long cnt_of_operations = 1;
+    int start_time;
+    std::cout << "   Time of adding:\n";
+    while(duration < 1) {
+        cnt_of_operations *=5;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            list.append_left(temp);
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    long long etalon = cnt_of_operations;
+    while(duration < 5) {
+        cnt_of_operations += etalon;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            list.append_left(temp);
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    std::cout << "  Time of deleting\n";
+    cnt_of_operations = 1;
+    duration =  0;
+    while(duration < 1 && !list.is_empty()) {
+        cnt_of_operations = cnt_of_operations*5;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            list.pop_left();
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5 && !list.is_empty()) {
+        cnt_of_operations += etalon;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            list.pop_left();
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    std::cout << "For Vector:\n";
+    Vector vec = Vector();
+    duration = 0.0;
+    cnt_of_operations = 1;
+    std::cout << "   Time of adding:\n";
+    while(duration < 1) {
+        cnt_of_operations *=5;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            vec.append_left(temp);
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5) {
+        cnt_of_operations += etalon;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            vec.append_left(temp);
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    std::cout << "  Time of deleting\n";
+    cnt_of_operations = 1;
+    duration =  0;
+    while(duration < 1 && !vec.is_empty()) {
+        cnt_of_operations = cnt_of_operations*5;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            vec.pop_right();
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5 && !vec.is_empty()) {
+        cnt_of_operations += etalon;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            vec.pop_right();
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    std::cout << "For Array:\n";
+    Array arr = Array();
+    duration = 0.0;
+    cnt_of_operations = 1;
+    std::cout << "   Time of adding:\n";
+    while(duration < 1) {
+        cnt_of_operations *=5;
+        if (cnt_of_operations > nmax) break;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            arr.append_left(temp);
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5) {
+        cnt_of_operations += etalon;
+        if (cnt_of_operations >= nmax) break;
+        IP temp;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            temp.random_value();
+            arr.append_left(temp);
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    std::cout << "  Time of deleting\n";
+    cnt_of_operations = 1;
+    duration =  0;
+    while(duration < 1 && !arr.is_empty()) {
+        cnt_of_operations = cnt_of_operations*5;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            arr.pop_left();
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
+    etalon = cnt_of_operations;
+    while(duration < 5 && !arr.is_empty()) {
+        cnt_of_operations += etalon;
+        start_time = clock();
+        for (int i = 0; i < cnt_of_operations; i++) {
+            arr.pop_left();
+        }
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
+    }
 }
 
 void selector(){
-    cout << "Press 'd' to demo mod\nPress 'b' to benchmark\n";
-    char mode;
-    cin >> mode;
-    if (mode == 'd')
-        demo();
-    if (mode == 'b')
-        benchmark();
+    std::cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to demo mod\nPress 'b' to benchmark mod\nPress q to exit\n";
+    char mod;
+    std::cin >> mod;
+    if (mod == 'i') interacter();
+    if (mod == 'd') demo();
+    if (mod == 'b') benchmark();
 }
 
-int main() {
+int main()
+{
+    srand(time(0));
     selector();
     return 0;
 }
