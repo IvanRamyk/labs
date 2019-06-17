@@ -659,6 +659,8 @@ void interactor(){
 }
 
 void benchmark(){
+    std::cout << "Rewriting benchmark file ('benchmark.txt')\n";
+    freopen("benchmark.txt", "w", stdout);
     std::cout << "----------------BENCHMARK MODE----------------\n";
     for (int n = 10; n <= 10000; n *= 10){
         std::cout << "Number of vertex is " << n << "\n";
@@ -673,24 +675,24 @@ void benchmark(){
             int start_matrix = clock();
             temp = search_component_matrix(matrix);
             int end_matrix = clock();
-            std::cout << "       Time searching component: list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
-            std::cout << "                                 matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
+            std::cout << "       Time searching component: list - " << -(start_adj - end_adj)/double(CLOCKS_PER_SEC) << " sec\n";
+            std::cout << "                                 matrix - " << -(start_matrix - end_matrix)/double(CLOCKS_PER_SEC) << " sec\n";
             start_adj = clock();
             std::vector <int> dist = bfs_adj(adj, 0);
             end_adj = clock();
             start_matrix = clock();
             dist = bfs_matrix(matrix, 0);
             end_matrix = clock();
-            std::cout << "       Time working bfs: list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
-            std::cout << "                         matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
+            std::cout << "       Time working bfs: list - " << -(start_adj - end_adj)/double(CLOCKS_PER_SEC) << " sec\n";
+            std::cout << "                         matrix - " << -(start_matrix - end_matrix)/double(CLOCKS_PER_SEC) << " sec\n";
             start_adj = clock();
             std::pair<bool, std::vector <int> >  top_sort = topological_sort_adj(adj);
             end_adj = clock();
             start_matrix = clock();
             top_sort = topological_sort_matrix(matrix);
             end_matrix = clock();
-            std::cout << "       Time working topological sort: list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
-            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
+            std::cout << "       Time working topological sort: list - " << -(start_adj - end_adj)/double(CLOCKS_PER_SEC) << " sec\n";
+            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/double(CLOCKS_PER_SEC) << " sec\n";
             if (n <= 1000){
                 start_adj = clock();
                 std::vector <int>  dijkstra = dijkstra_adj(adj, 0);
@@ -698,8 +700,8 @@ void benchmark(){
                 start_matrix = clock();
                 dijkstra = dijkstra_matrix(matrix, 0);
                 end_matrix = clock();
-                std::cout << "       Time working dijkstra : list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
-                std::cout << "                               matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
+                std::cout << "       Time working dijkstra : list - " << -(start_adj - end_adj)/double(CLOCKS_PER_SEC) << " sec\n";
+                std::cout << "                               matrix - " << -(start_matrix - end_matrix)/double(CLOCKS_PER_SEC) << " sec\n";
             }
             start_adj = clock();
             std::pair< std::vector <span_edge>, int > span = spanning_tree_adj(adj);
@@ -707,8 +709,8 @@ void benchmark(){
             start_matrix = clock();
             span = spanning_tree_matrix(matrix);
             end_matrix = clock();
-            std::cout << "       Time searching spanning tree : list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
-            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
+            std::cout << "       Time searching spanning tree : list - " << -(start_adj - end_adj)/double(CLOCKS_PER_SEC) << " sec\n";
+            std::cout << "                                      matrix - " << -(start_matrix - end_matrix)/double(CLOCKS_PER_SEC) << " sec\n";
             if (n <= 1000){
                 start_adj = clock();
                 span = minimal_spanning_tree_adj(adj);
@@ -716,8 +718,8 @@ void benchmark(){
                 start_matrix = clock();
                 span = minimal_spanning_tree_matrix(matrix);
                 end_matrix = clock();
-                std::cout << "       Time searching minimal spanning tree : list - " << -(start_adj - end_adj)/CLOCKS_PER_SEC << "\n";
-                std::cout << "                                              matrix - " << -(start_matrix - end_matrix)/CLOCKS_PER_SEC << "\n";
+                std::cout << "       Time searching minimal spanning tree : list - " << -(start_adj - end_adj)/double(CLOCKS_PER_SEC) << " sec\n";
+                std::cout << "                                              matrix - " << -(start_matrix - end_matrix)/double(CLOCKS_PER_SEC) << " sec\n";
             }
         }
     }
