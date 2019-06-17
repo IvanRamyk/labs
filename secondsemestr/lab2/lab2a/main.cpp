@@ -519,6 +519,8 @@ void demo(){
 }
 
 void benchmark(){
+    std::cout << "Rewriting benchmark file ('benchmark.txt')\n";
+    freopen("benchmark.txt", "w", stdout);
     std::cout << "For List:\n";
     List list = List();
     double duration = 0.0;
@@ -533,8 +535,8 @@ void benchmark(){
             temp.random_value();
             list.append_left(temp);
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     long long etalon = cnt_of_operations;
     while(duration < 5) {
@@ -545,8 +547,8 @@ void benchmark(){
             temp.random_value();
             list.append_left(temp);
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     std::cout << "  Time of deleting\n";
     cnt_of_operations = 1;
@@ -557,8 +559,8 @@ void benchmark(){
         for (int i = 0; i < cnt_of_operations; i++) {
             list.pop_left();
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5 && !list.is_empty()) {
@@ -567,8 +569,8 @@ void benchmark(){
         for (int i = 0; i < cnt_of_operations; i++) {
             list.pop_left();
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     std::cout << "For Vector:\n";
     Vector vec = Vector();
@@ -583,8 +585,8 @@ void benchmark(){
             temp.random_value();
             vec.append_left(temp);
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5) {
@@ -595,8 +597,8 @@ void benchmark(){
             temp.random_value();
             vec.append_left(temp);
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     std::cout << "  Time of deleting\n";
     cnt_of_operations = 1;
@@ -607,8 +609,8 @@ void benchmark(){
         for (int i = 0; i < cnt_of_operations; i++) {
             vec.pop_right();
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5 && !vec.is_empty()) {
@@ -617,8 +619,8 @@ void benchmark(){
         for (int i = 0; i < cnt_of_operations; i++) {
             vec.pop_right();
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     std::cout << "For Array:\n";
     Array arr = Array();
@@ -634,8 +636,8 @@ void benchmark(){
             temp.random_value();
             arr.append_left(temp);
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5) {
@@ -647,8 +649,8 @@ void benchmark(){
             temp.random_value();
             arr.append_left(temp);
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout  << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout  << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     std::cout << "  Time of deleting\n";
     cnt_of_operations = 1;
@@ -659,8 +661,8 @@ void benchmark(){
         for (int i = 0; i < cnt_of_operations; i++) {
             arr.pop_left();
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
     etalon = cnt_of_operations;
     while(duration < 5 && !arr.is_empty()) {
@@ -669,21 +671,18 @@ void benchmark(){
         for (int i = 0; i < cnt_of_operations; i++) {
             arr.pop_left();
         }
-        duration = (clock() - start_time) / CLOCKS_PER_SEC;
-        std::cout << "      " << cnt_of_operations << " elements:" << duration << "\n";
+        duration = (clock() - start_time) / double(CLOCKS_PER_SEC);
+        std::cout << "      " << cnt_of_operations << " elements:" << duration << " sec" << "\n";
     }
 }
 
 void selector(){
-    while (1){
-        std::cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to demo mod\nPress 'b' to benchmark mod\nPress q to exit\n";
-        char mod;
-        std::cin >> mod;
-        if (mod == 'q') break;
-        if (mod == 'i') interacter();
-        if (mod == 'd') demo();
-        if (mod == 'b') benchmark();
-    }
+    std::cout << "Choose mode:\nPress 'i' to interacter mod\nPress 'v' to demo mod\nPress 'b' to benchmark mod\nPress q to exit\n";
+    char mod;
+    std::cin >> mod;
+    if (mod == 'i') interacter();
+    if (mod == 'd') demo();
+    if (mod == 'b') benchmark();
 }
 
 int main()
