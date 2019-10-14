@@ -14,6 +14,7 @@ class Dice{
 private:
     vector <double> probabilities;
     bool valid = false;
+
     void check_valid();
 
 public:
