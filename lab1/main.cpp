@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include "dice.h"
 #include "graph.h"
 
@@ -42,14 +42,13 @@ void test_graph_class(){
     Tree<std::string, int> tree;
     tree.convert(gtree, 0);
     tree.print();
-    /*
     vector <vector<std::string>> components = graph.search_component();
     for (auto i : components) {
         for (auto j : i)
             cout << j << " ";
         cout << "\n";
     }
-    */
+
 }
 
 void test_random(){
@@ -62,4 +61,19 @@ int main() {
     test_graph_class();
     //test_random();
     return 0;
+}*/
+/*
+#include <gtest/gtest.h>
+
+TEST(DiceTests,TestName){
+
+}*/
+
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
+int main(int argc, char* argv[]){
+    //std::cout << "Hello!" << "\n";
+    testing::InitGoogleTest();
+    RUN_ALL_TESTS();
 }

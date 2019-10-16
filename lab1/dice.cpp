@@ -34,6 +34,7 @@ Dice::Dice(bool random) {
         }
         probabilities.push_back(total);
     }
+    check_valid();
 }
 
 Dice::Dice(vector<double> prob) {
