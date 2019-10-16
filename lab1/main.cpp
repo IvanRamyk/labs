@@ -37,7 +37,10 @@ void test_graph_class(){
     graph.add_edge(v1, v2, edge);
     graph.add_edge("Lviv", "Irpen", 13);
     graph.add_edge("Kyiv", "Irpen", 12);
-    Graph<std::string, int> tree = graph.minimum_spanning_tree();
+    Graph<std::string, int> gtree = graph.minimum_spanning_tree();
+    gtree.print();
+    Tree<std::string, int> tree;
+    tree.convert(gtree, 0);
     tree.print();
     /*
     vector <vector<std::string>> components = graph.search_component();
@@ -49,8 +52,14 @@ void test_graph_class(){
     */
 }
 
+void test_random(){
+    SetDices set(true);
+    set.print();
+}
+
 int main() {
     //test_dice_class();
     test_graph_class();
+    //test_random();
     return 0;
 }

@@ -2,14 +2,39 @@
 // Created by Ivan Ramyk on 10/10/19.
 //
 
-#include "dice.h"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <random>
+#include "dice.h"
 
 using std::cout;
 
-Dice::Dice() = default;
+int random_int(int begin, int end) {
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<> dis(begin, end);
+    return dis(gen);
+}
+
+double random_double(double begin, double end) {
+    double d = end - begin;
+    double a = random_int(0, 1000);
+    return begin + (a / 1000.0) * d;
+}
+
+Dice::Dice(bool random) {
+    if (random){
+        int n = random_int(1, 5) * 2;
+        //probabilities.resize(n);
+        double total = 1;
+        for (int i = 0; i < n - 1; ++i) {
+            probabilities.push_back(random_double(0, total));
+            total -= probabilities[i];
+        }
+        probabilities.push_back(total);
+    }
+}
 
 Dice::Dice(vector<double> prob) {
     probabilities = std::move(prob);
@@ -48,7 +73,12 @@ double Dice::get_side(int k) {
 
 // end of class Dice
 
-SetDices::SetDices() = default;
+SetDices::SetDices(bool random, int n){
+    if (random){
+        for (int i = 0; i < n; ++i)
+            dices.push_back(Dice(true));
+    }
+}
 
 SetDices::SetDices(vector<Dice> d) {
     dices = std::move(d);

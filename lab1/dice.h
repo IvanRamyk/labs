@@ -18,7 +18,7 @@ private:
     void check_valid();
 
 public:
-    Dice();
+    Dice(bool random = false);
 
     Dice(vector <double> prob);
 
@@ -39,7 +39,7 @@ private:
     double expected_sum();
 
 public:
-    SetDices();
+    SetDices(bool random = false, int n = 10);
 
     SetDices(vector <Dice> d);
 
@@ -54,6 +54,7 @@ public:
     vector<pair<int, double>> probability_for_each_sum();
 
     bool operator <(SetDices another);
+
 };
 
 #endif //DICE_H
