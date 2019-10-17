@@ -11,7 +11,8 @@ List1:
 		3. search connected components 
 		4. minimum spanning tree (returns Graph)
 		5. topological sort
-		6. print 
+		6. print
+		7. center of graph (additional task)
 
 	Class Tree 
 	methods:
@@ -42,8 +43,13 @@ List2:
 	Extra - * overloaded operation <
 	Total - ****
 
-Also all methods was tested via googletest
+Additional:
+All methods was tested via googletest
+Added method center to convert graph to tree in the best way
+
 All tests are in directory tests
-I hope for additional points :)  	
-Total count - 9	
+
+I hope for additional points :)
+
+Total count - 9* + 2 additional tasks
 

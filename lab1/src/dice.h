@@ -31,6 +31,8 @@ public:
     int cnt_sides();
 
     double get_side(int k);
+
+    bool operator ==(Dice another);
 };
 
 class SetDices{
@@ -54,8 +56,11 @@ public:
 
     vector<pair<int, double>> probability_for_each_sum();
 
-    bool operator <(SetDices another);
-
+    SetDices operator +(SetDices another);
 };
+
+bool operator <(SetDices a, SetDices b);
+
+bool operator ==(SetDices a, SetDices b);
 
 #endif //DICE_H

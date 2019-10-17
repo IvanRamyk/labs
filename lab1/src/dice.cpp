@@ -72,6 +72,10 @@ double Dice::get_side(int k) {
     return probabilities[k];
 }
 
+bool Dice::operator==(Dice another) {
+    return probabilities == another.probabilities;
+}
+
 // end of class Dice
 
 SetDices::SetDices(bool random, int n){
@@ -132,8 +136,12 @@ vector<pair<int, double>> SetDices::probability_for_each_sum() {
     return answer;
 }
 
-bool SetDices::operator<(SetDices another) {
-    return this->expected_sum() < another.expected_sum();
+bool operator==(SetDices a, SetDices b) {
+    return a.expected_sum() == b.expected_sum();
+}
+
+bool operator<(SetDices a, SetDices b) {
+    return a.expected_sum() < b.expected_sum();
 }
 
 double SetDices::expected_sum() {
@@ -142,4 +150,13 @@ double SetDices::expected_sum() {
     for (auto i : prob_for_sum)
         total += i.first * i.second;
     return total;
+}
+
+SetDices SetDices::operator+(SetDices another) {
+    SetDices res;
+    for (auto i : dices)
+        res.add(i);
+    for (auto i : another.dices)
+        res.add(i);
+    return res;
 }

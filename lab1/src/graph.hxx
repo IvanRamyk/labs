@@ -6,6 +6,7 @@
 #define LAB1_GRAPH_HXX
 
 
+
 template<typename VertexT, typename EdgeT>
 Graph<VertexT, EdgeT>::Graph(bool is_directed) {
     directed = is_directed;
@@ -14,12 +15,17 @@ Graph<VertexT, EdgeT>::Graph(bool is_directed) {
 
 template<typename VertexT, typename EdgeT>
 void Graph<VertexT, EdgeT>::print(){
-    cout << "Graph with " << number_vertex << " vertexes\n";
+    cout << "Graph with " << number_vertex << " vertexes\nVertexes = {";
+    for (int i = 0; i <vertexes.size() - 1; ++i)
+        cout << vertexes[i] << ", ";
+    cout << *(vertexes.end() - 1) << "};\n";
+    cout << "Edges = { \n";
     for (int i = 0; i < number_vertex; ++i){
         for (auto j : adj[i])
             if (directed  || (i  < j.to))
-                cout << "Edge (" << vertexes[i] << ", " << vertexes[j.to] << ") - " << j.data  << "\n";
+                cout << "\t(" << vertexes[i] << ", " << vertexes[j.to] << ") - " << j.data  << ";\n";
     }
+    cout << "}.\n";
 }
 
 template<typename VertexT, typename EdgeT>
@@ -178,6 +184,50 @@ Graph<VertexT, EdgeT> Graph<VertexT, EdgeT>::minimum_spanning_tree(){
 }
 
 template<typename VertexT, typename EdgeT>
+int Graph<VertexT, EdgeT>::center() {
+    vector<vector<std::pair<bool, EdgeT>>> floyd(number_vertex);
+    for (int i = 0; i < number_vertex;++i)
+        floyd[i].resize(number_vertex);
+    for (int i = 0; i < number_vertex; ++i)
+        for (int j = 0; j < number_vertex; ++j)
+            if (i == j) {
+                floyd[i][j].first = true;
+                floyd[i][j].second = EdgeT();
+            }
+            else {
+                floyd[i][j].first = false;
+            }
+    for (int i = 0; i < number_vertex; ++i)
+        for (auto j : adj[i]) {
+            floyd[i][j.to] = {true, j.data};
+        }
+    for (int k=0; k<number_vertex; ++k)
+        for (int i=0; i<number_vertex; ++i)
+            for (int j=0; j<number_vertex; ++j)
+                if (floyd[i][k].first && floyd[k][j].first)
+                    if ((floyd[i][j].first == false) || (floyd[i][j].second > floyd[i][k].second  + floyd[k][j].second)) {
+                        floyd[i][j].second = floyd[i][k].second + floyd[k][j].second;
+                        floyd[i][j].first = true;
+                    }
+    int v_center = 0;
+    EdgeT center = floyd[0][0].second;
+    for (int i = 1 ; i < number_vertex; ++i)
+        if (center < floyd[0][i].second)
+            center = floyd[0][i].second;
+    for (int i = 1; i < number_vertex; ++i){
+        EdgeT n_center = floyd[i][0].second;
+        for (int j = 1; j < number_vertex; ++j)
+            if (n_center < floyd[i][j].second)
+                n_center = floyd[i][j].second;
+        if (n_center < center){
+            center = n_center;
+            v_center = i;
+        }
+    }
+    return v_center;
+}
+
+template<typename VertexT, typename EdgeT>
 Tree<VertexT, EdgeT>::Tree() = default;
 
 template <typename VertexT, typename EdgeT>
@@ -211,5 +261,21 @@ void Tree<VertexT, EdgeT>::convert(Graph<VertexT, EdgeT> graph, int graph_root) 
     vector <bool> used(graph.number_vertex, false);
     root = dfs(graph, used, graph_root);
 }
+
+template <typename VertexT, typename EdgeT>
+EdgeT Tree<VertexT, EdgeT>::total(TreeNode<VertexT, EdgeT>  * current_node) {
+    EdgeT s = current_node->edge;
+    for (auto i : current_node->children)
+            s = s + total(i);
+    return s;
+}
+
+template <typename VertexT, typename EdgeT>
+EdgeT Tree<VertexT, EdgeT>::total_w() {
+    return total(root);
+}
+
+
+
 
 #endif //LAB1_GRAPH_HXX

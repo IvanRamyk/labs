@@ -112,6 +112,8 @@ public:
     std::pair<bool, vector <VertexT>> topological_sort();
 
     void print();
+
+    int center();
 };
 
 template <typename  VertexT, typename  EdgeT>
@@ -135,6 +137,8 @@ private:
 
     TreeNode<VertexT, EdgeT> * dfs(Graph<VertexT, EdgeT> &graph, vector<bool> &used, int v, EdgeT edge = EdgeT());
 
+    EdgeT total(TreeNode<VertexT, EdgeT> * current_node);
+
     void print_node(TreeNode<VertexT, EdgeT> * current_node);
 public:
     Tree();
@@ -142,6 +146,8 @@ public:
     void convert(Graph<VertexT, EdgeT> graph, int root);
 
     void print();
+
+    EdgeT total_w();
 };
 
 #include "graph.hxx"
