@@ -17,13 +17,14 @@ List1:
 	methods:
 		1. convert Graph to Tree
 		2. print
-		3. add vertex
+		3. add vertex	
 
 	Basic level - ****
 	Extra - * (minimum spanning tree)
 	Total - *****
 
 List2:
+
 	Class Dice
 	methods:
 		1. add side
@@ -40,6 +41,7 @@ List2:
 	Basic level - ***
 	Extra - * overloaded operation <
 	Total - ****
+	
 Also all methods was tested via googletest
 All tests are in directory tests
 I hope for additional points :)  	
