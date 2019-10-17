@@ -51,7 +51,7 @@ Additional:
 
 All tests are in directory tests
 
-I hope for additional points :)
+I hope for extra points :)
 
 Total count - 9* + 2 additional tasks
 
