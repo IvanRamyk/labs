@@ -26,6 +26,7 @@ List1:
 List2:
 	Class Dice
 	methods:
+	
 		1. add side
 		2. check valid
 		3. print
@@ -40,6 +41,7 @@ List2:
 	Basic level - ***
 	Extra - * overloaded operation <
 	Total - ****
+	
 Also all methods were tested via googletest
 All tests are in directory tests
 I hope for additional points :)  	
