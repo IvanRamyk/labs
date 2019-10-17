@@ -1,6 +1,6 @@
 # Lab1 
-8 from List1 (Graph and Tree)
-6 from List2 (Set of dices)
+8 from List 1 (Graph and Tree)
+6 from List 2 (Set of dices)
 
 List1:
 
@@ -40,7 +40,7 @@ List2:
 	Basic level - ***
 	Extra - * overloaded operation <
 	Total - ****
-Also all methods was tested via googletest
+Also all methods were tested via googletest
 All tests are in directory tests
 I hope for additional points :)  	
 Total count - 9	
