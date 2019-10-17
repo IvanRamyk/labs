@@ -45,8 +45,9 @@ List2:
 	Total - ****
 
 Additional:
-All methods was tested via googletest
-Added method center to convert graph to tree in the best way
+
+    All methods was tested via googletest
+    Added method center to convert graph to tree in the best way
 
 All tests are in directory tests
 
