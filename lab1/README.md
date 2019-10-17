@@ -1,6 +1,6 @@
 # Lab1 
-8 from List1 (Graph and Tree)
-6 from List2 (Set of dices)
+8 from List 1 (Graph and Tree)
+6 from List 2 (Set of dices)
 
 List1:
 
@@ -17,7 +17,7 @@ List1:
 	methods:
 		1. convert Graph to Tree
 		2. print
-		3. add vertex	
+		3. add vertex
 
 	Basic level - ****
 	Extra - * (minimum spanning tree)
@@ -41,7 +41,7 @@ List2:
 	Basic level - ***
 	Extra - * overloaded operation <
 	Total - ****
-	
+
 Also all methods was tested via googletest
 All tests are in directory tests
 I hope for additional points :)  	
