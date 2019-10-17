@@ -19,6 +19,7 @@ List1:
 		1. convert Graph to Tree
 		2. print
 		3. add vertex
+		4. get total weight of tree
 
 	Basic level - ****
 	Extra - * (minimum spanning tree)
