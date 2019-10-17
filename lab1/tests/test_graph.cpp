@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "../graph.h"
+#include "../src/graph.h"
 
 TEST(TestGraphStandartTypes, TestGraphInit){
     Graph<std::string, int> graph;

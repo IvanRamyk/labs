@@ -2,7 +2,7 @@
 // Created by Ivan Ramyk on 10/16/19.
 //
 #include <gtest/gtest.h>
-#include "../dice.h"
+#include "../src/dice.h"
 
 TEST(TestDice, DiceRandomInit){
     for (int i = 0; i < 20; ++i) {
