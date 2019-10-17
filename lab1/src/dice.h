@@ -36,12 +36,13 @@ public:
 class SetDices{
 private:
     vector <Dice> dices;
-    double expected_sum();
 
 public:
     SetDices(bool random = false, int n = 10);
 
     SetDices(vector <Dice> d);
+
+    double expected_sum();
 
     bool add(Dice dice);
 
