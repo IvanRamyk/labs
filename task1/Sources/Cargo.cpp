@@ -2,13 +2,13 @@
 // Created by Ivan Ramyk on 10/27/19.
 //
 
-#include "Cargo.h"
+#include "../Headers/Cargo.h"
 
 Cargo::Cargo(std::string _name, double _weight, double _size) :
     name(_name),weight(_weight), size(_size) {}
 
 void Cargo::print() {
-    std::cout << "Cargo " << name << ": weight - " << weight << "; size - " << size << ';\n';
+    std::cout << "Cargo " << name << ": weight - " << weight << "; size - " << size << ";\n";
 }
 
 void Cargo::setName(std::string _name) {
