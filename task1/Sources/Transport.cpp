@@ -60,10 +60,18 @@ double Transport::getSpeed() {
     return speed;
 }
 
-bool Transport::addCargo(Cargo cargo) {
+bool Transport::addCargo(Cargo cargo, int count) {
     if ((cargo.getSize() <= maxSize - currentSize)
     && (cargo.getWeight() <= maxWeight - currentWeight)){
-        goods.push_back(cargo);
+        int k = std::min(std::min(count, int((maxSize - currentSize) / cargo.getSize())),
+                int((maxWeight - currentWeight) / cargo.getWeight()));
+        for(int i = 0; i < goods.size(); ++i)
+            if (goods[i].first == cargo){
+                goods[i].second += k;
+                return true;
+            }
+
+        goods.push_back({cargo, k});
         return true;
     }
     return false;

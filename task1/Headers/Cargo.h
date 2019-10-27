@@ -30,6 +30,8 @@ public:
     double getSize();
 
     void print();
+
+    bool operator ==(const Cargo& that);
 };
 
 

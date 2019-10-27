@@ -22,7 +22,7 @@ private:
     double speed;
     double currentWeight;
     double currentSize;
-    std::vector <Cargo> goods;
+    std::vector <std::pair<Cargo, int>> goods;
 
 public:
     Transport(std::string _name = "", double _maxWeight = 0, double _maxSize = 0,
@@ -52,9 +52,17 @@ public:
 
     void setSpeed(double speed);
 
-    bool addCargo(Cargo cargo);
+    bool addCargo(Cargo cargo, int count);
 
     void print(bool show_goods = false);
+};
+
+class AirTransport : public Transport {
+
+};
+
+class GroundTransport : public Transport  {
+
 };
 
 #endif //TASK1_TRANSPORT_H
