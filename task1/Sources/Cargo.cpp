@@ -38,3 +38,7 @@ std::string Cargo::getName() {
 bool Cargo::operator==(const Cargo& that) {
     return name == that.name && size == that.size && weight == that.weight;
 }
+
+bool Cargo::operator<(const Cargo &that) {
+    return name < that.name;
+}

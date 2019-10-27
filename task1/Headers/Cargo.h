@@ -32,6 +32,8 @@ public:
     void print();
 
     bool operator ==(const Cargo& that);
+
+    bool operator <(const Cargo& that);
 };
 
 

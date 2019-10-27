@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 struct cargoOut  {
     Cargo cargo;
@@ -38,7 +39,6 @@ private:
     std::vector <cargoIn> needs;
 
 public:
-
     Stock(std::string _name = "", double _x, double _y);
 
     void add_needs(Cargo cargo, double period, int count);
@@ -46,6 +46,14 @@ public:
     void add_out(Cargo cargo, double period, int count);
 
     std::vector <std::pair<Cargo, int>> needToTransport();
+
+    bool operator !=(Stock B);
+
+    double getX();
+
+    double getY();
+
+    std::map <Stock, int> canLoad(std::map<Stock, int> m);
 };
 
 #endif //TASK1_STOCK_H

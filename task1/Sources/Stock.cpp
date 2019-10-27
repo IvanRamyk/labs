@@ -32,3 +32,19 @@ std::vector <std::pair<Cargo, int>> Stock::needToTransport() {
             res.push_back({i.cargo, i.count - i.currentCount});
     return res;
 }
+
+bool Stock::operator!=(Stock B) {
+    return name != B.name;
+}
+
+double Stock::getX() {
+    return x;
+}
+
+double Stock::getY() {
+    return y;
+}
+
+std::map<Stock, int> Stock::canLoad() {
+    return std::map<Stock, int>();
+}
