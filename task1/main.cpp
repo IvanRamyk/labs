@@ -1,6 +1,8 @@
 #include <iostream>
+#include "Cargo.h"
+
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Cargo("temp", 0.5, 12).print();
     return 0;
 }

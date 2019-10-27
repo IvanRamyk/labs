@@ -3,4 +3,4 @@ project(task1)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(task1 main.cpp)
+add_executable(task1 main.cpp Cargo.cpp Cargo.h)
