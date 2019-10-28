@@ -2,10 +2,11 @@
 // Created by Ivan Ramyk on 10/28/19.
 //
 
-#include "../Headers/Translate.h"
-
 #include <gtest/gtest.h>
-#include <iostream>
+
+#include "../Headers/Translate.h"
+#include "../Headers/Function.h"
+
 
 TEST(TestTranslation, TestIntegerUnderTen){
     Translate<int> translate;
@@ -67,3 +68,54 @@ TEST(TestTranslation, TestError){
     Translate<std::string> translate;
     EXPECT_TRUE(translate.translate("abs") == "sorry please try again");
 }
+
+
+TEST(TestFunction, TestIntegerFunction){
+    Function function;
+    EXPECT_TRUE(function.calculate(5) == "twenty-five");
+    EXPECT_TRUE(function.calculate(11) == "eleven");
+    EXPECT_TRUE(function.calculate(-1) == "two hundred and eight");
+    EXPECT_TRUE(function.calculate(-2) == "one hundred and seventy");
+}
+
+TEST(TestFunction, TestDoubleFunction){
+    Function function;
+    EXPECT_TRUE(function.calculate(0.2) == "zero point nine five");
+    EXPECT_TRUE(function.calculate(0.1) == "zero point nine one");
+    EXPECT_TRUE(function.calculate(10.2) == "zero point zero four");
+}
+
+TEST(TestFunction, TestTextFunction){
+    Function function;
+    std::string s = "a ab abc";
+    EXPECT_TRUE(function.calculate(s) == "abc ab a");
+    s = "gg temp cut";
+    EXPECT_TRUE(function.calculate(s) == "cut temp gg");
+    s = "d";
+    EXPECT_TRUE(function.calculate(s) == "d");
+}
+
+TEST(TestFunction, TestPairFunction){
+    Function function;
+    std::string s = "a ab abc";
+    int a = 11;
+    std::pair<std::string, int> p = {s, a};
+    //std::cout << function.calculate(p) << "\n";
+    EXPECT_TRUE(function.calculate(p) == "eleven abc ab a");
+}
+
+TEST(TestFunction, TestVectorFunction){
+    Function function;
+    std::vector <double> p = {0.1, 0.1, 0.2, 0.2, 10.1};
+    //std::cout << function.calculate(p) << "\n";
+    EXPECT_TRUE(function.calculate(p) == "zero point nine five zero point nine one zero point zero two");
+}
+
+TEST(TestFunction, TestErrorFunction){
+    Function function;
+    char p = 'u';
+    EXPECT_TRUE(function.calculate(p) == "sorry please try again");
+}
+
+
+

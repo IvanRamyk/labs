@@ -4,6 +4,10 @@
 
 //#include "../Headers/Translate.h"
 
+#ifndef TASK2_TRANSLATE_HXX
+#define TASK2_TRANSLATE_HXX
+
+//#include <iostream>
 
 template <typename NumberT>
 Translate<NumberT>::Translate() = default;
@@ -108,9 +112,11 @@ std::string Translate<int>::translate(int number) {
 template <>
 std::string Translate<double>::translate(double number) {
     Translate <int> intTranlsate;
-    std::string begining = intTranlsate.translate(int(number));
+    std::string begining = intTranlsate.translate(number);
     number *=100;
     int n = number;
+    n %= 100;
+    n += 100;
     n %= 100;
     if (n == 0)
         return begining;
@@ -124,3 +130,4 @@ std::string Translate<NumbertT>::translate(NumbertT) {
     return "sorry please try again";
 }
 
+#endif
