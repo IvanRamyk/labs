@@ -85,7 +85,7 @@ void TradeSystem::modeling(std::string passToFile, const int TIME) {
                 }
             }
         }
-        if (cur.type == "unload"){
+        if (cur.type == "arrive"){
             if (air != - 1){
                 if (loadAir(air, stock)){
                     events.push({-currentTime - airTransport[air].getLoadTime(), event("load", air, -1, stock)});
