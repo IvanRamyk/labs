@@ -52,3 +52,18 @@ TEST(TestTranslation, TestIntegerOver100){
     EXPECT_TRUE(translate.translate(142) == "one hundred and forty-two");
     EXPECT_TRUE(translate.translate(499) == "four hundred and ninety-nine");
 }
+
+TEST(TestTranslation, TestDoubles){
+    Translate<double> translate;
+    EXPECT_TRUE(translate.translate(0.2) == "zero point two");
+    std::cout << translate.translate(123.23) << "\n";
+    EXPECT_TRUE(translate.translate(123.23) == "one hundred and twenty-three point two three");
+    EXPECT_TRUE(translate.translate(313) == "three hundred thirteen");
+    EXPECT_TRUE(translate.translate(142.03) == "one hundred and forty-two point zero three");
+    EXPECT_TRUE(translate.translate(499) == "four hundred and ninety-nine");
+}
+
+TEST(TestTranslation, TestError){
+    Translate<std::string> translate;
+    EXPECT_TRUE(translate.translate("abs") == "sorry please try again");
+}
