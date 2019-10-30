@@ -37,3 +37,12 @@ int Base2::getN() {
     return N;
 }
 
+std::shared_ptr<Base1> Base1::getBase1() {
+    return base1;
+}
+
+std::shared_ptr<Base2> Base1::getBase2() {
+    return base2;
+}
+
+
