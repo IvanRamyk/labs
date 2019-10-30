@@ -33,3 +33,7 @@ Base2::~Base2() {
     --count();
 }
 
+int Base2::getN() {
+    return N;
+}
+

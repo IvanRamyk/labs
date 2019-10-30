@@ -22,6 +22,7 @@ private:
 public:
     void setBase1(std::shared_ptr<Base1> base);
     void setBase2(std::shared_ptr<Base2> base);
+    int getN();
 };
 
 

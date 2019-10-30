@@ -30,3 +30,7 @@ Base1::~Base1() {
     S = S * 2 + N - 10;
     --count();
 }
+
+int Base1::getN() {
+    return N;
+}
