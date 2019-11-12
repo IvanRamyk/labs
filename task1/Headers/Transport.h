@@ -15,6 +15,7 @@
 class Transport {
 private:
     std::string name;
+    std::string type;
     double maxWeight;
     double maxSize;
     double uploadTime;
@@ -25,10 +26,14 @@ private:
     std::vector <std::pair<Cargo, int>> goods;
 
 public:
-    Transport(std::string _name = "", double _maxWeight = 0, double _maxSize = 0,
+    Transport(std::string _name = "", std::string _type = "", double _maxWeight = 0, double _maxSize = 0,
             double _loadTime = 0, double _uploadTime = 0, double _speed = 0);
 
     std::string getName();
+
+    std::string getType(){
+        return type;
+    }
 
     double getMaxWeight();
 
@@ -41,6 +46,10 @@ public:
     double getSpeed();
 
     void setName(std::string _name);
+
+    void setType(std::string _type){
+        type = _type;
+    }
 
     void setMaxWeight(double weight);
 

@@ -39,7 +39,7 @@ private:
     std::vector <cargoIn> needs;
 
 public:
-    Stock(std::string _name = "", double _x, double _y);
+    Stock(std::string _name = "", double _x = 0, double _y = 0);
 
     void add_needs(Cargo cargo, double period, int count);
 
@@ -54,6 +54,10 @@ public:
     double getY();
 
     std::map <Stock, int> canLoad(std::map<Stock, int> m);
+
+    std::map<Stock, int> canLoad();
+
+    bool operator <(Cargo that);
 };
 
 #endif //TASK1_STOCK_H

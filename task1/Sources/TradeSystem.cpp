@@ -17,100 +17,19 @@ TradeSystem::TradeSystem(std::string passToFile) {
 }
 
 void TradeSystem::modeling(std::string passToFile, const int TIME) {
+    freopen("passToFile", "w", stdout);
     setGroundDist();
     std::priority_queue <std::pair <double, event>> events;
     for (int i = 0; i < airTransport.size(); ++i)
-        events.push({0, event("arrive", i, -1, 0)});
+        events.push({0, event("arrive", "air", i, airTransportStart[i])});
     for (int i = 0; i < groundTransport.size(); ++i)
-        events.push({0, event("arrive", i, -1, 0)});
+        events.push({0, event("arrive", "ground", i,  groundTransportStart[i])});
     int currentTime = 0;
     while (!events.empty() && currentTime < TIME){
         event cur = events.top().second;
         currentTime = -events.top().first;
         events.pop();
-        if (currentTime > TIME) break;
-        int stock = cur.stock;
-        int air = cur.air;
-        int ground = cur.ground;
-        std::string type = cur.type;
-        if (cur.type == "unload"){
-            if (air != - 1){
-                if (loadAir(air, stock)){
-                    events.push({-currentTime - airTransport[air].getLoadTime(), event("load", air, -1, stock)});
-                    continue;
-                }
-                else {
-                    int to = bestAirMove(air, stock);
-                    events.push({-currentTime - airDist(stock, to)/airTransport[air].getSpeed(),
-                                 event("arrive", air, -1, to)});
-                    continue;
-                }
-            }
-            else {
-                if (loadGround(ground, stock)){
-                    events.push({-currentTime - groundTransport[ground].getLoadTime(), event("load", -1, ground, stock)});
-                    continue;
-                }
-                else {
-                    int to = bestGroundMove(ground, stock);
-                    events.push({-currentTime - groundDist(stock, to)/groundTransport[ground].getSpeed(),
-                                 event("arrive", -1, ground, to)});
-                    continue;
-                }
-            }
-        }
-        if (cur.type == "load"){
-            if (air != - 1){
-                if (loadAir(air, stock)){
-                    events.push({-currentTime - airTransport[air].getLoadTime(), event("load", air, -1, stock)});
-                    continue;
-                }
-                else {
-                    int to = bestAirMove(air, stock);
-                    events.push({-currentTime - airDist(stock, to)/airTransport[air].getSpeed(),
-                                 event("arrive", air, -1, to)});
-                    continue;
-                }
-            }
-            else {
-                if (loadGround(ground, stock)){
-                    events.push({-currentTime - groundTransport[ground].getLoadTime(), event("load", -1, ground, stock)});
-                    continue;
-                }
-                else {
-                    int to = bestGroundMove(ground, stock);
-                    events.push({-currentTime - groundDist(stock, to)/groundTransport[ground].getSpeed(),
-                                 event("arrive", -1, ground, to)});
-                    continue;
-                }
-            }
-        }
-        if (cur.type == "arrive"){
-            if (air != - 1){
-                if (loadAir(air, stock)){
-                    events.push({-currentTime - airTransport[air].getLoadTime(), event("load", air, -1, stock)});
-                    continue;
-                }
-                else {
-                    int to = bestAirMove(air, stock);
-                    events.push({-currentTime - airDist(stock, to)/airTransport[air].getSpeed(),
-                                 event("arrive", air, -1, to)});
-                    continue;
-                }
-            }
-            else {
-                if (loadGround(ground, stock)){
-                    events.push({-currentTime - groundTransport[ground].getLoadTime(), event("load", -1, ground, stock)});
-                    continue;
-                }
-                else {
-                    int to = bestGroundMove(ground, stock);
-                    events.push({-currentTime - groundDist(stock, to)/groundTransport[ground].getSpeed(),
-                                 event("arrive", -1, ground, to)});
-                    continue;
-                }
-            }
-        }
+        events.push(handleEvent(cur, currentTime));
     }
 }
 
@@ -118,12 +37,8 @@ void TradeSystem::finishSetting() {
     isSet = true;
 }
 
-void TradeSystem::addAirTransport(AirTransport _transport) {
-    airTransport.push_back(_transport);
-}
-
-void TradeSystem::addGroundTransport(GroundTransport _transport) {
-    groundTransport.push_back(_transport);
+void TradeSystem::addTransport(Transport _transport) {
+    transport.push_back(_transport);
 }
 
 void TradeSystem::addStock(const Stock& A) {
@@ -181,15 +96,6 @@ std::map<Stock, int> TradeSystem::needs() {
     return std::map<Stock, int>();
 }
 
-bool TradeSystem::loadAir(int transport, int stock) {
-    return false;
-}
-
-
-bool TradeSystem::loadGround(int transport, int stock) {
-    return false;
-}
-
 int TradeSystem::bestAirMove(int transport, int stock) {
     return 0;
 }
@@ -198,5 +104,6 @@ int TradeSystem::bestGroundMove(int transport, int stock) {
     return 0;
 }
 
-event::event(std::string _event, int _air, int _ground, int _stock): type(_event), air(_air)
-, ground(_ground), stock(_stock) {}
+
+event::event(std::string _event, int transportNumber, int _stock):
+eventType(_event), transport(transportNumber), stock(_stock) {}

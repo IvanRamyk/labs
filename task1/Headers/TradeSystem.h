@@ -17,19 +17,17 @@
 #include <map>
 
 struct event {
-    std::string type;
-    int air;
-    int ground;
+    std::string eventType;
+    int transport;
     int stock;
 
-    explicit event(std::string _event = "", int air = - 1, int ground = -1, int stock = -1);
+    explicit event(std::string _event = "", int transportNumber = -1, int stock = -1);
 };
 
 class TradeSystem {
 private:
     bool isSet;
-    std::vector <AirTransport> airTransport;
-    std::vector <GroundTransport> groundTransport;
+    std::vector <Transport> transport;
     std::vector <Stock> stocks;
     std::vector <std::vector <std::pair<int, double>>> adjectiveStocks;
     std::vector <std::vector <std::pair<int, double>>> roadDistance;
@@ -44,13 +42,32 @@ private:
 
     std::map <Stock, int> needs();
 
-    bool loadAir(int transport, int stock);
+    bool load(int transportNumber, int stock){
+        return true;
+    }
 
-    bool loadGround(int transport, int stock);
+    bool upload(int transportNumber, int stock){
+        return true;
+    }
 
     int bestAirMove(int transport, int stock);
 
     int bestGroundMove(int transport, int stock);
+
+    std::pair<double, event> handleEvent(const event& currentEvent, double currentTime){
+        int transportNumber = currentEvent.transport;
+        int stockNumber = currentEvent.stock;
+        std::string eventType = currentEvent.eventType;
+        if (eventType != "unload" && upload(transportNumber, stockNumber))
+            return {currentTime + transport[transportNumber].getUploadTime(),
+                    {event("upload", transportNumber, stockNumber)}};
+        if (eventType != "load" && load(transportNumber, stockNumber))
+            return {currentTime + transport[transportNumber].getLoadTime(),
+                    {event("load", transportNumber, stockNumber)}};
+        if (transport[transportNumber].getType() == "air"){
+
+        }
+    }
 
 public:
 
@@ -60,9 +77,7 @@ public:
 
     void finishSetting();
 
-    void addAirTransport(AirTransport _transport);
-
-    void addGroundTransport(GroundTransport _transport);
+    void addTransport(Transport _transport);
 
     void addStock(const Stock& A);
 

@@ -4,10 +4,10 @@
 
 #include "../Headers/Transport.h"
 
-Transport::Transport(std::string _name, double _maxWeight, double _maxSize,
+Transport::Transport(std::string _name, std::string _type, double _maxWeight, double _maxSize,
         double _loadTime, double _uploadTime, double _speed):
         name(_name), maxSize(_maxSize), maxWeight(_maxWeight), loadTime(_loadTime),
-        uploadTime(_uploadTime), speed(_speed) {
+        uploadTime(_uploadTime), speed(_speed), type(_type) {
     currentSize = 0;
     currentWeight = 0;
 }
@@ -89,7 +89,7 @@ void Transport::print(bool show_goods) {
     if (show_goods){
         std::cout << "Goods:\n";
         for (auto i : goods) {
-            i.print();
+            i.first.print();
         }
     }
 }

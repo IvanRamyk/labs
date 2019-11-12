@@ -48,3 +48,11 @@ double Stock::getY() {
 std::map<Stock, int> Stock::canLoad() {
     return std::map<Stock, int>();
 }
+
+std::map<Stock, int> Stock::canLoad(std::map<Stock, int> m) {
+    return std::map<Stock, int>();
+}
+
+bool Stock::operator<(Cargo that) {
+    return this->name < that.getName();
+}

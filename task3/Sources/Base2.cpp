@@ -6,8 +6,6 @@
 #include "../Headers/Base2.h"
 #include "../Headers/Global.h"
 
-
-#include <iostream>
 #include <memory>
 
 int &Base2::count() const {
