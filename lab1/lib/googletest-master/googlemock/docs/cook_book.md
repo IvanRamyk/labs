@@ -1323,27 +1323,27 @@ using ::testing::MatchResultListener;
 
 class BarPlusBazEqMatcher : public MatcherInterface<const Foo&> {
  public:
-  explicit BarPlusBazEqMatcher(int expected_sum)
-      : expected_sum_(expected_sum) {}
+  explicit BarPlusBazEqMatcher(int expectedSum)
+      : expectedSum_(expectedSum) {}
 
   bool MatchAndExplain(const Foo& foo,
                        MatchResultListener* /* listener */) const override {
-    return (foo.bar() + foo.baz()) == expected_sum_;
+    return (foo.bar() + foo.baz()) == expectedSum_;
   }
 
   void DescribeTo(::std::ostream* os) const override {
-    *os << "bar() + baz() equals " << expected_sum_;
+    *os << "bar() + baz() equals " << expectedSum_;
   }
 
   void DescribeNegationTo(::std::ostream* os) const override {
-    *os << "bar() + baz() does not equal " << expected_sum_;
+    *os << "bar() + baz() does not equal " << expectedSum_;
   }
  private:
-  const int expected_sum_;
+  const int expectedSum_;
 };
 
-Matcher<const Foo&> BarPlusBazEq(int expected_sum) {
-  return MakeMatcher(new BarPlusBazEqMatcher(expected_sum));
+Matcher<const Foo&> BarPlusBazEq(int expectedSum) {
+  return MakeMatcher(new BarPlusBazEqMatcher(expectedSum));
 }
 
 ...

@@ -15,7 +15,7 @@ private:
     vector <double> probabilities;
     bool valid = false;
 
-    void check_valid();
+    void checkValid();
 
 public:
     Dice(bool random = false);
@@ -26,11 +26,11 @@ public:
 
     void print();
 
-    bool is_valid();
+    bool isValid();
 
-    int cnt_sides();
+    int cntSides();
 
-    double get_side(int k);
+    double getSide(int k);
 
     bool operator ==(Dice another);
 };
@@ -44,17 +44,17 @@ public:
 
     SetDices(vector <Dice> d);
 
-    double expected_sum();
+    double expectedSum();
 
     bool add(Dice dice);
 
     void print();
 
-    int max_sum_value();
+    int maxSumValue();
 
-    int min_sum_value();
+    int minSumValue();
 
-    vector<pair<int, double>> probability_for_each_sum();
+    vector<pair<int, double>> probabilityForEachSum();
 
     SetDices operator +(SetDices another);
 };

@@ -37,7 +37,7 @@ int Graph<VertexT, EdgeT>::position(VertexT v) {
 
 
 template<typename VertexT, typename EdgeT>
-bool Graph<VertexT, EdgeT>::add_edge(VertexT from, VertexT to, EdgeT edge) {
+bool Graph<VertexT, EdgeT>::addEdge(VertexT from, VertexT to, EdgeT edge) {
     int from_pos = position(from);
     int to_pos = position(to);
     if (from_pos == -1 || to_pos == -1){
@@ -54,7 +54,7 @@ bool Graph<VertexT, EdgeT>::add_edge(VertexT from, VertexT to, EdgeT edge) {
 }
 
 template <typename  VertexT, typename EdgeT>
-void Graph<VertexT, EdgeT>::add_vertex(VertexT v) {
+void Graph<VertexT, EdgeT>::addVertex(VertexT v) {
     vertexes.push_back(v);
     ++number_vertex;
     adj.push_back({});
@@ -69,7 +69,7 @@ void Graph<VertexT, EdgeT>::dfs(int v, std::vector<bool> &used, std::vector<Vert
 }
 
 template <typename  VertexT, typename EdgeT>
-vector<vector<VertexT>> Graph<VertexT, EdgeT>::search_component() {
+vector<vector<VertexT>> Graph<VertexT, EdgeT>::searchComponent() {
     vector <bool> used;
     used.resize(this->number_vertex);
     vector <std::vector <VertexT> > result;
@@ -133,12 +133,12 @@ int Graph <VertexT, EdgeT>::bfs(VertexT V1, VertexT V2)
 
 
 template <typename VertexT, typename  EdgeT>
-bool Graph<VertexT, EdgeT>::top_dfs(int v, std::vector<int> &used, vector<VertexT> &ans) {
+bool Graph<VertexT, EdgeT>::topDfs(int v, std::vector<int> &used, vector<VertexT> &ans) {
     used[v] = 1;
     bool result = 1;
     for (auto i : adj[v]) {
         if (!used[i.to]) {
-            result = result  & top_dfs(i.to, used, ans);
+            result = result  & topDfs(i.to, used, ans);
         }
         else if (used[i.to] == 1) return 0;
     }
@@ -148,7 +148,7 @@ bool Graph<VertexT, EdgeT>::top_dfs(int v, std::vector<int> &used, vector<Vertex
 }
 
 template <typename VertexT, typename  EdgeT>
-std::pair<bool, vector <VertexT>> Graph<VertexT, EdgeT>::topological_sort() {
+std::pair<bool, vector <VertexT>> Graph<VertexT, EdgeT>::topologicalSort() {
     int n = this->number_vertex;
     std::vector <int> used;
     used.resize(n);
@@ -158,16 +158,16 @@ std::pair<bool, vector <VertexT>> Graph<VertexT, EdgeT>::topological_sort() {
     bool answer = 1;
     for (int i=0; i<n; ++i)
         if (!used[i])
-            answer &= top_dfs (i, used, result);
+            answer &= topDfs (i, used, result);
     std::reverse (result.begin(), result.end());
     return {answer, result};
 }
 
 template<typename VertexT, typename EdgeT>
-Graph<VertexT, EdgeT> Graph<VertexT, EdgeT>::minimum_spanning_tree(){
+Graph<VertexT, EdgeT> Graph<VertexT, EdgeT>::minimumSpanningTree(){
     Graph tree;
     for (int i = 0; i < number_vertex; ++i)
-        tree.add_vertex(vertexes[i]);
+        tree.addVertex(vertexes[i]);
     DisjointSet set(number_vertex);
     vector <SpanningTreeEdge<EdgeT>> edges;
     for (int i = 0; i < number_vertex; ++i)
@@ -176,8 +176,8 @@ Graph<VertexT, EdgeT> Graph<VertexT, EdgeT>::minimum_spanning_tree(){
     std::sort(edges.begin(), edges.end(),
               [](const SpanningTreeEdge<EdgeT> &a, const SpanningTreeEdge<EdgeT> &b) {return a.data < b.data;});
     for (auto i : edges)
-        if (!set.same_set(i.from, i.to)){
-            tree.add_edge(vertexes[i.from], vertexes[i.to], i.data);
+        if (!set.isSameSet(i.from, i.to)){
+            tree.addEdge(vertexes[i.from], vertexes[i.to], i.data);
             set.join(i.from, i.to);
         }
     return tree;
@@ -243,17 +243,17 @@ TreeNode<VertexT, EdgeT> * Tree<VertexT, EdgeT>::dfs(Graph<VertexT, EdgeT> &grap
 }
 
 template <typename VertexT, typename EdgeT>
-void Tree<VertexT, EdgeT>::print_node(TreeNode<VertexT, EdgeT> * current_node) {
+void Tree<VertexT, EdgeT>::printNode(TreeNode<VertexT, EdgeT> * current_node) {
     if (current_node == nullptr)
         return;
     cout << current_node->data << "\n";
     for (auto i : current_node->children)
-        print_node(i);
+        printNode(i);
 }
 
 template <typename VertexT, typename EdgeT>
 void Tree<VertexT, EdgeT>::print(){
-    print_node(root);
+    printNode(root);
 }
 
 template <typename VertexT, typename EdgeT>
@@ -271,7 +271,7 @@ EdgeT Tree<VertexT, EdgeT>::total(TreeNode<VertexT, EdgeT>  * current_node) {
 }
 
 template <typename VertexT, typename EdgeT>
-EdgeT Tree<VertexT, EdgeT>::total_w() {
+EdgeT Tree<VertexT, EdgeT>::totalWeight() {
     return total(root);
 }
 

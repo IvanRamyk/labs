@@ -894,7 +894,7 @@ class GTEST_API_ RE {
  private:
   void Init(const char* regex);
   const char* pattern_;
-  bool is_valid_;
+  bool isValid_;
 
 # if GTEST_USES_POSIX_RE
 

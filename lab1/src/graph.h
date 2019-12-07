@@ -4,8 +4,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <queue>
 #include <algorithm>
 
@@ -56,19 +56,19 @@ struct DisjointSet {
             parent[i] = - 1;
     }
 
-    int find_root(int v) {
+    int findRoot(int v) {
         if (parent[v] == -1) return v;
-        return parent[v] = find_root(parent[v]);
+        return parent[v] = findRoot(parent[v]);
     }
 
     void join(int u, int v) {
-        u = find_root(u), v = find_root(v);
+        u = findRoot(u), v = findRoot(v);
         if (u != v)
             parent[u] = v;
     }
 
-    bool same_set(int u, int v) {
-        return find_root(u) == find_root(v);
+    bool isSameSet(int u, int v) {
+        return findRoot(u) == findRoot(v);
     }
 };
 
@@ -92,24 +92,24 @@ private:
 
     void dfs(int v, std::vector <bool> &used, std::vector <VertexT> &component);
 
-    bool top_dfs (int v, std::vector <int>& used, std::vector <VertexT> &ans);
+    bool topDfs (int v, std::vector <int>& used, std::vector <VertexT> &ans);
 
 public:
     Graph(bool is_directed = false);
 
-    void add_vertex(VertexT v);
+    void addVertex(VertexT v);
 
-    bool add_edge(VertexT from, VertexT to, EdgeT edge);
+    bool addEdge(VertexT from, VertexT to, EdgeT edge);
 
-    vector < std::vector <VertexT> > search_component();
+    vector < std::vector <VertexT> > searchComponent();
 
     vector <pair<int, VertexT>> bfs(VertexT V);
 
     int bfs(VertexT V1, VertexT V2);
 
-    Graph<VertexT, EdgeT> minimum_spanning_tree();
+    Graph<VertexT, EdgeT> minimumSpanningTree();
 
-    std::pair<bool, vector <VertexT>> topological_sort();
+    std::pair<bool, vector <VertexT>> topologicalSort();
 
     void print();
 
@@ -139,7 +139,7 @@ private:
 
     EdgeT total(TreeNode<VertexT, EdgeT> * current_node);
 
-    void print_node(TreeNode<VertexT, EdgeT> * current_node);
+    void printNode(TreeNode<VertexT, EdgeT> * current_node);
 public:
     Tree();
 
@@ -147,7 +147,7 @@ public:
 
     void print();
 
-    EdgeT total_w();
+    EdgeT totalWeight();
 };
 
 #include "graph.hxx"

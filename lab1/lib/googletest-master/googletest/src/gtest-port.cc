@@ -704,7 +704,7 @@ void ThreadLocalRegistry::OnThreadLocalDestroyed(
 // Implements RE.  Currently only needed for death tests.
 
 RE::~RE() {
-  if (is_valid_) {
+  if (isValid_) {
     // regfree'ing an invalid regex might crash because the content
     // of the regex is undefined. Since the regex's are essentially
     // the same, one cannot be valid (or invalid) without the other
@@ -717,7 +717,7 @@ RE::~RE() {
 
 // Returns true if and only if regular expression re matches the entire str.
 bool RE::FullMatch(const char* str, const RE& re) {
-  if (!re.is_valid_) return false;
+  if (!re.isValid_) return false;
 
   regmatch_t match;
   return regexec(&re.full_regex_, str, 1, &match, 0) == 0;
@@ -726,7 +726,7 @@ bool RE::FullMatch(const char* str, const RE& re) {
 // Returns true if and only if regular expression re matches a substring of
 // str (including str itself).
 bool RE::PartialMatch(const char* str, const RE& re) {
-  if (!re.is_valid_) return false;
+  if (!re.isValid_) return false;
 
   regmatch_t match;
   return regexec(&re.partial_regex_, str, 1, &match, 0) == 0;
@@ -742,7 +742,7 @@ void RE::Init(const char* regex) {
   char* const full_pattern = new char[full_regex_len];
 
   snprintf(full_pattern, full_regex_len, "^(%s)$", regex);
-  is_valid_ = regcomp(&full_regex_, full_pattern, REG_EXTENDED) == 0;
+  isValid_ = regcomp(&full_regex_, full_pattern, REG_EXTENDED) == 0;
   // We want to call regcomp(&partial_regex_, ...) even if the
   // previous expression returns false.  Otherwise partial_regex_ may
   // not be properly initialized can may cause trouble when it's
@@ -751,11 +751,11 @@ void RE::Init(const char* regex) {
   // Some implementation of POSIX regex (e.g. on at least some
   // versions of Cygwin) doesn't accept the empty string as a valid
   // regex.  We change it to an equivalent form "()" to be safe.
-  if (is_valid_) {
+  if (isValid_) {
     const char* const partial_regex = (*regex == '\0') ? "()" : regex;
-    is_valid_ = regcomp(&partial_regex_, partial_regex, REG_EXTENDED) == 0;
+    isValid_ = regcomp(&partial_regex_, partial_regex, REG_EXTENDED) == 0;
   }
-  EXPECT_TRUE(is_valid_)
+  EXPECT_TRUE(isValid_)
       << "Regular expression \"" << regex
       << "\" is not a valid POSIX Extended regular expression.";
 
@@ -826,7 +826,7 @@ bool ValidateRegex(const char* regex) {
     return false;
   }
 
-  bool is_valid = true;
+  bool isValid = true;
 
   // True if and only if ?, *, or + can follow the previous atom.
   bool prev_repeatable = false;
@@ -842,7 +842,7 @@ bool ValidateRegex(const char* regex) {
       if (!IsValidEscape(regex[i])) {
         ADD_FAILURE() << FormatRegexSyntaxError(regex, i - 1)
                       << "invalid escape sequence \"\\" << regex[i] << "\".";
-        is_valid = false;
+        isValid = false;
       }
       prev_repeatable = true;
     } else {  // Not an escape sequence.
@@ -851,26 +851,26 @@ bool ValidateRegex(const char* regex) {
       if (ch == '^' && i > 0) {
         ADD_FAILURE() << FormatRegexSyntaxError(regex, i)
                       << "'^' can only appear at the beginning.";
-        is_valid = false;
+        isValid = false;
       } else if (ch == '$' && regex[i + 1] != '\0') {
         ADD_FAILURE() << FormatRegexSyntaxError(regex, i)
                       << "'$' can only appear at the end.";
-        is_valid = false;
+        isValid = false;
       } else if (IsInSet(ch, "()[]{}|")) {
         ADD_FAILURE() << FormatRegexSyntaxError(regex, i)
                       << "'" << ch << "' is unsupported.";
-        is_valid = false;
+        isValid = false;
       } else if (IsRepeat(ch) && !prev_repeatable) {
         ADD_FAILURE() << FormatRegexSyntaxError(regex, i)
                       << "'" << ch << "' can only follow a repeatable token.";
-        is_valid = false;
+        isValid = false;
       }
 
       prev_repeatable = !IsInSet(ch, "^$?*+");
     }
   }
 
-  return is_valid;
+  return isValid;
 }
 
 // Matches a repeated regex atom followed by a valid simple regular
@@ -966,13 +966,13 @@ RE::~RE() {
 
 // Returns true if and only if regular expression re matches the entire str.
 bool RE::FullMatch(const char* str, const RE& re) {
-  return re.is_valid_ && MatchRegexAnywhere(re.full_pattern_, str);
+  return re.isValid_ && MatchRegexAnywhere(re.full_pattern_, str);
 }
 
 // Returns true if and only if regular expression re matches a substring of
 // str (including str itself).
 bool RE::PartialMatch(const char* str, const RE& re) {
-  return re.is_valid_ && MatchRegexAnywhere(re.pattern_, str);
+  return re.isValid_ && MatchRegexAnywhere(re.pattern_, str);
 }
 
 // Initializes an RE from its string representation.
@@ -982,8 +982,8 @@ void RE::Init(const char* regex) {
     pattern_ = posix::StrDup(regex);
   }
 
-  is_valid_ = ValidateRegex(regex);
-  if (!is_valid_) {
+  isValid_ = ValidateRegex(regex);
+  if (!isValid_) {
     // No need to calculate the full pattern when the regex is invalid.
     return;
   }

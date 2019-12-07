@@ -9,7 +9,7 @@ using std::vector;
 TEST(TestDice, DiceRandomInit){
     for (int i = 0; i < 20; ++i) {
         Dice random_dice(true);
-        EXPECT_TRUE(random_dice.is_valid());// check random init
+        EXPECT_TRUE(random_dice.isValid());// check random init
     }
 }
 
@@ -22,7 +22,7 @@ TEST(TestDice, DiceVectorInit){
     prob.push_back(0.1);
     Dice vector_dice(prob);
     for (int i = 0; i < 5; ++i)
-        EXPECT_DOUBLE_EQ(prob[i], vector_dice.get_side(i));
+        EXPECT_DOUBLE_EQ(prob[i], vector_dice.getSide(i));
 }
 
 TEST(TestDice, DiceAdd){
@@ -30,16 +30,16 @@ TEST(TestDice, DiceAdd){
     dice.add(0.5);
     dice.add(0.3);
     dice.add(0.2);// custom dice
-    EXPECT_TRUE(dice.is_valid());// sum probabilities 1
+    EXPECT_TRUE(dice.isValid());// sum probabilities 1
 }
 
-TEST(TestSetDices, SetDicesExpectedSum){// testing operator <
+TEST(TestSetDices, SetDicesgetSide){// testing operator <
     SetDices set;
     set.add(Dice({0.5, 0.5}));
     set.add(Dice({0.5, 0.5}));
     set.add(Dice({0.5, 0.5}));
     set.add(Dice({0.5, 0.5}));
-    EXPECT_DOUBLE_EQ(6, set.expected_sum());
+    EXPECT_DOUBLE_EQ(6, set.expectedSum());
     SetDices set_low;
     set_low.add(Dice({0.6, 0.4}));
     set_low.add(Dice({0.6, 0.4}));
@@ -55,7 +55,7 @@ TEST(TestSetDices, SetDicesAllSums){// testing operator <
     set.add(Dice({0.5, 0.5}));
     set.add(Dice({0.5, 0.5}));
     set.add(Dice({0, 1, 0, 0}));
-    vector <std::pair<int, double>> sum_prob = set.probability_for_each_sum();
+    vector <std::pair<int, double>> sum_prob = set.probabilityForEachSum();
     for (int i = 0; i < sum_prob.size(); ++i)
         switch (sum_prob[i].first){
             case 6:

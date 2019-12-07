@@ -1,45 +1,45 @@
 //
 // Created by Ivan Ramyk on 10/10/19.
 //
+#include "dice.h"
 
 #include <iostream>
 #include <cmath>
-#include <algorithm>
 #include <random>
-#include "dice.h"
+#include <algorithm>
 
 using std::cout;
 
-int random_int(int begin, int end) {
+int randomInt(int begin, int end) {
     std::random_device rd;
     std::mt19937_64 gen(rd());
     std::uniform_int_distribution<> dis(begin, end);
     return dis(gen);
 }
 
-double random_double(double begin, double end) {
+double randomDouble(double begin, double end) {
     double d = end - begin;
-    double a = random_int(0, 1000);
+    double a = randomInt(0, 1000);
     return begin + (a / 1000.0) * d;
 }
 
 Dice::Dice(bool random) {
     if (random){
-        int n = random_int(1, 5) * 2;
+        int n = randomInt(1, 5) * 2;
         //probabilities.resize(n);
         double total = 1;
         for (int i = 0; i < n - 1; ++i) {
-            probabilities.push_back(random_double(0, total));
+            probabilities.push_back(randomDouble(0, total));
             total -= probabilities[i];
         }
         probabilities.push_back(total);
     }
-    check_valid();
+    checkValid();
 }
 
 Dice::Dice(vector<double> prob) {
     probabilities = std::move(prob);
-    check_valid();
+    checkValid();
 }
 
 void Dice::print() {
@@ -50,25 +50,25 @@ void Dice::print() {
 
 void Dice::add(double prob) {
     probabilities.push_back(prob);
-    check_valid();
+    checkValid();
 }
 
-void Dice::check_valid() {
+void Dice::checkValid() {
     double sum = 0;
     for (auto i : probabilities)
         sum += i;
     valid = (fabs(sum - 1.0) < 1e-3);
 }
 
-bool Dice::is_valid() {
+bool Dice::isValid() {
     return valid;
 }
 
-int Dice::cnt_sides(){
+int Dice::cntSides(){
     return probabilities.size();
 }
 
-double Dice::get_side(int k) {
+double Dice::getSide(int k) {
     return probabilities[k];
 }
 
@@ -90,7 +90,7 @@ SetDices::SetDices(vector<Dice> d) {
 }
 
 bool SetDices::add(Dice dice) {
-    if (dice.is_valid()) {
+    if (dice.isValid()) {
         dices.push_back(dice);
         return true;
     }
@@ -104,48 +104,48 @@ void SetDices::print() {
         i.print();
 }
 
-int SetDices::max_sum_value() {
+int SetDices::maxSumValue() {
     int total = 0;
     for (int i = 0; i < dices.size(); ++i)
-        total += dices[i].cnt_sides();
+        total += dices[i].cntSides();
     return total;
 }
 
-int SetDices::min_sum_value() {
+int SetDices::minSumValue() {
     return dices.size();
 }
 
-vector<pair<int, double>> SetDices::probability_for_each_sum() {
-    int min_value = min_sum_value();
-    vector <double> prob_for_sum(max_sum_value() + 1, 0);
-    vector <double> prob_for_second(max_sum_value() + 1, 0);
+vector<pair<int, double>> SetDices::probabilityForEachSum() {
+    int min_value = minSumValue();
+    vector <double> prob_for_sum(maxSumValue() + 1, 0);
+    vector <double> prob_for_second(maxSumValue() + 1, 0);
     prob_for_sum[0] = 1;
     for (int i = 0; i < dices.size(); ++i) {
         for (int j = 0; j < prob_for_sum.size(); ++j)
-            for (int k = 0; k < dices[i].cnt_sides(); ++k) {
+            for (int k = 0; k < dices[i].cntSides(); ++k) {
                 if (j + k + 1  < prob_for_second.size())
-                    prob_for_second[j + k + 1] += prob_for_sum[j] * dices[i].get_side(k);
+                    prob_for_second[j + k + 1] += prob_for_sum[j] * dices[i].getSide(k);
             }
         std::swap(prob_for_second, prob_for_sum);
         std::fill(prob_for_second.begin(), prob_for_second.end(), 0);
     }
     vector <pair<int, double>> answer;
-    for (int i = 0; i <= max_sum_value(); ++i)
+    for (int i = 0; i <= maxSumValue(); ++i)
         if (fabs(prob_for_sum[i]) > 1e-4)
             answer.push_back({i, prob_for_sum[i]});
     return answer;
 }
 
 bool operator==(SetDices a, SetDices b) {
-    return a.expected_sum() == b.expected_sum();
+    return a.expectedSum() == b.expectedSum();
 }
 
 bool operator<(SetDices a, SetDices b) {
-    return a.expected_sum() < b.expected_sum();
+    return a.expectedSum() < b.expectedSum();
 }
 
-double SetDices::expected_sum() {
-    vector <pair<int, double>> prob_for_sum = probability_for_each_sum();
+double SetDices::expectedSum() {
+    vector <pair<int, double>> prob_for_sum = probabilityForEachSum();
     double total = 0;
     for (auto i : prob_for_sum)
         total += i.first * i.second;

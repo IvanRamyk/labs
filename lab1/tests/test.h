@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-void start_testing(){
+void startTesting(){
     testing::InitGoogleTest();
     RUN_ALL_TESTS();
 }

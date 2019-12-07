@@ -1,6 +1,6 @@
 #include "tests/test.h"
 
-int main(int argc, char* argv[]){
-    start_testing();
+int main(){
+    startTesting();
     return 0;
 }

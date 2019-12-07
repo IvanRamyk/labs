@@ -11,13 +11,13 @@ TEST(TestGraphStandartTypes, TestGraphInit){
     std::string v1 = "Kyiv";
     std::string v2 = "Lviv";
     int edge = 145;
-    graph.add_vertex("Kyiv");
-    graph.add_vertex("Lviv");
-    graph.add_vertex("Irpen");
-    EXPECT_TRUE(graph.add_edge(v1, v2, edge));
-    EXPECT_TRUE(graph.add_edge("Lviv", "Irpen", 13));
-    EXPECT_TRUE(graph.add_edge("Kyiv", "Irpen", 12));
-    EXPECT_TRUE(!graph.add_edge("Kyiv", "abc", 1));// we can't add this edge because no vertex "abc"
+    graph.addVertex("Kyiv");
+    graph.addVertex("Lviv");
+    graph.addVertex("Irpen");
+    EXPECT_TRUE(graph.addEdge(v1, v2, edge));
+    EXPECT_TRUE(graph.addEdge("Lviv", "Irpen", 13));
+    EXPECT_TRUE(graph.addEdge("Kyiv", "Irpen", 12));
+    EXPECT_TRUE(!graph.addEdge("Kyiv", "abc", 1));// we can't add this edge because no vertex "abc"
 }
 
 TEST(TestGraphStandartTypes, TestGraphComponents){
@@ -25,14 +25,14 @@ TEST(TestGraphStandartTypes, TestGraphComponents){
     std::string v1 = "Kyiv";
     std::string v2 = "Lviv";
     int edge = 145;
-    graph.add_vertex("Kyiv");
-    graph.add_vertex("Lviv");
-    graph.add_vertex("Irpen");
-    graph.add_vertex("Kirov");
-    graph.add_edge(v1, v2, edge);
-    graph.add_edge("Lviv", "Irpen", 13);
-    graph.add_edge("Kyiv", "Irpen", 12);
-    vector <vector <std::string>> components = graph.search_component();
+    graph.addVertex("Kyiv");
+    graph.addVertex("Lviv");
+    graph.addVertex("Irpen");
+    graph.addVertex("Kirov");
+    graph.addEdge(v1, v2, edge);
+    graph.addEdge("Lviv", "Irpen", 13);
+    graph.addEdge("Kyiv", "Irpen", 12);
+    vector <vector <std::string>> components = graph.searchComponent();
     EXPECT_EQ(2, components.size());
     EXPECT_EQ(components[0][0], "Kyiv");
     EXPECT_EQ(components[0][1], "Lviv");
@@ -45,17 +45,17 @@ TEST(TestTreeStandartTypes, TestGraphSpanningTree){
     std::string v1 = "Kyiv";
     std::string v2 = "Lviv";
     int edge = 145;
-    graph.add_vertex("Kyiv");
-    graph.add_vertex("Lviv");
-    graph.add_vertex("Irpen");
-    EXPECT_TRUE(graph.add_edge(v1, v2, edge));
-    EXPECT_TRUE(graph.add_edge("Lviv", "Irpen", 13));
-    EXPECT_TRUE(graph.add_edge("Kyiv", "Irpen", 12));
-    Graph<std::string, int> g_tree = graph.minimum_spanning_tree();
+    graph.addVertex("Kyiv");
+    graph.addVertex("Lviv");
+    graph.addVertex("Irpen");
+    EXPECT_TRUE(graph.addEdge(v1, v2, edge));
+    EXPECT_TRUE(graph.addEdge("Lviv", "Irpen", 13));
+    EXPECT_TRUE(graph.addEdge("Kyiv", "Irpen", 12));
+    Graph<std::string, int> g_tree = graph.minimumSpanningTree();
     EXPECT_EQ(g_tree.center(), 2);
     Tree<std::string, int> tree;
     tree.convert(g_tree, g_tree.center());
-    EXPECT_TRUE(tree.total_w() == 25);
+    EXPECT_TRUE(tree.totalWeight() == 25);
 }
 
 TEST(TestGraphCustomTypes, TestGraphInit){
@@ -66,13 +66,13 @@ TEST(TestGraphCustomTypes, TestGraphInit){
     SetDices edge1(true, 2);
     SetDices edge2(true, 2);
     SetDices edge3(true, 12);
-    graph.add_vertex(v1);
-    graph.add_vertex(v2);
-    graph.add_vertex(v3);
-    EXPECT_TRUE(graph.add_edge(v1, v2, edge1));
-    EXPECT_TRUE(graph.add_edge(v2, v3, edge2));
-    EXPECT_TRUE(graph.add_edge(v1, v3, edge3));
-    EXPECT_TRUE(!graph.add_edge(v3, Dice(true), SetDices(true)));// we can't add this edge because no second vertex
+    graph.addVertex(v1);
+    graph.addVertex(v2);
+    graph.addVertex(v3);
+    EXPECT_TRUE(graph.addEdge(v1, v2, edge1));
+    EXPECT_TRUE(graph.addEdge(v2, v3, edge2));
+    EXPECT_TRUE(graph.addEdge(v1, v3, edge3));
+    EXPECT_TRUE(!graph.addEdge(v3, Dice(true), SetDices(true)));// we can't add this edge because no second vertex
 }
 
 TEST(TestGraphCustomTypes, TestGraphComponents){
@@ -83,15 +83,15 @@ TEST(TestGraphCustomTypes, TestGraphComponents){
     SetDices edge1(true, 2);
     SetDices edge2(true, 2);
     SetDices edge3(true, 12);
-    graph.add_vertex(v1);
-    graph.add_vertex(v2);
-    graph.add_vertex(v3);
-    graph.add_vertex(Dice(true));
-    graph.add_vertex(Dice(true));
-    graph.add_edge(v1, v2, edge1);
-    graph.add_edge(v2, v3, edge2);
-    graph.add_edge(v1, v3, edge3);
-    vector <vector <Dice>> components = graph.search_component();
+    graph.addVertex(v1);
+    graph.addVertex(v2);
+    graph.addVertex(v3);
+    graph.addVertex(Dice(true));
+    graph.addVertex(Dice(true));
+    graph.addEdge(v1, v2, edge1);
+    graph.addEdge(v2, v3, edge2);
+    graph.addEdge(v1, v3, edge3);
+    vector <vector <Dice>> components = graph.searchComponent();
     EXPECT_EQ(3, components.size());
     EXPECT_TRUE(components[0][0] == v1);
     EXPECT_TRUE(components[0][1] == v2);
@@ -106,14 +106,14 @@ TEST(TestTreeCustomTypes, TestGraphSpanningTree){
     SetDices edge1(true, 2);
     SetDices edge2(true, 2);
     SetDices edge3(true, 12);
-    graph.add_vertex(v1);
-    graph.add_vertex(v2);
-    graph.add_vertex(v3);
-    graph.add_edge(v1, v2, edge1);
-    graph.add_edge(v2, v3, edge2);
-    graph.add_edge(v1, v3, edge3);
-    Graph<Dice, SetDices> g_tree = graph.minimum_spanning_tree();
+    graph.addVertex(v1);
+    graph.addVertex(v2);
+    graph.addVertex(v3);
+    graph.addEdge(v1, v2, edge1);
+    graph.addEdge(v2, v3, edge2);
+    graph.addEdge(v1, v3, edge3);
+    Graph<Dice, SetDices> g_tree = graph.minimumSpanningTree();
     Tree<Dice, SetDices> tree;
     tree.convert(g_tree, 0);
-    EXPECT_TRUE(tree.total_w() == edge1 + edge2);
+    EXPECT_TRUE(tree.totalWeight() == edge1 + edge2);
 }
