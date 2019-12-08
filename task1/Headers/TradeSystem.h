@@ -34,15 +34,12 @@ private:
     std::vector <Stock> stocks;
     std::vector <std::vector <std::pair<int, double>>> adjective_stocks;
     std::vector <std::vector <std::pair<int, double>>> road_distance;
-    std::vector <int> transport_start;
 
     void setGroundDist();
 
     double groundDist(int u, int v);
 
     double airDist(int u, int v);
-
-    std::map <Stock, int> needs();
 
     bool unload(int transport_number, int stock);
 
@@ -56,11 +53,13 @@ private:
 
     std::map <Cargo, int, ByName> systemNeeds();
 
+    Stock findStockByName(std::string _name);
+
 public:
 
     explicit TradeSystem(const char *passToFile = "");
 
-    void modeling(std::string passToFile = "", const int TIME = 200);
+    void modeling(const char *passToFile = "", const int TIME = 200);
 
     void finishSetting();
 
@@ -69,6 +68,13 @@ public:
     void addStock(const Stock& A);
 
     bool addRoad(const Stock& A, const Stock& B, double dist);
+
+    void print();
+
+    void updateStocks(double current_time){
+        for (auto i : stocks)
+            i.update(current_time);
+    }
 };
 
 #endif //TASK1_TRADESYSTEM_H

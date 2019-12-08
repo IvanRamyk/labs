@@ -52,12 +52,16 @@ std::map<Cargo, int, ByName> Stock::getNeeds() {
 
 std::map<Cargo, int, ByName> Stock::getProducts() {
     std::map<Cargo, int, ByName> result;
-    for (auto i : cargo)
+    std::cout << "cargo size " << cargo.size() << "\n";
+    for (auto i : cargo) {
+        std::cout << i.first.getName() << " " << i.second << "\n";
         if (i.second)
             if (result.count(i.first))
                 result[i.first] += i.second;
             else
                 result[i.first] = i.second;
+    }
+    std::cout << result.size() << "!!!\n";
     return result;
 }
 
@@ -71,6 +75,33 @@ void Stock::unload(Cargo cargo, int count) {
 
 void Stock::load(const Cargo &_cargo, int count) {
     cargo[_cargo] -= count;
-    if (cargo[_cargo] == 0)
-        cargo.erase(_cargo);
+    //if (cargo[_cargo] == 0)
+        //cargo.erase(_cargo);
+}
+
+void Stock::setName(std::string _name) {
+    name = _name;
+}
+
+void Stock::print() {
+    std::cout << "Stock " << name << "\n";
+    std::cout << "Coordinates: x - " << x << "; y - " << y << ";\n";
+    std::cout << "Production:\n";
+    for (auto i : production)
+        i.cargo.print();
+    std::cout << "Needs:\n";
+    for (auto i : needs)
+        i.cargo.print();
+}
+
+std::string Stock::getName() {
+    return name;
+}
+
+void Stock::setX(double _x) {
+    x = _x;
+}
+
+void Stock::setY(double _y) {
+    y = _y;
 }

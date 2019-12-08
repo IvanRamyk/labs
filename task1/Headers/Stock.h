@@ -55,6 +55,12 @@ public:
 
     bool operator !=(Stock B);
 
+    void setName(std::string _name);
+
+    void setX(double _x);
+
+    void setY(double _y);
+
     double getX();
 
     double getY();
@@ -66,6 +72,37 @@ public:
     void unload(Cargo cargo, int count);
 
     void load(const Cargo& _cargo, int count);
+
+    void print();
+
+    std::string getName();
+
+    void update(double current_time){
+        for (auto i : production) {
+            while (i.last_time <= current_time - i.period) {
+                std::cout << "yes ";
+                if (cargo.count(i.cargo)) {
+                    std::cout << i.count << " ";
+                    cargo[i.cargo] += i.count;
+                    std::cout << cargo[i.cargo] << "*\n";
+                }
+                else {
+                    std::cout << i.count << " ";
+                    cargo[i.cargo] = i.count;
+                    std::cout << cargo[i.cargo] << "*\n";
+                }
+                i.last_time += i.period;
+            }
+        }
+        for (auto i : needs) {
+            if (i.last_time <= current_time - i.period) {
+                i.current_count = 0;
+            }
+            while (i.last_time <= current_time - i.period)
+                i.last_time += i.period;
+        }
+        std::cout << cargo.size() << " size after update\n";
+    }
 };
 
 

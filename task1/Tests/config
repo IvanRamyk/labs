@@ -25,7 +25,7 @@ Stock {
 
 Stock {
     name = "Stock2";
-    x = 30;
+    x = 10;
     y = 30;
     CargoProduction {
         Cargo {
@@ -51,21 +51,21 @@ Stock {
 Transport {
     name = "bus";
     type = "ground";
-    max_weight = 20;
-    max_size = 20;
-    unloadTime = 10;
-    loadTime = 10;
-    speed = 10;
+    max_weight = 20000;
+    max_size = 20000;
+    unload_time = 10;
+    load_time = 10;
+    speed = 1;
 }
 
 Transport {
     name = "plane";
     type = "air";
-    max_weight = 2000;
-    max_size = 2000;
-    unloadTime = 1;
-    loadTime = 1;
-    speed = 200;
+    max_weight = 20000;
+    max_size = 20000;
+    unload_time = 1;
+    load_time = 1;
+    speed = 2;
 }
 
 Road  {
