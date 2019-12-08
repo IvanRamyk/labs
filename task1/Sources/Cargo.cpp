@@ -31,14 +31,6 @@ double Cargo::getWeight() {
     return weight;
 }
 
-std::string Cargo::getName() {
+std::string Cargo::getName() const {
     return name;
-}
-
-bool Cargo::operator==(const Cargo& that) {
-    return name == that.name && size == that.size && weight == that.weight;
-}
-
-bool Cargo::operator<(const Cargo &that) {
-    return name < that.name;
 }

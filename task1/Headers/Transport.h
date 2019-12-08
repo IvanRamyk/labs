@@ -6,10 +6,12 @@
 #define TASK1_TRANSPORT_H
 
 #include "Cargo.h"
+#include "Stock.h"
 
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 
 
 class Transport {
@@ -18,7 +20,7 @@ private:
     std::string type;
     double maxWeight;
     double maxSize;
-    double uploadTime;
+    double unloadTime;
     double loadTime;
     double speed;
     double currentWeight;
@@ -27,19 +29,17 @@ private:
 
 public:
     Transport(std::string _name = "", std::string _type = "", double _maxWeight = 0, double _maxSize = 0,
-            double _loadTime = 0, double _uploadTime = 0, double _speed = 0);
+            double _loadTime = 0, double _unloadTime = 0, double _speed = 0);
 
     std::string getName();
 
-    std::string getType(){
-        return type;
-    }
+    std::string getType();
 
     double getMaxWeight();
 
     double getMaxSize();
 
-    double getUploadTime();
+    double getUnloadTime();
 
     double getLoadTime();
 
@@ -47,15 +47,13 @@ public:
 
     void setName(std::string _name);
 
-    void setType(std::string _type){
-        type = _type;
-    }
+    void setType(std::string _type);
 
     void setMaxWeight(double weight);
 
     void setMaxSize(double size);
 
-    void setUploadTime(double time);
+    void setUnloadTime(double time);
 
     void setLoadTime(double time);
 
@@ -64,14 +62,12 @@ public:
     bool addCargo(Cargo cargo, int count);
 
     void print(bool show_goods = false);
-};
 
-class AirTransport : public Transport {
+    std::map <Cargo, int, ByName> getGoods();
 
-};
+    void unload(Cargo cargo, int count);
 
-class GroundTransport : public Transport  {
-
+    int load(Cargo cargo, int count);
 };
 
 #endif //TASK1_TRANSPORT_H

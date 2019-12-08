@@ -23,7 +23,7 @@ public:
 
     void setSize(double _size);
 
-    std::string getName();
+    std::string getName() const;
 
     double getWeight();
 
@@ -31,10 +31,9 @@ public:
 
     void print();
 
-    bool operator ==(const Cargo& that);
-
-    bool operator <(const Cargo& that);
+    bool operator ==(const Cargo& that) {return this->name == that.name; }
 };
 
+//bool operator <(Cargo a, Cargo b){ return a.getName() < b.getName(); }
 
 #endif //TASK1_CARGO_H

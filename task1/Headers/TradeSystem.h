@@ -20,19 +20,21 @@ struct event {
     std::string eventType;
     int transport;
     int stock;
+    double time;
 
-    explicit event(std::string _event = "", int transportNumber = -1, int stock = -1);
+    explicit event(std::string _event = "", int transport_number = -1, int stock = -1, double _time = 0);
 };
+
+bool operator <(event a, event b);
 
 class TradeSystem {
 private:
     bool isSet;
-    std::vector <Transport> transport;
+    std::vector <Transport *> transport;
     std::vector <Stock> stocks;
-    std::vector <std::vector <std::pair<int, double>>> adjectiveStocks;
-    std::vector <std::vector <std::pair<int, double>>> roadDistance;
-    std::vector <int> airTransportStart;
-    std::vector <int> groundTransportStart;
+    std::vector <std::vector <std::pair<int, double>>> adjective_stocks;
+    std::vector <std::vector <std::pair<int, double>>> road_distance;
+    std::vector <int> transport_start;
 
     void setGroundDist();
 
@@ -42,32 +44,17 @@ private:
 
     std::map <Stock, int> needs();
 
-    bool load(int transportNumber, int stock){
-        return true;
-    }
+    bool unload(int transport_number, int stock);
 
-    bool upload(int transportNumber, int stock){
-        return true;
-    }
+    bool load(int transport_number, int stock);
 
     int bestAirMove(int transport, int stock);
 
     int bestGroundMove(int transport, int stock);
 
-    std::pair<double, event> handleEvent(const event& currentEvent, double currentTime){
-        int transportNumber = currentEvent.transport;
-        int stockNumber = currentEvent.stock;
-        std::string eventType = currentEvent.eventType;
-        if (eventType != "unload" && upload(transportNumber, stockNumber))
-            return {currentTime + transport[transportNumber].getUploadTime(),
-                    {event("upload", transportNumber, stockNumber)}};
-        if (eventType != "load" && load(transportNumber, stockNumber))
-            return {currentTime + transport[transportNumber].getLoadTime(),
-                    {event("load", transportNumber, stockNumber)}};
-        if (transport[transportNumber].getType() == "air"){
+    event handleEvent(const event& current_event);
 
-        }
-    }
+    std::map <Cargo, int, ByName> systemNeeds();
 
 public:
 
@@ -77,7 +64,7 @@ public:
 
     void finishSetting();
 
-    void addTransport(Transport _transport);
+    void addTransport(Transport *_transport);
 
     void addStock(const Stock& A);
 

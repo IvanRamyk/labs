@@ -11,41 +11,47 @@
 #include <vector>
 #include <map>
 
-struct cargoOut  {
+struct CargoProduction  {
     Cargo cargo;
     double period;
     int count;
-    double lastTime;
+    double last_time;
 
-    cargoOut(Cargo _cargo = Cargo(), double _period = 0, int _count = 0);
+    CargoProduction(Cargo _cargo = Cargo(), double _period = 0, int _count = 0);
 };
 
-struct cargoIn  {
+struct CargoNeeds  {
     Cargo cargo;
     double period;
     int count;
-    int currentCount;
-    double lastTime;
+    int current_count;
+    double last_time;
 
-    cargoIn(Cargo _cargo = Cargo(), double _period = 0, int _count = 0);
+    explicit CargoNeeds(Cargo _cargo = Cargo(), double _period = 0, int _count = 0);
+};
+
+struct ByName : public std::binary_function<Cargo, Cargo, bool>
+{
+    bool operator()(Cargo lhs, Cargo rhs) const
+    {
+        return lhs.getName() < rhs.getName();
+    }
 };
 
 class Stock {
 private:
     std::string name;
     double x, y;
-    std::vector <std::pair<Cargo, int>> cargo;
-    std::vector <cargoOut> out;
-    std::vector <cargoIn> needs;
+    std::map<Cargo, int, ByName> cargo;
+    std::vector <CargoProduction> production;
+    std::vector <CargoNeeds> needs;
 
 public:
     Stock(std::string _name = "", double _x = 0, double _y = 0);
 
-    void add_needs(Cargo cargo, double period, int count);
+    void addNeeds(Cargo cargo, double period, int count);
 
-    void add_out(Cargo cargo, double period, int count);
-
-    std::vector <std::pair<Cargo, int>> needToTransport();
+    void addProduction(Cargo cargo, double period, int count);
 
     bool operator !=(Stock B);
 
@@ -53,11 +59,14 @@ public:
 
     double getY();
 
-    std::map <Stock, int> canLoad(std::map<Stock, int> m);
+    std::map <Cargo, int, ByName> getNeeds();
 
-    std::map<Stock, int> canLoad();
+    std::map <Cargo, int, ByName> getProducts();
 
-    bool operator <(Cargo that);
+    void unload(Cargo cargo, int count);
+
+    void load(const Cargo& _cargo, int count);
 };
+
 
 #endif //TASK1_STOCK_H
