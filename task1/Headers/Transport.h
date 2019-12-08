@@ -65,7 +65,7 @@ public:
 
     std::map <Cargo, int, ByName> getGoods();
 
-    void unload(Cargo cargo, int count);
+    int unload(Cargo cargo, int count);
 
     int load(Cargo cargo, int count);
 };

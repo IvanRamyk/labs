@@ -1,0 +1,75 @@
+Stock {
+    name = "Stock1";
+    x = 10;
+    y = 10;
+    CargoProduction {
+        Cargo {
+            name = "milk";
+            weight = 1;
+            size = 1;
+        }
+        period = 3;
+        count = 5;
+
+    }
+    CargoNeeds {
+        Cargo {
+            name = "fruits";
+            weight = 5;
+            size = 1;
+        }
+        period = 3;
+        count = 5;
+    }
+}
+
+Stock {
+    name = "Stock2";
+    x = 30;
+    y = 30;
+    CargoProduction {
+        Cargo {
+            name = "milk";
+            weight = 1;
+            size = 1;
+        }
+        period = 1;
+        count = 10;
+
+    }
+    CargoNeeds {
+        Cargo {
+            name = "fruits";
+            weight = 5;
+            size = 1;
+        }
+        period = 30;
+        count = 5;
+    }
+}
+
+Transport {
+    name = "bus";
+    type = "ground";
+    max_weight = 20;
+    max_size = 20;
+    unloadTime = 10;
+    loadTime = 10;
+    speed = 10;
+}
+
+Transport {
+    name = "plane";
+    type = "air";
+    max_weight = 2000;
+    max_size = 2000;
+    unloadTime = 1;
+    loadTime = 1;
+    speed = 200;
+}
+
+Road  {
+    from = "Stock1";
+    to = "Stock2";
+    dist = 10.5;
+}

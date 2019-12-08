@@ -3,15 +3,23 @@
 //
 
 #include "../Headers/TradeSystem.h"
+#include <string>
+#include <sstream>
 
-TradeSystem::TradeSystem(std::string passToFile) {
+TradeSystem::TradeSystem(const char *passToFile) {
     if (passToFile == ""){
         isSet = false;
     }
     else {
-        freopen("passToFile", "r", stdin);
-        int n, m;
-        std::cin >> n;
+        freopen(passToFile, "r", stdin);
+        std::cout << "ok";
+        std::string buffer;
+        while (std::getline(std::cin, buffer)){
+            if (buffer.empty()) continue;
+            std::stringstream ss(buffer);
+            std::string class_name;
+            ss >> class_name;
+        }
         isSet = true;
     }
 }

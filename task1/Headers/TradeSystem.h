@@ -58,7 +58,7 @@ private:
 
 public:
 
-    explicit TradeSystem(std::string passToFile = "");
+    explicit TradeSystem(const char *passToFile = "");
 
     void modeling(std::string passToFile = "", const int TIME = 200);
 

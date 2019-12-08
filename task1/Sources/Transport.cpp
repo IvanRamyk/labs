@@ -122,15 +122,16 @@ int Transport::load(Cargo cargo, int count) {
     return k;
 }
 
-void Transport::unload(Cargo cargo, int count) {
+int Transport::unload(Cargo cargo, int count) {
     for (int i = 0; i < goods.size(); ++i) {
         if (goods[i].first == cargo){
-            goods[i].second -= count;
-            currentSize -= count * cargo.getSize();
-            currentWeight -= count * cargo.getWeight();
+            int k = std::min(count, goods[i].second);
+            goods[i].second -= k;
+            currentSize -= k * cargo.getSize();
+            currentWeight -= k * cargo.getWeight();
             if (!goods[i].second)
                 goods.erase(goods.begin() + i);
-            break;
+            return k;
         }
     }
 }
