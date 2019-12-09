@@ -40,7 +40,7 @@ double Stock::getY() {
 
 std::map<Cargo, int, ByName> Stock::getNeeds() {
     std::map<Cargo, int, ByName> result;
-    for (auto i : needs)
+    for (auto &i : needs)
         if (i.count - i.current_count){
             if (result.count(i.cargo))
                 result[i.cargo] += i.count - i.current_count;
@@ -52,16 +52,13 @@ std::map<Cargo, int, ByName> Stock::getNeeds() {
 
 std::map<Cargo, int, ByName> Stock::getProducts() {
     std::map<Cargo, int, ByName> result;
-    std::cout << "cargo size " << cargo.size() << "\n";
     for (auto i : cargo) {
-        std::cout << i.first.getName() << " " << i.second << "\n";
         if (i.second)
             if (result.count(i.first))
                 result[i.first] += i.second;
             else
                 result[i.first] = i.second;
     }
-    std::cout << result.size() << "!!!\n";
     return result;
 }
 
@@ -74,9 +71,9 @@ void Stock::unload(Cargo cargo, int count) {
 }
 
 void Stock::load(const Cargo &_cargo, int count) {
-    cargo[_cargo] -= count;
-    //if (cargo[_cargo] == 0)
-        //cargo.erase(_cargo);
+    for (auto i : cargo)
+        if (i.first.getName() == _cargo.getName())
+            i.second -= count;
 }
 
 void Stock::setName(std::string _name) {

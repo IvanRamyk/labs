@@ -12,39 +12,20 @@ Stock {
         count = 5;
 
     }
-    CargoNeeds {
-        Cargo {
-            name = "fruits";
-            weight = 5;
-            size = 1;
-        }
-        period = 3;
-        count = 5;
-    }
 }
 
 Stock {
     name = "Stock2";
     x = 10;
     y = 30;
-    CargoProduction {
+    CargoNeeds {
         Cargo {
             name = "milk";
             weight = 1;
             size = 1;
         }
-        period = 1;
-        count = 10;
-
-    }
-    CargoNeeds {
-        Cargo {
-            name = "fruits";
-            weight = 5;
-            size = 1;
-        }
-        period = 30;
-        count = 5;
+        period = 50;
+        count = 1;
     }
 }
 

@@ -42,7 +42,7 @@ class Stock {
 private:
     std::string name;
     double x, y;
-    std::map<Cargo, int, ByName> cargo;
+    std::vector<std::pair<Cargo, int>> cargo;
     std::vector <CargoProduction> production;
     std::vector <CargoNeeds> needs;
 
@@ -78,19 +78,16 @@ public:
     std::string getName();
 
     void update(double current_time){
-        for (auto i : production) {
+        for (auto &i : production) {
             while (i.last_time <= current_time - i.period) {
-                std::cout << "yes ";
-                if (cargo.count(i.cargo)) {
-                    std::cout << i.count << " ";
-                    cargo[i.cargo] += i.count;
-                    std::cout << cargo[i.cargo] << "*\n";
-                }
-                else {
-                    std::cout << i.count << " ";
-                    cargo[i.cargo] = i.count;
-                    std::cout << cargo[i.cargo] << "*\n";
-                }
+                bool already_exist = false;
+                for (auto &j : cargo)
+                    if (j.first.getName() == i.cargo.getName()){
+                        j.second += i.count;
+                        already_exist = true;
+                    }
+                if (!already_exist)
+                    cargo.push_back({i.cargo, i.count});
                 i.last_time += i.period;
             }
         }
@@ -101,7 +98,6 @@ public:
             while (i.last_time <= current_time - i.period)
                 i.last_time += i.period;
         }
-        std::cout << cargo.size() << " size after update\n";
     }
 };
 

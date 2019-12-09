@@ -72,7 +72,7 @@ public:
     void print();
 
     void updateStocks(double current_time){
-        for (auto i : stocks)
+        for (auto &i : stocks)
             i.update(current_time);
     }
 };

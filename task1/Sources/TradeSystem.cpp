@@ -19,7 +19,6 @@ TradeSystem::TradeSystem(const char *passToFile) {
     }
     else {
         freopen(passToFile, "r", stdin);
-        //std::cout << "ok";
         std::string buffer;
         while (std::getline(std::cin, buffer)){
             if (buffer.empty()) continue;
@@ -29,7 +28,6 @@ TradeSystem::TradeSystem(const char *passToFile) {
             if (class_name == "Stock"){
                 Stock stock;
                 while(std::getline(std::cin, buffer)){
-                    //std::cout << "\t" << buffer << "\n";
                     if (buffer.empty()) continue;
                     if (isEnd(buffer)) break;
                     ss.clear();
@@ -218,7 +216,7 @@ void TradeSystem::modeling(const char *passToFile, const int TIME) {
     double current_time = 0;
     while (!events.empty() && current_time < TIME){
         event cur = events.top();
-        std::cout << cur.time << " " << cur.transport << " " << cur.eventType
+        std::cout << cur.time << ": " << cur.transport << " " << cur.eventType
         <<  " " <<cur.stock  << "\n";
         current_time = cur.time;
         updateStocks(current_time);
@@ -343,9 +341,9 @@ bool TradeSystem::unload(int transport_number, int stock) {
 
 std::map<Cargo, int, ByName> TradeSystem::systemNeeds() {
     std::map <Cargo, int, ByName> result;
-    for (auto i : stocks){
+    for (auto &i : stocks){
         std::map <Cargo, int, ByName> temp = i.getNeeds();
-        for (auto j : temp)
+        for (auto &j : temp)
             if (result.count(j.first))
                 result[j.first] += j.second;
             else
@@ -357,12 +355,7 @@ std::map<Cargo, int, ByName> TradeSystem::systemNeeds() {
 bool TradeSystem::load(int transport_number, int stock) {
     bool result = false;
     std::map <Cargo, int, ByName> products = stocks[stock].getProducts();
-    std::cout << "products "<<products.size()  << "\n";
-    for (auto i : products)
-        std::cout << i.first.getName() << " " << i.second << "\n";
     std::map <Cargo, int, ByName> system_needs = systemNeeds();
-    for (auto i : system_needs)
-        std::cout << i.first.getName() << " " << i.second << "\n";
     for (auto i : products)
         if (system_needs.count(i.first)){
             int count = std::min(i.second, system_needs[i.first]);
@@ -375,7 +368,6 @@ bool TradeSystem::load(int transport_number, int stock) {
 }
 
 void TradeSystem::print() {
-    std::cout << "hey, from print\n" << transport.size() << "\n";
     for (auto i : transport)
         i->print();
     for (auto i : stocks)
