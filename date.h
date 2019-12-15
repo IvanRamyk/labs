@@ -9,7 +9,7 @@
 struct Date
 {
     Date() = default;
-    Date(int _year, int _month, int _day);
+    Date(int _year, int _month, int _day): year(_year), month(_month), day(_day) {}
     Date(int days){
         year = days / 365;
         days = days % 365;
@@ -77,21 +77,4 @@ struct Date
     }
 
 };
-
-
-
-/*
-bool operator <(Date a, Date b){
-    if (a.year != b.year)
-        return a.year < b.year;
-    if (a.month != b.month)
-        return a.month < b.month;
-    if (a.day != b.day)
-        return a.day < b.day;
-    return false;
-}
-
-Date operator ++(Date a){
-    return a + Date(0, 0, 1);
-}*/
 #endif // DATE_H

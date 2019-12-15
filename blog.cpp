@@ -46,3 +46,7 @@ double Blog::topicPart(std::string title){
         return 0;
     return (double(cnt_topic) / total);
 }
+
+std::string Blog::getTitle(){
+    return title;
+}

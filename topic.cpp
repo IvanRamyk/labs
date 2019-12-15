@@ -16,3 +16,11 @@ bool Topic::changePopularity(double new_popularity, Date date){
 std::string Topic::getTitle(){
     return _title;
 }
+
+double Topic::getPopularity(){
+    return (--_popularity.end())->second;
+}
+
+std::map<month, double, cmpMonth> Topic::getPopularityHistory(){
+    return _popularity;
+}

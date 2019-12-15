@@ -15,11 +15,11 @@ class Source;
 struct cmpDate {
     bool operator()(const Date& a, const Date& b) const {
         if (a.year != b.year)
-            return a.year < b.year;
+            return a.year > b.year;
         if (a.month != b.month)
-            return a.month < b.month;
+            return a.month > b.month;
         if (a.day != b.day)
-            return a.day < b.day;
+            return a.day > b.day;
         return false;
     }
 };
@@ -33,9 +33,7 @@ public:
     std::vector<std::pair<std::shared_ptr<Topic>, int>> getMessages(Date date);
     void update(Date date);
     double topicPart(std::string title);
-    std::string getTitle(){
-        return title;
-    }
+    std::string getTitle();
 
 private:
     std::string title;

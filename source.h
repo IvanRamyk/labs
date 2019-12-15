@@ -15,6 +15,7 @@ class Source
 {
 public:
     virtual std::vector<std::pair<std::shared_ptr<Topic>, int>> getMessages(Date date)=0;
+    virtual ~Source() = default;
 };
 
 class SourceFixedTopic: public Source
@@ -22,6 +23,7 @@ class SourceFixedTopic: public Source
 public:
     SourceFixedTopic(std::shared_ptr<Topic> _topic, int _min, int _max): topic(_topic), minCntMessages(_min), maxCntMessages(_max) {}
     std::vector<std::pair<std::shared_ptr<Topic>, int> > getMessages(Date date) override;
+
 private:
     int minCntMessages, maxCntMessages;
     std::shared_ptr<Topic> topic;

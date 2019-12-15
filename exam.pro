@@ -18,7 +18,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     blog.cpp \
     blogsystem.cpp \
-    date.cpp \
     main.cpp \
     mainwindow.cpp \
     source.cpp \
