@@ -39,7 +39,7 @@ bool comp(std::shared_ptr<Topic> a, std::shared_ptr<Topic> b){
 }
 
 std::vector<std::pair<std::shared_ptr<Topic>, int>> SourcePopularity::getMessages(Date date){
-    std::sort(topics.begin(), topics.end());
+    std::sort(topics.begin(), topics.end(), comp);
     int pos = randomInt(0, N - 1);
     int cnt = randomInt(minCntMessages, maxCntMessages);
     return {{topics[pos], cnt}};

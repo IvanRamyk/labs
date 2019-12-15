@@ -25,7 +25,7 @@ std::vector<std::pair<std::shared_ptr<Topic>, int>> BlogSystem::cntMessages(std:
                        alreadyInList = true;
                    }
                if (!alreadyInList) {
-                   result.push_back(k);
+                   result.push_back({k.first, k.second});
                }
            }
        }
