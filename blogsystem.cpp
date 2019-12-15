@@ -41,7 +41,7 @@ void BlogSystem::addTopic(std::shared_ptr<Topic> topic){
     topics.push_back(topic);
 }
 
-std::pair<std::vector<std::pair<Date, double>>, std::vector<std::pair<std::shared_ptr<Blog>, int>>>
+std::pair<std::vector<std::pair<Date, double>>, std::vector<std::pair<std::shared_ptr<Blog>, int>>>//????????
 BlogSystem::getStatistics(std::string title){
     std::shared_ptr<Topic> topic = nullptr;
     for (auto i : topics)

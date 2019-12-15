@@ -39,6 +39,19 @@ private:
     int delay;
 };
 
+class SourcePopularity: public Source
+{
+public:
+    SourcePopularity (int n, int min, int max, std::vector<std::shared_ptr<Topic>> _topics):
+        N(n), minCntMessages(min), maxCntMessages(max), topics(_topics) {}
+    std::vector<std::pair<std::shared_ptr<Topic>, int>> getMessages(Date date) override;
+private:
+    int N, minCntMessages, maxCntMessages;
+    std::vector<std::shared_ptr<Topic>> topics;
+};
+
+
+
 
 
 

@@ -14,11 +14,11 @@ struct Date
         year = days / 365;
         days = days % 365;
         month = 1;
-        while (days > daysInMonth(month)){
+        while (days >= daysInMonth(month)){
             days -= daysInMonth(month);
             month++;
         }
-        day = days+1;
+        day = days + 1;
     }
     int daysInMonth(int month){
         if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) return 31;

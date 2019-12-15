@@ -8,18 +8,24 @@ void setUp(BlogSystem &system){
     Date date = system.getDate();
     std::shared_ptr<Topic> a(new Topic("Ukraine", 0.5, date));
     std::shared_ptr<Topic> b(new Topic("Duncky", 0.7, date));
+    std::shared_ptr<Topic> c(new Topic("Qt", 1, date));
     std::shared_ptr<Blog> blog(new Blog("News", "url"));
     std::shared_ptr<Blog> blog1(new Blog("Sport", "url"));
     std::shared_ptr<Source> source(new SourceFixedTopic(a, 10, 20));
     std::shared_ptr<Source> source1(new SourceBlog(blog, 1, 1));
+    std::shared_ptr<Source> source2(new SourceFixedTopic(b, 10, 20));
+    std::shared_ptr<Source> source3(new SourceFixedTopic(c, 20, 20));
     blog->addSource(source);
     blog1->addSource(source1);
+    blog->addSource(source2);
+    blog->addSource(source3);
     system.addBlog(blog);
     system.addBlog(blog1);
     system.addTopic(a);
     system.addTopic(b);
-    system.nextDay();
-    system.nextDay();
+    system.addTopic(c);
+    for (int i = 0; i < 30; ++i)
+        system.nextDay();
     system.nextDay();
 }
 
@@ -82,6 +88,8 @@ void MainWindow::on_topics_cellClicked(int row, int column)
             else
                 ui->details->setItem(i, j, new QTableWidgetItem(QString::fromUtf8(std::to_string(popHistory[i].second).c_str())));
     std::vector <std::pair<std::shared_ptr<Blog>, double>> blogs = system.topicPartInBlogs(data);
+    for (auto i : blogs)
+        std::cout << i.second << "\n";
     ui->blogs->clear();
     ui->blogs->setRowCount(blogs.size());
     ui->blogs->setColumnCount(2);
