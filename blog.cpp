@@ -44,5 +44,5 @@ double Blog::topicPart(std::string title){
     }
     if (total < 0.0001)
         return 0;
-    return double(cnt_topic) / total;
+    return (double(cnt_topic) / total);
 }

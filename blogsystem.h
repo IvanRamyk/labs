@@ -30,7 +30,7 @@ public:
                 std::map<month, double> history = i->getPopularityHistory();
                 std::vector<std::pair<Date, double>> result;
                 for (auto cur : history)
-                    result.push_back({Date(cur.first / 12, cur.first % 12, 1), cur.second});
+                    result.push_back({Date(cur.first / 12, cur.first % 12 + 1, 1), cur.second});
                 return result;
             }
     }
@@ -42,6 +42,13 @@ public:
                 result.push_back({i, cur});
         }
         return result;
+    }
+
+    void changeTopicPopularity(std::string title, double newPop){
+        for (auto i : topics)
+            if (i->getTitle() == title){
+                i->changePopularity(newPop, current_date);
+            }
     }
 
 private:

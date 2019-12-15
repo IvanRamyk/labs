@@ -72,7 +72,9 @@ struct Date
         return std::to_string(year) + "." + std::to_string(month) + "." + std::to_string(day);
     }
 
-
+    std::string toMonth(){
+        return std::to_string(year) + "." + std::to_string(month);
+    }
 
 };
 

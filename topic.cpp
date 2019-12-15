@@ -1,12 +1,12 @@
 #include "topic.h"
 
 Topic::Topic(std::string title, double popularity, Date date): _title(title){
-    month current_month = date.year * 12 + date.month;
+    month current_month = date.year * 12 + date.month - 1;
     _popularity[current_month] = popularity;
 }
 
 bool Topic::changePopularity(double new_popularity, Date date){
-    month current_month = date.year * 12 + date.month;
+    month current_month = date.year * 12 + date.month - 1;
     if (_popularity.count(current_month))
         return false;
     _popularity[current_month] = new_popularity;
