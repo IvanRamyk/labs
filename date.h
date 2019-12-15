@@ -1,7 +1,8 @@
 #ifndef DATE_H
 #define DATE_H
 
-
+#include <iostream>
+#include <string>
 
 
 
@@ -17,7 +18,7 @@ struct Date
             days -= daysInMonth(month);
             month++;
         }
-        day = days++;
+        day = days+1;
     }
     int daysInMonth(int month){
         if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) return 31;
@@ -28,17 +29,30 @@ struct Date
     bool operator == (Date b){
         Date a = *this;
         return a.day == b.day && a.year == b.year && a.month == b.month;
+    } 
+    bool operator != (Date b){
+        Date a = *this;
+        return a.day != b.day || a.year != b.year || a.month != b.month;
     }
     Date operator + (Date b){
         Date a = *this;
-        return Date((a.year + b.year) * 365 + daysInMonth(a.month) + daysInMonth(b.month) + a.day + b.day);
+        int total = (a.year + b.year) * 365;
+        for (int i = 1; i < a.month; ++i)
+            total += daysInMonth(i);
+        for (int i = 1; i < b.month; ++i)
+            total += daysInMonth(i);
+
+        return Date(total + a.day + b.day - 2);
     }
     int year;
     int month;
     int day;
     Date operator -(int d){
         Date a = *this;
-        return Date((a.year) * 365 + daysInMonth(a.month) + a.day - d);
+        int total = (a.year) * 365;
+        for (int i = 1; i < a.month; ++i)
+            total += daysInMonth(i);
+        return Date(total  + a.day - d - 1);
     }
     bool operator <(Date b){
         Date a = *this;
@@ -49,6 +63,13 @@ struct Date
         if (a.day != b.day)
             return a.day < b.day;
         return false;
+    }
+
+    void print(){
+        std::cout << year << "." << month << "." << day << "\n";
+    }
+    std::string toString(){
+        return std::to_string(year) + "." + std::to_string(month) + "." + std::to_string(day);
     }
 
 

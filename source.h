@@ -30,6 +30,7 @@ private:
 
 class SourceBlog: public Source
 {
+public:
     SourceBlog(std::shared_ptr<Blog> _blog, double prob, int _delay): blog(_blog), probability(prob), delay(_delay) {}
     std::vector<std::pair<std::shared_ptr<Topic>, int>> getMessages(Date date) override;
 private:

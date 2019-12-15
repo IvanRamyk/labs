@@ -32,6 +32,10 @@ public:
     void addSource(std::shared_ptr<Source> source);
     std::vector<std::pair<std::shared_ptr<Topic>, int>> getMessages(Date date);
     void update(Date date);
+    double topicPart(std::string title);
+    std::string getTitle(){
+        return title;
+    }
 
 private:
     std::string title;

@@ -1,5 +1,9 @@
 #include "mainwindow.h"
 
+#include "blogsystem.h"
+
+#include <iostream>
+
 #include <QApplication>
 
 int main(int argc, char *argv[])

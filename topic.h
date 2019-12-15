@@ -3,7 +3,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <date.h>
+
+#include "date.h"
 
 using month = int;
 
@@ -11,8 +12,15 @@ class Topic
 {
 public:
     Topic() = default;
-    Topic(std::string title, double popularity, month current_month);
-    bool changePopularity(double new_popularity, month current_month);
+    Topic(std::string title, double popularity, Date current_month);
+    bool changePopularity(double new_popularity, Date current_month);
+    std::string getTitle();
+    double getPopularity(){
+        return (--_popularity.end())->second;
+    }
+    std::map<month, double> getPopularityHistory(){
+        return _popularity;
+    }
 
 private:
     std::string _title;

@@ -20,7 +20,7 @@ std::vector<std::pair<std::shared_ptr<Topic>, int>> SourceBlog::getMessages(Date
     for (auto i : fromBlog){
         int cnt = 0;
         for (int k = 0; k < i.second; ++k)
-            if (randomDouble(0, 1) >= probability)
+            if (randomDouble(0, 1) <= probability)
                  ++cnt;
         if (cnt > 0)
             result.push_back({i.first, cnt});
