@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <gtest/gtest.h>
+#include <queue>
 
 template <typename T>
 struct BinomialNode {
@@ -204,6 +206,45 @@ void int_interaction() {
 }
 
 
+TEST(Heap, test){
+    BinomialHeap<int> heap;
+    for (int i = 100; i > 0; --i)
+        heap.insert(i);
+    for (int i = 1000; i < 2000; ++i)
+        heap.insert(i);
+    for (int i = 1; i <= 100; ++i){
+        EXPECT_EQ(heap.extract_minimum()->key, i);
+        heap.pop();
+    }
+    for (int i = 1000; i < 2000; ++i) {
+        EXPECT_EQ(heap.extract_minimum()->key, i);
+        heap.pop();
+    }
+}
+
+TEST(Heap, rand_test){
+    srand(time(0));
+    BinomialHeap<int> heap;
+    std::priority_queue<int> q;
+    for (int i = 0; i < 100; i++) {
+        int v = rand() % 10000;
+        heap.insert(v);
+        q.push(-v);
+    }
+    for (int i = 0; i < 10000; ++i){
+        if (rand() % 2 == 1)  {
+            EXPECT_EQ(heap.extract_minimum()->key, -q.top());
+            heap.pop();
+            q.pop();
+        }
+        else {
+            int v= rand() % 10000;
+            heap.insert(v);
+            q.push(-v);
+        }
+    }
+}
+
 
 struct Album {
     std::string name;
@@ -289,6 +330,8 @@ void queries() {
 
 
 int main() {
+    testing::InitGoogleTest();
+    RUN_ALL_TESTS();
     queries();
 
     return 0;
