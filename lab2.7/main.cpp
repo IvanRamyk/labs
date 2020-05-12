@@ -13,7 +13,7 @@ struct BinomialNode {
     int degree;
     BinomialNode()= default;
     BinomialNode(T _key, BinomialNode<T> * _parent = nullptr, BinomialNode<T> * _child = nullptr,
-            BinomialNode<T> * _sibling = nullptr, int _degree = 0):
+                 BinomialNode<T> * _sibling = nullptr, int _degree = 0):
             parent(_parent), key(_key), child(_child), sibling(_sibling), degree(_degree){}
 };
 
@@ -121,7 +121,7 @@ public:
             std::cout << "go to sibling " << node->sibling->key << "\n";
             print(node->sibling);
         }
-     }
+    }
 
     void print_() {
         auto cur = head;
