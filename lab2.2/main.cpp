@@ -96,7 +96,7 @@ void queries() {
             std::string buff;
             getline(std::cin, buff);
             int k = atoi(buff.c_str());
-            tree.updateSize();
+            //tree.updateSize();
             auto node = tree.select(k);
             if (node != nullptr)
                 print_album(node->value());

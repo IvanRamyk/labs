@@ -466,7 +466,7 @@ RedBlackTreeNode<TreeItem>::RedBlackTreeNode(TreeItem item, RedBlackTreeNode<Tre
         _right(right),
         _parent(parent)
 {
-    _size = 0;
+    _size = 1;
 }
 
 template<typename TreeItem>
