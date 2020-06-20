@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+struct quadratic_equation{ // ax^2 + bx + c = 0
+    long long a;
+    long long b;
+    long long c;
+    quadratic_equation(){
+        a = 1;
+        b = 0;
+        c = 0;
+    }
+    quadratic_equation(long long x, long long y, long long z){
+        a = x;
+        b = y;
+        c = z;
+    }
+    void read(){// ç÷èòóâàííÿ
+        cin >> a >> b >> c;
+    }
+    void write(){// âèâ³ä
+        cout << a << "x^2 + " << b << "x + " << c <<" = 0";
+    }
+    pair <double, double> solve()// çíàõîäæåííÿ êîðåí³â
+        double D = b * b - 4 * a * c;
+        if (D < 0) return {-1e9, -1e9}; // êîðåí³â íå ³ñíóº
+        return {(-b + sqrt(D)) / 2 / a, (-b - sqrt(D)) / 2 / a};
+    }
+    bool write_answer(){// âèâ³ä êîðåí³â
+        pair <double, double> answer = this->solve();
+        if (answer.first == -1e9) return 0;
+        if (fabs(answer.first - answer.second) < 0.0001) cout << answer.first << "\n"; // êîðåí³ çá³ãàþòüñÿ
+        else cout << answer.first << " " << answer.second << "\n";
+        return 1;
+    }
+};
+
+quadratic_equation operator +(quadratic_equation equation1, quadratic_equation equation2) { // äîäàâàííÿ ð³âíÿíü (íàâ³ùîñü ïîòð³áíî ðåàë³çóâàòè)
+    return { equation1.a + equation2.a, equation1.b + equation2.b, equation1.c + equation2.c };
+}
+
+int main()
+{
+    quadratic_equation equation1, equation2;
+    equation1.read();
+    equation2.read();
+    quadratic_equation equation = equation1 + equation2;
+    equation.write();
+    if (!equation.write_answer()) cout << "No solve.";
+    return 0;
+}

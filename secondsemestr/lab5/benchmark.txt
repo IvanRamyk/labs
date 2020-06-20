@@ -1,0 +1,163 @@
+----------------BENCHMARK MODE----------------
+Number of vertex is 10
+   Number of edges is 10
+       Time searching component: list - 0 sec
+                                 matrix - 0 sec
+       Time working bfs: list - 0 sec
+                         matrix - 0 sec
+       Time working topological sort: list - 0 sec
+                                      matrix - 0 sec
+       Time working dijkstra : list - 0 sec
+                               matrix - 0 sec
+       Time searching spanning tree : list - 0 sec
+                                      matrix - 0 sec
+       Time searching minimal spanning tree : list - 0 sec
+                                              matrix - 0 sec
+Number of vertex is 100
+   Number of edges is 100
+       Time searching component: list - 0 sec
+                                 matrix - 0 sec
+       Time working bfs: list - 0.001 sec
+                         matrix - 0 sec
+       Time working topological sort: list - 0 sec
+                                      matrix - 0 sec
+       Time working dijkstra : list - 0 sec
+                               matrix - 0 sec
+       Time searching spanning tree : list - 0 sec
+                                      matrix - 0 sec
+       Time searching minimal spanning tree : list - 0 sec
+                                              matrix - 0.001 sec
+   Number of edges is 500
+       Time searching component: list - 0 sec
+                                 matrix - 0 sec
+       Time working bfs: list - 0 sec
+                         matrix - 0.001 sec
+       Time working topological sort: list - 0 sec
+                                      matrix - 0 sec
+       Time working dijkstra : list - 0 sec
+                               matrix - 0.001 sec
+       Time searching spanning tree : list - 0 sec
+                                      matrix - 0 sec
+       Time searching minimal spanning tree : list - 0 sec
+                                              matrix - 0 sec
+   Number of edges is 2500
+       Time searching component: list - 0 sec
+                                 matrix - 0.001 sec
+       Time working bfs: list - 0 sec
+                         matrix - 0.001 sec
+       Time working topological sort: list - 0 sec
+                                      matrix - 0 sec
+       Time working dijkstra : list - 0.001 sec
+                               matrix - 0.001 sec
+       Time searching spanning tree : list - 0 sec
+                                      matrix - 0 sec
+       Time searching minimal spanning tree : list - 0.001 sec
+                                              matrix - 0 sec
+Number of vertex is 1000
+   Number of edges is 1000
+       Time searching component: list - 0 sec
+                                 matrix - 0.014 sec
+       Time working bfs: list - 0 sec
+                         matrix - 0.012 sec
+       Time working topological sort: list - 0 sec
+                                      matrix - 0.011 sec
+       Time working dijkstra : list - 0.001 sec
+                               matrix - 0.012 sec
+       Time searching spanning tree : list - 0 sec
+                                      matrix - 0.011 sec
+       Time searching minimal spanning tree : list - 0.001 sec
+                                              matrix - 0.01 sec
+   Number of edges is 5000
+       Time searching component: list - 0.001 sec
+                                 matrix - 0.015 sec
+       Time working bfs: list - 0.001 sec
+                         matrix - 0.014 sec
+       Time working topological sort: list - 0 sec
+                                      matrix - 0.005 sec
+       Time working dijkstra : list - 0.002 sec
+                               matrix - 0.025 sec
+       Time searching spanning tree : list - 0 sec
+                                      matrix - 0.015 sec
+       Time searching minimal spanning tree : list - 0.003 sec
+                                              matrix - 0.016 sec
+   Number of edges is 25000
+       Time searching component: list - 0.002 sec
+                                 matrix - 0.016 sec
+       Time working bfs: list - 0.001 sec
+                         matrix - 0.014 sec
+       Time working topological sort: list - 0.001 sec
+                                      matrix - 0.003 sec
+       Time working dijkstra : list - 0.008 sec
+                               matrix - 0.044 sec
+       Time searching spanning tree : list - 0.003 sec
+                                      matrix - 0.014 sec
+       Time searching minimal spanning tree : list - 0.007 sec
+                                              matrix - 0.02 sec
+   Number of edges is 125000
+       Time searching component: list - 0.01 sec
+                                 matrix - 0.025 sec
+       Time working bfs: list - 0.005 sec
+                         matrix - 0.018 sec
+       Time working topological sort: list - 0.001 sec
+                                      matrix - 0.003 sec
+       Time working dijkstra : list - 0.032 sec
+                               matrix - 0.077 sec
+       Time searching spanning tree : list - 0.009 sec
+                                      matrix - 0.02 sec
+       Time searching minimal spanning tree : list - 0.01 sec
+                                              matrix - 0.024 sec
+Number of vertex is 10000
+   Number of edges is 10000
+       Time searching component: list - 0.005 sec
+                                 matrix - 1.295 sec
+       Time working bfs: list - 0.004 sec
+                         matrix - 1.078 sec
+       Time working topological sort: list - 0.004 sec
+                                      matrix - 1.036 sec
+       Time searching spanning tree : list - 0.004 sec
+                                      matrix - 1.059 sec
+   Number of edges is 50000
+       Time searching component: list - 0.008 sec
+                                 matrix - 1.306 sec
+       Time working bfs: list - 0.006 sec
+                         matrix - 1.289 sec
+       Time working topological sort: list - 0.005 sec
+                                      matrix - 0.421 sec
+       Time searching spanning tree : list - 0.009 sec
+                                      matrix - 1.287 sec
+   Number of edges is 250000
+       Time searching component: list - 0.022 sec
+                                 matrix - 1.319 sec
+       Time working bfs: list - 0.015 sec
+                         matrix - 1.358 sec
+       Time working topological sort: list - 0.007 sec
+                                      matrix - 0.308 sec
+       Time searching spanning tree : list - 0.024 sec
+                                      matrix - 1.33 sec
+   Number of edges is 1250000
+       Time searching component: list - 0.085 sec
+                                 matrix - 1.389 sec
+       Time working bfs: list - 0.051 sec
+                         matrix - 1.351 sec
+       Time working topological sort: list - 0.018 sec
+                                      matrix - 0.285 sec
+       Time searching spanning tree : list - 0.092 sec
+                                      matrix - 1.402 sec
+   Number of edges is 6250000
+       Time searching component: list - 0.434 sec
+                                 matrix - 1.705 sec
+       Time working bfs: list - 0.236 sec
+                         matrix - 1.564 sec
+       Time working topological sort: list - 0.071 sec
+                                      matrix - 0.288 sec
+       Time searching spanning tree : list - 0.438 sec
+                                      matrix - 1.699 sec
+   Number of edges is 31250000
+       Time searching component: list - 2.638 sec
+                                 matrix - 3.273 sec
+       Time working bfs: list - 1.519 sec
+                         matrix - 2.511 sec
+       Time working topological sort: list - 0.722 sec
+                                      matrix - 0.645 sec
+       Time searching spanning tree : list - 2.545 sec
+                                      matrix - 3.27 sec

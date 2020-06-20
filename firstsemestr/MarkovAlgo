@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+struct rule {
+    string from;
+    string to;
+    bool ender;
+    rule(string a, string b, bool f){
+        from = a;
+        to = b;
+        ender = f;
+    }
+};
+
+rule from_string_to_rule(string buff){
+    string word1 = "";
+    string word2 = "";
+    bool f = 0;
+    int i = 0;
+    while (buff[i] != '-' || buff[i + 1] != '>')
+        word1 += buff[i++];
+    i += 2;
+    if (buff[i] == '.'){
+        f = 1;
+        ++i;
+    }
+    for (;i < buff.size(); ++i)
+        word2 += buff[i];
+    return {word1, word2, f};
+}
+
+vector <rule> read_rules(){
+    vector <rule> result;
+    int number_of_rules;
+    cin >> number_of_rules;
+    for (int i = 0; i < number_of_rules; ++i){
+        string buff;
+        cin >> buff;
+        result.push_back(from_string_to_rule(buff));
+    }
+    return result;
+}
+
+string solve(string word, vector <rule> rules){
+    for (int i = 0; i < rules.size(); ++i)
+        if (rules[i].from == "" || word.find(rules[i].from) != string::npos){
+            if (rules[i].from == "") return solve(rules[i].to + word, rules);
+            word.replace(word.find(rules[i].from), rules[i].from.size(), rules[i].to);
+            if (!rules[i].ender) return solve(word, rules);
+            break;
+        }
+    return word;
+}
+
+int main()
+{
+    vector <rule> rules = read_rules();
+    string word;
+    cin >> word;
+    cout << solve(word, rules);
+    return 0;
+}
