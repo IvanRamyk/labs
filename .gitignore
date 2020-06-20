@@ -1,7 +1,3 @@
-*/cmake-build-debug/
-*.DS_Store
-*/.idea/
-
 # Prerequisites
 *.d
 
@@ -35,3 +31,7 @@
 *.out
 *.app
 
+# */CMakeLists.txt
+*/cmake-build-debug/
+.DS_Store
+*/.idea/
