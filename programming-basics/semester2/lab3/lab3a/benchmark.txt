@@ -1,0 +1,358 @@
+For max bubble size = 2
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.154 sec
+For max bubble size = 3
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.099 sec
+  For n 2000000 1.154 sec
+For max bubble size = 4
+  For n 2000 0 sec
+  For n 20000 0.009 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.142 sec
+For max bubble size = 5
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.143 sec
+For max bubble size = 6
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.144 sec
+For max bubble size = 7
+  For n 2000 0 sec
+  For n 20000 0.006 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.149 sec
+For max bubble size = 8
+  For n 2000 0 sec
+  For n 20000 0.007 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.132 sec
+For max bubble size = 9
+  For n 2000 0.001 sec
+  For n 20000 0.009 sec
+  For n 200000 0.098 sec
+  For n 2000000 1.143 sec
+For max bubble size = 10
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.131 sec
+For max bubble size = 11
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.095 sec
+  For n 2000000 1.139 sec
+For max bubble size = 12
+  For n 2000 0 sec
+  For n 20000 0.009 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.148 sec
+For max bubble size = 13
+  For n 2000 0.001 sec
+  For n 20000 0.007 sec
+  For n 200000 0.099 sec
+  For n 2000000 1.167 sec
+For max bubble size = 14
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.094 sec
+  For n 2000000 1.144 sec
+For max bubble size = 15
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.095 sec
+  For n 2000000 1.128 sec
+For max bubble size = 16
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.095 sec
+  For n 2000000 1.167 sec
+For max bubble size = 17
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.138 sec
+For max bubble size = 18
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.095 sec
+  For n 2000000 1.138 sec
+For max bubble size = 19
+  For n 2000 0.001 sec
+  For n 20000 0.009 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.141 sec
+For max bubble size = 20
+  For n 2000 0.001 sec
+  For n 20000 0.007 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.143 sec
+For max bubble size = 25
+  For n 2000 0.001 sec
+  For n 20000 0.007 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.154 sec
+For max bubble size = 35
+  For n 2000 0.001 sec
+  For n 20000 0.007 sec
+  For n 200000 0.095 sec
+  For n 2000000 1.14 sec
+For max bubble size = 45
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.145 sec
+For max bubble size = 55
+  For n 2000 0.001 sec
+  For n 20000 0.007 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.145 sec
+For max bubble size = 65
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.15 sec
+For max bubble size = 75
+  For n 2000 0.001 sec
+  For n 20000 0.007 sec
+  For n 200000 0.098 sec
+  For n 2000000 1.136 sec
+For max bubble size = 85
+  For n 2000 0 sec
+  For n 20000 0.007 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.143 sec
+For max bubble size = 95
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.098 sec
+  For n 2000000 1.137 sec
+For max bubble size = 105
+  For n 2000 0 sec
+  For n 20000 0.008 sec
+  For n 200000 0.095 sec
+  For n 2000000 1.151 sec
+For max bubble size = 115
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.159 sec
+For max bubble size = 125
+  For n 2000 0 sec
+  For n 20000 0.007 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.142 sec
+For max bubble size = 135
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.099 sec
+  For n 2000000 1.142 sec
+For max bubble size = 145
+  For n 2000 0.001 sec
+  For n 20000 0.009 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.14 sec
+For max bubble size = 155
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.099 sec
+  For n 2000000 1.154 sec
+For max bubble size = 165
+  For n 2000 0 sec
+  For n 20000 0.007 sec
+  For n 200000 0.098 sec
+  For n 2000000 1.153 sec
+For max bubble size = 175
+  For n 2000 0.001 sec
+  For n 20000 0.008 sec
+  For n 200000 0.104 sec
+  For n 2000000 1.134 sec
+For max bubble size = 185
+  For n 2000 0.001 sec
+  For n 20000 0.009 sec
+  For n 200000 0.096 sec
+  For n 2000000 1.132 sec
+For max bubble size = 195
+  For n 2000 0.001 sec
+  For n 20000 0.009 sec
+  For n 200000 0.097 sec
+  For n 2000000 1.141 sec
+
+
+For size 100
+
+  For random array
+    Bubble: 0.000000 sec
+    Quick: 0.000000 sec
+    Merge: 0.000000 sec
+    Combine: 0.000000 sec
+
+
+
+  For sort array
+    Bubble: 0.000000 sec
+
+    Quick: 0.000000 sec
+
+    Merge: 0.000000 sec
+
+    Combine: 0.000000 sec
+
+
+  For reverse array
+    Bubble: 0.000000 sec
+
+    Quick: 0.000000 sec
+
+    Merge: 0.000000 sec
+
+    Combine: 0.000000 sec
+
+
+
+For size 1000
+
+  For random array
+    Bubble: 0.011000 sec
+    Quick: 0.000000 sec
+    Merge: 0.001000 sec
+    Combine: 0.000000 sec
+
+
+
+  For sort array
+    Bubble: 0.000000 sec
+
+    Quick: 0.000000 sec
+
+    Merge: 0.000000 sec
+
+    Combine: 0.001000 sec
+
+
+  For reverse array
+    Bubble: 0.000000 sec
+
+    Quick: 0.000000 sec
+
+    Merge: 0.000000 sec
+
+    Combine: 0.000000 sec
+
+
+
+For size 10000
+
+  For random array
+    Bubble: 1.073000 sec
+    Quick: 0.003000 sec
+    Merge: 0.003000 sec
+    Combine: 0.004000 sec
+
+
+
+  For sort array
+    Bubble: 0.000000 sec
+
+    Quick: 0.002000 sec
+
+    Merge: 0.002000 sec
+
+    Combine: 0.003000 sec
+
+
+  For reverse array
+    Bubble: 0.000000 sec
+
+    Quick: 0.002000 sec
+
+    Merge: 0.002000 sec
+
+    Combine: 0.002000 sec
+
+
+
+For size 100000
+
+  For random array
+    Quick: 0.039000 sec
+    Merge: 0.044000 sec
+    Combine: 0.047000 sec
+
+
+
+  For sort array
+    Quick: 0.019000 sec
+
+    Merge: 0.026000 sec
+
+    Combine: 0.027000 sec
+
+
+  For reverse array
+    Quick: 0.028000 sec
+
+    Merge: 0.025000 sec
+
+    Combine: 0.027000 sec
+
+
+
+For size 1000000
+
+  For random array
+    Quick: 0.483000 sec
+    Merge: 0.516000 sec
+    Combine: 0.545000 sec
+
+
+
+  For sort array
+    Quick: 0.230000 sec
+
+    Merge: 0.294000 sec
+
+    Combine: 0.327000 sec
+
+
+  For reverse array
+    Quick: 0.344000 sec
+
+    Merge: 0.302000 sec
+
+    Combine: 0.321000 sec
+
+
+
+For size 10000000
+
+  For random array
+    Quick: 5.560000 sec
+    Merge: 6.155000 sec
+    Combine: 6.486000 sec
+
+
+
+  For sort array
+    Quick: 2.811000 sec
+
+    Merge: 3.554000 sec
+
+    Combine: 3.794000 sec
+
+
+  For reverse array
+    Quick: 2.811000 sec
+
+    Merge: 3.513000 sec
+
+    Combine: 3.760000 sec
+
+
+
