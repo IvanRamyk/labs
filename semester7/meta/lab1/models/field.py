@@ -1,10 +1,10 @@
-from enum import Enum
 from random import seed
 from random import randint
 
 import pygame
 
 from models.bubble import Bubble
+from models.queue_element import QueueElement
 
 
 class Field:
@@ -15,13 +15,15 @@ class Field:
         self.rows = rows
         self.columns = columns
         self.bubble_types = bubble_types
-        self.bubbles_for_each_type = [0] * (bubble_types + 1)  # TODO change name
+        self.bubbles_for_each_type = [0] * (bubble_types + 1)
         print(self.bubbles_for_each_type)
         self.bubbles = [self.generate_row(i, self.columns, self.bubble_types) for i in range(initial_rows)]
         for bubble_row in self.bubbles:
             for bubble in bubble_row:
                 self.sprites.add(bubble)
         print(self.bubbles)
+        self.queue = []
+        self.generate_new_queue(6)
 
     def update(self):
         self.sprites.update()
@@ -32,12 +34,12 @@ class Field:
     def generate_bubble(self, row, column, n_types):
         return Bubble(self, row, column, randint(0, n_types))
 
+    def generate_queue_element(self, x, y, n_types, is_hidden):
+        return QueueElement(self, x, y, randint(0, n_types), is_hidden)
 
-class BubbleCeil(Enum):
-    empty = 0
-    red = 1
-    blue = 2
-    yellow = 3
-    green = 4
-    lightBlue = 5
-    purple = 6
+    def generate_new_queue(self, size):
+        self.queue = [self.generate_queue_element(self.bubble_size * (0.2 + 1.2 * i),
+                                                  self.bubble_size * (self.rows + 1),
+                                                  self.bubble_types, i != 0) for i in range(size)]
+        for q in self.queue:
+            self.sprites.add(q)
