@@ -3,6 +3,7 @@ from random import randint
 
 import pygame
 
+from models.ball import Ball
 from models.bubble import Bubble
 from models.queue_element import QueueElement
 
@@ -10,7 +11,7 @@ from models.queue_element import QueueElement
 class Field:
     def __init__(self, rows, columns, initial_rows, bubble_types, bubble_size, sprites: pygame.sprite.Group):
         self.sprites = sprites
-        seed(1)
+        seed()
         self.bubble_size = bubble_size
         self.rows = rows
         self.columns = columns
@@ -22,8 +23,11 @@ class Field:
             for bubble in bubble_row:
                 self.sprites.add(bubble)
         print(self.bubbles)
+        self.queue_y = self.bubble_size * (self.rows + 1)
         self.queue = []
         self.generate_new_queue(6)
+        self.ball = self.generate_new_ball(-1)
+        self.sprites.add(self.ball)
 
     def update(self):
         self.sprites.update()
@@ -39,7 +43,13 @@ class Field:
 
     def generate_new_queue(self, size):
         self.queue = [self.generate_queue_element(self.bubble_size * (0.2 + 1.2 * i),
-                                                  self.bubble_size * (self.rows + 1),
+                                                  self.queue_y,
                                                   self.bubble_types, i != 0) for i in range(size)]
         for q in self.queue:
             self.sprites.add(q)
+
+    def generate_new_ball(self, color):
+        x_center = (self.rows + 0.5) * self.bubble_size // 2
+        if color == -1:
+            return Ball(self, x_center, self.queue_y, randint(0, self.bubble_types))
+        return Ball(self, x_center, self.queue_y, color)
