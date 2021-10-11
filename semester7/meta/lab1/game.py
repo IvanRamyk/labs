@@ -3,6 +3,8 @@ import sys
 
 from collections import defaultdict
 
+from models.field import Field
+
 
 class Game:
     def __init__(self,
@@ -12,10 +14,16 @@ class Game:
                  rows,
                  columns,
                  bubble_types,
+                 bubble_size,
                  frame_rate):
+
+
+
         self.frame_rate = frame_rate
         self.game_over = False
-        self.objects = []
+        all_sprites = pygame.sprite.Group()
+        self.field = Field(rows, columns, rows // 2, bubble_types, bubble_size, all_sprites)
+
         pygame.mixer.pre_init(44100, 16, 2, 4096)
         pygame.init()
         pygame.font.init()
@@ -25,14 +33,6 @@ class Game:
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
-
-    def update(self):
-        for o in self.objects:
-            o.update()
-
-    def draw(self):
-        for o in self.objects:
-            o.draw(self.surface)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -54,8 +54,10 @@ class Game:
     def run(self):
         while not self.game_over:
             self.handle_events()
-            self.update()
-            self.draw()
+
+            self.field.update()
+            self.field.sprites.draw(self.surface)
 
             pygame.display.update()
+            self.surface.fill((0, 0, 0))
             self.clock.tick(self.frame_rate)
