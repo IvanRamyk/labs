@@ -14,6 +14,7 @@ def main():
         bubble_types=int(config["Game"]["bubble_types"]),
         frame_rate=int(config["Animation"]["frame_rate"]),
         caption="Bubble shooter",
+        speed=int(config["Game"]["speed"]),
         bubble_size=int(config["Game"]["bubble_size"])
     )
     game.run()

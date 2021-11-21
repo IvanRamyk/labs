@@ -15,9 +15,13 @@ class Bubble(pygame.sprite.Sprite):
         self.y = row * self.size
         self.color = get_color_by_number(color_type)
         self.image = pygame.Surface((self.size, self.size))
-        pygame.draw.circle(self.image, self.color, (self.size // 2, self.size // 2), self.size // 2 - 1)
+        pygame.draw.circle(self.image, self.color, (self.size // 2, self.size // 2), self.size // 2 - 2)
         self.rect = self.image.get_rect()
         self.rect.center = (self.x + self.size / 2, self.y + self.size / 2)
+
+    def move_up(self, rows):
+        self.row += rows
+        self.rect.y += rows * self.size
 
 
 def get_color_by_number(color_type):
